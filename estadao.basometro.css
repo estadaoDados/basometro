@@ -146,6 +146,7 @@ input[type=search] {
 	font-size:0.8em;
 }
 .ui-menu-item {
+	text-transform:uppercase;
 	padding:5px 15px;
 	color:lightgrey;
 	border-top:1px solid #555;
@@ -308,11 +309,12 @@ h3{
 
 #legenda_partidos{
 	float:left;
-	width:120px;
-	height: 600px;
+	width:100px;
+	height: 574px;
 	position:relative;
 	color:#666;
-	
+	margin-right:20px;
+	background:#222;
 }
 
 #legenda_partidos .topo{
@@ -328,7 +330,7 @@ h3{
 	margin-right: 3px;
 }
 
-.partido{
+.partido, #todos {
 	width:90px;
 	height: 14px;
 	font-size:11px;
@@ -346,8 +348,13 @@ h3{
 	-o-transition: all 0.3s ease;
 }
 
-.partido:hover, .bancada:hover, .estado:hover {
+.partido:hover, .bancada:hover, .estado:hover, #todos:hover {
 	background: #444 !important;
+	cursor:pointer;
+}
+
+#todos {
+	color:white;
 }
 
 .bancada{
@@ -368,7 +375,7 @@ h3{
 	-o-transition: all 0.3s ease;
 }
 
-.presenca_partido{
+.presenca_partido, #media_geral {
 	float:right;
 	text-align:right;
 }
@@ -880,6 +887,9 @@ h3{
 	margin-left:1px;
 	float:right;
 }
+.sen_row .governista_voto, .sen_row .oposicionista_voto, .sen_row .abstencao_voto {
+	width:14px;
+}
 
 #gov_counter i, #ops_counter i, #abs_counter i {
 	color:gray;
@@ -952,4 +962,45 @@ h3{
 
 .metodo a {
 	color:white !important;
+}
+
+#links_capa, #melhor_dos_usuarios {
+	background:#222;
+	padding:15px;
+}
+
+#melhor_dos_usuarios {
+	height:265px;
+}
+.thumb {
+	display:inline-block;
+	width:225px;
+	margin-right:5px;
+}
+.thumb:hover {
+	color:lightblue;
+	background:gray;
+}
+.thumb img {
+	width:225px;
+}
+.tweet {
+	width:341px;
+}
+.tweet img {
+	width:341px;
+}
+#links_capa {
+	height:75px;
+}
+#links_capa a, #links_capa b {
+	cursor:pointer;
+	color: white !important;
+	font-size:1.2em;
+	font-family:serif;
+	margin-right:20px;
+}
+
+#links_capa a:hover {
+	color:lightblue !important;
 }

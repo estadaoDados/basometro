@@ -1,11 +1,49 @@
-﻿var cores = {"PT":["#a00001",0],"PTC":["#ac1b01",1],"PRTB":["#be4700",2],"PCdoB":["#d57800",3],"PSB":["#e9a900",4],"PP":["#f8d100",5],"PSL":["#fff600",6],"PMDB":["#f8e804",7],"PTB":["#e7d20c",8],"PRB":["#cfb014",9],"PSD":["#b48d1c",10],"PSC":["#9c7222",11],"PTdoB":["#816022",12],"PRP":["#7a6f1f",13],"PMN":["#6a7f16",14],"PDT":["#5c9411",15],"PHS":["#51a911",16],"PR":["#4bbc11",17],"PV":["#4cd22e",18],"PPS":["#6cecab",19],"PSOL":["#74e7f6",20],"DEM":["#53b4eb",21],"PSDB":["#246ec2",22],"S.Part.":["#999",23]};
+﻿/*!
+ * Basômetro
+ * Authors: http://github.com/tcha-tcho, estadaodados team.
+ * http://estadaodados.com/html/basometro
+ *
+ * GPL Version 3 licenses.
+ * http://www.gnu.org/licenses/gpl.html
+*/
+
+var cores = {"PT":["#a00001",0],"PTC":["#ac1b01",1],"PRTB":["#be4700",2],"PCdoB":["#d57800",3],"PSB":["#e9a900",4],"PP":["#f8d100",5],"PSL":["#fff600",6],"PMDB":["#f8e804",7],"PTB":["#e7d20c",8],"PRB":["#cfb014",9],"PSD":["#b48d1c",10],"PSC":["#9c7222",11],"PTdoB":["#816022",12],"PRP":["#7a6f1f",13],"PMN":["#6a7f16",14],"PDT":["#5c9411",15],"PHS":["#51a911",16],"PR":["#4bbc11",17],"PV":["#4cd22e",18],"PPS":["#6cecab",19],"PSOL":["#74e7f6",20],"DEM":["#53b4eb",21],"PSDB":["#246ec2",22],"S.Part.":["#999",23],"S/PARTIDO":["#999",24]};
 var meses = [,,"mar",,,"jun",,,"set"];//intermediarios na legenda
-var d, g;//dados e grupo que contem os pontos
 var altura = 450, largura = 765; // do canvas
 var ios = /(iPad|iPhone)/i.test(navigator.userAgent)
-var bolinha = 3; // do canvas
-var complemento_foto = "http://www2.camara.gov.br/deputados/pesquisa/ws_layouts_deputados_fotoBiograf?id="
-var inicio, fim, datas_sorted = [], votacoes = [], participantes = [], votacoes_ids = [], participantes = {}, votantes = {}, votantes_sorted = [], partidos = [], votos = [], passos = 7, filtros = {}, porcentagem, enter_frame = 0, tip_path, item_selected = false, media_por_votacao = {},politicos_hints = [],votacoes_hints = [], visualizacao = "por_bancadas_partidárias", is_fim = false, inicio_left = 0, play_interval,tocando = false, first_time = true;
+var complemento_camara = "http://www2.camara.gov.br/deputados/pesquisa/ws_layouts_deputados_fotoBiograf?id="
+var inicio = false,
+		fim = false,
+		d,//dados e grupo que contem os pontos
+		g,
+		casa = "câmara",
+		first_time = true,
+		datas_sorted = [],
+		votacoes = [],
+		participantes = [],
+		votacoes_ids = [],
+		participantes = {},
+		votantes = {},
+		votantes_sorted = [],
+		partidos = [],
+		votos = [],
+		passos = 7,
+		filtros = {},
+		porcentagem,
+		enter_frame = 0,
+		tip_path,
+		item_selected = false,
+		media_por_votacao = {},
+		media_da_votacao = {},
+		politicos_hints = [],
+		votacoes_hints = [],
+		visualizacao = "por_bancadas_partidárias",
+		is_fim = false,
+		inicio_left = 0,
+		play_interval,
+		tocando = false,
+    bolinha_camara = 3, // do canvas
+		bolinha_senado = 5; // do canvas
 
 $.ui.autocomplete.prototype._renderItem = function( ul, item){
   var term = this.term.split(' ').join('|');
@@ -16,6 +54,33 @@ $.ui.autocomplete.prototype._renderItem = function( ul, item){
      .append( "<a>" + t + "</a>" )
      .appendTo( ul );
 };
+
+function rebuild(){
+	datas_sorted = [],
+	votacoes = [],
+	participantes = [],
+	votacoes_ids = [],
+	participantes = {},
+	votantes = {},
+	votantes_sorted = [],
+	partidos = [],
+	votos = [],
+	filtros = {},
+	enter_frame = 0,
+	item_selected = false,
+	media_por_votacao = {},
+	media_da_votacao = {},
+	is_fim = false,
+	inicio_left = 0,
+	$(".evento").remove();
+	$(".evento_tag").remove();
+	g.children = [];
+	esconder_ficha();
+	if (tocando) $("#tocar_votacao").click();
+
+	politicos_hints = [];
+	votacoes_hints = [];
+}
 
 function main(legislatura){
 	$("#mpl"+(ios?"":"_ios")).hide();
@@ -31,27 +96,34 @@ function main(legislatura){
 		d = data;//global data {politicos,votacoes,votos}
 		papel();
 		navegacao();
-		muda();
+		mudar_visualizacao();
 	});
 }
 
+
 function papel(){
-	paper.install(window);
-	paper.setup('grafico');
-	view.viewSize = new Size(largura, altura+10);
+
+	if (first_time) {
+		paper.install(window);
+		paper.setup('grafico');
+		view.viewSize = new Size(largura, altura+10);
+		view.onFrame = onFrame;
+		var tool = new Tool();
+		tool.onMouseDown = onMouseDown;
+	};
 
 	g = new Group();
 	// g.position.y = 5;
 	for(politico in d.politicos){
 		d.politicos[politico].ID_POLITICO = politico;
-		var circulo = new Path.Circle([380,5], bolinha);
+		var circulo = new Path.Circle([380,5], ((casa=="câmara")?bolinha_camara:bolinha_senado));
 		circulo.fillColor = 'red', circulo.fillColor.alpha = 0.7;
   	circulo.name = "id"+d.politicos[politico].ID
   	circulo.partido = d.politicos[politico].PARTIDO
   	circulo.politico = politico;
   	circulo.uf = d.politicos[politico].UF;
   	circulo.mandato = d.politicos[politico].ANO_MANDATO
-  	circulo.foto = d.politicos[politico].URL_FOTO
+  	circulo.foto = (d.politicos[politico].ARQUIVO_FOTO || d.politicos[politico].URL_FOTO)
 		circulo.votos = [0,0,0,0,0,0,0];//o ultimo são os votos com o governo
 		g.addChild(circulo);
 	}
@@ -63,41 +135,59 @@ function papel(){
 	for (votacao in d.votacoes) {
 		d.votacoes[votacao].ID_VOTACAO = votacao;
 	}
-	view.onFrame = onFrame;
-	
-	var tool = new Tool();
-	tool.onMouseDown = onMouseDown;
+
 }
+
+$("#choices").hide();
+$("#navegacao_topo a.drop").click(function(){
+	if ($("#choices").is(":visible")) {
+		$("#choices").hide();
+	}else{
+		var choices = $(this).attr("title").split(",");
+		choices_parsed = "";
+		for (var i = 0; i < choices.length; i++) {
+			choices_parsed += "<div id='choice_"+choices[i]+"' class='choices'>"+choices[i].replace(/_/g," ")+"</div>"
+		};
+		$("#choices").html(choices_parsed).css("left",$(this).position().left + "px").width($(this).outerWidth()).show().css("cursor", "pointer");
+	};
+})
+
 
 function navegacao(){
 
-	$("#choices").hide();
-	$("#navegacao_topo a.drop").click(function(){
-		if ($("#choices").is(":visible")) {
-			$("#choices").hide();
-		}else{
-			var choices = $(this).attr("title").split(",");
-			choices_parsed = "";
-			for (var i = 0; i < choices.length; i++) {
-				choices_parsed += "<div id='choice_"+choices[i]+"' class='choices'>"+choices[i].replace(/_/g," ")+"</div>"
-			};
-			$("#choices").html(choices_parsed).css("left",$(this).position().left + "px").width($(this).outerWidth()).show().css("cursor", "pointer");
-		};
-	})
+	$(".choices").die("click");
 	$(".choices").live("click",function(){
-		visualizacao = $(this).attr("id").substr(7);
-		$("#listar_tipos").text(visualizacao.replace(/_/g," "))
 		$("#choices").hide();
-		mudar_visualizacao();
+		escolha = $(this).attr("id");
+		if (/(Câmara|Senado)/.test(escolha)) {
+			nova_casa = /Câmara/.test(escolha)?"câmara":"senado"
+			if (nova_casa != casa) {
+				casa = nova_casa;
+				rebuild();
+				$("#listar_casa").text(escolha.substr(7).replace(/_/g," "))
+				escolha = escolha.replace("â","a")
+				$(".click").toggleClass("click");
+				main(escolha.substr(10)+"_2011");
+			};
+		} else {
+			visualizacao = escolha.substr(7);
+			$("#listar_tipos").text(visualizacao.replace(/_/g," "))
+			mudar_visualizacao();
+		};
 	}).css("cursor", "pointer")
 
-	$(".partido, .estado, .bancada").click(function(){
+	$(".partido, .estado, .bancada").unbind("click").click(function(){
 		$(this).toggleClass("click");
+		muda();
+	})
+
+	$("#todos").unbind("click").click(function(){
+		$(".click").toggleClass("click");
 		muda();
 	})
 	
 	//Desenha as escalas do gráfico
-	$('.linha_apoio').each(function (i){
+	$('.linha_apoio').each(function (i) {
 		$(this).css("top",(i * (altura/4) )+5);
 	});
 	
@@ -107,7 +197,7 @@ function navegacao(){
 			if (visualizacao == "por_bancadas_partidárias") {
 				selecionar_politico(ui.item.value)
 			}else{
-				mover_alca_fim($(".evento[title='"+ui.item.value+"']").attr("id"))
+				mover_alca("fim",$(".evento[title='"+ui.item.value+"']").attr("id"))
 			};
 		}
 	})
@@ -119,7 +209,7 @@ function navegacao(){
 		linha_y = Math.round((pos/altura)*100)/100;
 	}
 
-	$('.seletor').draggable({
+	$('.seletor').unbind("draggable").draggable({
 		containment:"parent",
 		scroll: false,
 		drag: function(event, ui) {
@@ -130,9 +220,8 @@ function navegacao(){
 			totalizacao();
 		}
 	});
-
 	
-	$('.alca').draggable({
+	$('.alca').unbind("draggable").draggable({
 		containment:"parent",
 		scroll: false,
 		drag: function(event,ui){
@@ -189,7 +278,6 @@ function slider_finishing(el) {
 	}
 }
 
-
 function mudar_visualizacao() {
 	$(".abas").hide();
 	$("#"+visualizacao).show();
@@ -219,25 +307,29 @@ function mudar_visualizacao() {
 	};
 }
 
-function mover_alca_fim(votacao_num,callback) {
-	is_fim = true;
-	var alca = $("#alca_fim");
+function mover_alca(alca,votacao_num) {
+	is_fim = (alca == "fim");
+	var j_alca = $("#alca_" + alca);
 	var votacao = $("#"+votacao_num)
-	alca.css("left",votacao.position().left+ "px")
-	fim = d.votacoes[votacao_num];
-	slider_finishing(alca)
+	j_alca.css("left",votacao.position().left+ "px")
+	if ( alca == "fim" ) {
+		fim = d.votacoes[votacao_num];
+	} else {
+		inicio = d.votacoes[votacao_num];
+	};
+	slider_finishing(j_alca)
 	$("#slider_tip").text(votacao.attr("title"))
-	muda(callback);
+	muda();
 }
 
 $("#somar_votacao").click(function(){
 	var proximo = $("#"+fim.ID_VOTACAO).next();
-	if (proximo.length > 0) mover_alca_fim(proximo.attr("id"));
+	if (proximo.length > 0) mover_alca("fim",proximo.attr("id"));
 })
 
 $("#subtrair_votacao").click(function(){
 	var anterior = $("#"+fim.ID_VOTACAO).prev();
-	if (anterior.length > 0) mover_alca_fim(anterior.attr("id"));
+	if (anterior.length > 0) mover_alca("fim",anterior.attr("id"));
 })
 
 $("#tocar_votacao").click(function(){
@@ -248,10 +340,10 @@ $("#tocar_votacao").click(function(){
 	}else{
 		$(this).children().removeClass("tocar").addClass("parar")
 		tocando = true;
-		mover_alca_fim(inicio.ID_VOTACAO)
+		mover_alca("fim",inicio.ID_VOTACAO)
 		play_interval = window.setInterval(function(){
 			var proximo = $("#"+fim.ID_VOTACAO).next();
-			if (proximo.length > 0) mover_alca_fim(proximo.attr("id"));
+			if (proximo.length > 0) mover_alca("fim",proximo.attr("id"));
 		},1000);
 	};
 })
@@ -267,7 +359,7 @@ function selecionar_politico(nome) {
 				preenche_ficha(item_selected);
 				draw_tip_arc(item_selected)
 			}else {
-				alert("Não participou dessa votação")
+				alert("Parlamentar não selecionado.")
 				esconder_ficha();
 			};
 		}
@@ -292,29 +384,32 @@ function desenha_eventos(){
 			$('#eventos_tag').append('<div class="evento_tag" style="left:'+posicao(i)+'">'+meses[datas_sorted[i][0].getMonth()]+'</div>');
 		}
 		var dt = datas_sorted[i][1].data_parsed;
-		var titulo = (i+1) + " - " + dt.getDate() +"/"+ (dt.getMonth()+1) +"/"+ dt.getFullYear()+ " "+ dt.getHours() + "h" + (dt.getMinutes()<10?"0":"")+ dt.getMinutes() + " - " +datas_sorted[i][1].LINGUAGEM_COMUM + " ("+datas_sorted[i][1].ID_VOTACAO + ")";
+		var titulo = (i+1) + " - " + dt.getDate() +"/"+ (dt.getMonth()+1) +"/"+ dt.getFullYear() + ((casa == "câmara")?(" "+ dt.getHours() + "h" + (dt.getMinutes()<10?"0":"")+ dt.getMinutes()):"" ) + " - " +datas_sorted[i][1].LINGUAGEM_COMUM + " ("+datas_sorted[i][1].ID_VOTACAO + ")";
 		votacoes_hints.push(titulo)
 		$('#eventos').append('<div id="'+datas_sorted[i][2]+'" class="evento" data="'+datas_sorted[i][0].getTime()+'" title="'+titulo+'" style="left:'+posicao(i)+'"></div>');
 		data_anterior = datas_sorted[i][0];
 	};
 	inicio = datas_sorted[0][1];
+	mover_alca("inicio",inicio.ID_VOTACAO)
 	fim = datas_sorted[datas_sorted.length-1][1];
+	mover_alca("fim",fim.ID_VOTACAO)
 }
 
 
 function muda(){
-	enter_frame = 0, politicos_hints = [], votacoes_ids = [], participantes = {}, votantes = {}, partidos = [], votos = [], votantes_sorted = [], media_por_votacao = {};
+	enter_frame = 0, politicos_hints = [], votacoes_ids = [], participantes = {}, votantes = {}, partidos = [], votos = [], votantes_sorted = [], media_por_votacao = {},  media_da_votacao = {};
 	if (inicio.data_parsed > fim.data_parsed) inicio = fim;
 	for (var i = 0; i < datas_sorted.length; i++) {
 		if(datas_sorted[i][1].data_parsed >= inicio.data_parsed && datas_sorted[i][1].data_parsed <= fim.data_parsed) {
-			votacoes_ids.push(Number(datas_sorted[i][2]));
-			media_por_votacao[Number(datas_sorted[i][2])] = {}//[PARTIDO][VOTOS_GOVERNO,VOTOS_TOTAIS]
+			votacoes_ids.push(datas_sorted[i][2]);
+			media_por_votacao[datas_sorted[i][2]] = {}//[PARTIDO][VOTOS_GOVERNO,VOTOS_TOTAIS]
+			media_da_votacao[datas_sorted[i][2]] = [0,0]; //[VOTOS_GOVERNO,VOTOS_TOTAIS]
 		}
 	};
 	$("#vota_count").text(votacoes_ids.length);
 
 	for (var i = 0; i < d.votos.length; i++) {//votos = [POLITICO,ID_VOTACAO,PARTIDO,VOTO]
-		if(votacoes_ids.indexOf(Number(d.votos[i][1])) != -1){ //todos os votos aqui já estão subselecteds
+		if(votacoes_ids.indexOf(String(d.votos[i][1])) != -1){ //todos os votos aqui já estão subselecteds
 			votos.push(d.votos[i])
 
 			if (media_por_votacao[d.votos[i][1]][d.votos[i][2]]) {
@@ -322,11 +417,14 @@ function muda(){
 			}else{
 				media_por_votacao[d.votos[i][1]][d.votos[i][2]] = [0,((d.votos[i][3]>=0 && d.votos[i][3] < 4)?1:0)]
 			};
+			if(d.votos[i][3]>=0 && d.votos[i][3] < 4) media_da_votacao[d.votos[i][1]][1] ++;
 
 			if(d.votacoes[d.votos[i][1]].ORIENTACAO_GOVERNO == "Sim" && d.votos[i][3] == 1) {
 				media_por_votacao[d.votos[i][1]][d.votos[i][2]][0] ++
-			} else if(d.votacoes[d.votos[i][1]].ORIENTACAO_GOVERNO == "Não" && d.votos[i][3] == 0) {
+				media_da_votacao[d.votos[i][1]][0] ++;
+			} else if (d.votacoes[d.votos[i][1]].ORIENTACAO_GOVERNO == "Não" && d.votos[i][3] == 0) {
 				media_por_votacao[d.votos[i][1]][d.votos[i][2]][0] ++
+				media_da_votacao[d.votos[i][1]][0] ++;
 			}
 
 			participantes["id"+d.votos[i][0]] = [d.votos[i][2],d.votos[i][3]] //ultimo partido e ultimo voto
@@ -350,6 +448,7 @@ function muda(){
 		g.children[politico].votos = [0,0,0,0,0,0,0];//o ultimo são os votos com o governo
 		votantes[politico].push(politico,g.children[politico].politico); //[PARTIDO,ULTIMO_VOTO,ID_POLITICO,NOME_CASA]
 	}
+
 	politicos_hints.sort();
 	if (first_time) {
 		$("#search").autocomplete("option", { source: politicos_hints });
@@ -386,20 +485,20 @@ function muda(){
 					votos_ = g.children[politico].votos;
 					g.children[politico].destino_x = x_pos;
 					g.children[politico].aceleracao_x = (g.children[politico].destino_x - g.children[politico].position.x)/passos;
-					x_pos += 1.4;
+					x_pos += (casa=="câmara")?1.4:9;
 
 
 
 
 					//votos_ = [NAO,SIM,ABSTENCAO,OBSTRUCAO,NAO VOTOU,PRESIDENTE,COM_GOVERNO]
 					var participacao = votos_[0] + votos_[1] + votos_[2] + votos_[3];
+					if (participacao == 0) g.children[politico].visible = false ;
+					if (participacao == 0) participacao = 1;
 					g.children[politico].governismo = votos_[6]/participacao; //em porcentagem
 					g.children[politico].destino_y = (altura - (g.children[politico].governismo * altura)) + 5;
-					if (isNaN(g.children[politico].governismo)) g.children[politico].visible = false;
 					// (Math.PI * (participacao * participacao * participacao))/(altura*20)
 					// g.children[politico].bounds.width  = Math.log(participacao)*3;
 					// g.children[politico].bounds.height = Math.log(participacao)*3;
-
 
 
 
@@ -439,18 +538,22 @@ function onFrame(event){
 }
 
 function filtra(){
-
-	filtros = {}, filtrar_partido = false, filtrar_estado = false;
+	filtros_partido = {}, filtros_uf = {}, filtrar_partido = false, filtrar_estado = false;
 	$(".partido.click,.estado.click").each(function(){
-		filtros[$(this).find("abbr").text()] = true;
-		if($(this).is(".partido")) filtrar_partido = true;
-		if($(this).is(".estado")) filtrar_estado = true;
+		if($(this).is(".partido")){
+			filtros_partido[$(this).find("abbr").text()] = true;
+			filtrar_partido = true;
+		}
+		if($(this).is(".estado")) {
+			filtros_uf[$(this).find("abbr").text()] = true;
+			filtrar_estado = true;
+		}
 	});
 
 	if (filtrar_partido || filtrar_estado) {
 		for (var i = 0; i < g.children.length; i++) {
 			if (g.children[i].visible) {
-				if ( !( (filtrar_estado?filtros[g.children[i].uf]:true) && (filtrar_partido?filtros[g.children[i].partido]:true) ) ) {
+				if ( !( (filtrar_partido?filtros_partido[g.children[i].partido]:true) && (filtrar_estado?filtros_uf[g.children[i].uf]:true) ) ) {
 					g.children[i].visible = false;
 					g.children[i].strokeColor = null;
 				};
@@ -470,8 +573,11 @@ function totalizacao(){
 	}
 
 	politicos_votantes = 0, governistas = 0, porcentagem = parseInt($("#seletor_v").text()) ;
+	var count = 0;
 	for (var i = 0; i < g.children.length; i++) {
 		if(g.children[i].visible){
+			count ++ 
+			console.log(g.children[i].politico)
 
 			politicos_votantes ++;
 			if ((g.children[i].governismo*100) >= porcentagem && g.children[i].governismo != 0) {
@@ -479,7 +585,8 @@ function totalizacao(){
 			}
 		}
 	};
-	$('#titulo').html("Em <b>"+ votacoes_ids.length +"</b> votações, <b>"+ governistas + "</b> deputados votaram com o governo em <b>"+ $("#seletor_v").text() +"</b> das vezes ou mais; e <b>"+ (politicos_votantes-governistas) +"</b> votaram com o governo em "+(($("#seletor_v").text() == "0%")?"":"menos de")+" <b>"+ $("#seletor_v").text() +"</b> das vezes")
+	console.log(count)
+	$('#titulo').html("Em <b>"+ votacoes_ids.length +"</b> votações, <b>"+ governistas + "</b> "+(casa=="câmara"?"deputados":"senadores")+" votaram com o governo em <b>"+ $("#seletor_v").text() +"</b> das vezes ou mais; e <b>"+ (politicos_votantes-governistas) +"</b> votaram com o governo em "+(($("#seletor_v").text() == "0%")?"":"menos de")+" <b>"+ $("#seletor_v").text() +"</b> das vezes")
 	.effect( "highlight", {color:tocando?"#111":"#333"}, 500 );
 
 	atualiza_partidos();
@@ -487,6 +594,13 @@ function totalizacao(){
 
 function atualiza_partidos(){
 	var media_partidos = {};
+	var total_media_das_votacoes = 0;
+
+	for(votacao_ in media_da_votacao) {
+		media_da_votacao[votacao_][2] = media_da_votacao[votacao_][0] / media_da_votacao[votacao_][1]
+		total_media_das_votacoes += media_da_votacao[votacao_][2];
+	}
+
 	for(votacao_ in media_por_votacao) {
 		for(partido_ in media_por_votacao[votacao_]) {
 			var porcentagem = media_por_votacao[votacao_][partido_][0]/media_por_votacao[votacao_][partido_][1];
@@ -501,16 +615,18 @@ function atualiza_partidos(){
 		}
 	}
 	for(partido_ in media_partidos) {
-		media_partidos[partido_] = parseInt((media_partidos[partido_][0]/media_partidos[partido_][1])*100)
+		media_partidos[partido_] = Math.round((media_partidos[partido_][0]/media_partidos[partido_][1])*100)
 	}
 
 	$(".presenca_partido").each(function(){
-		$(this).text("---");
+		$(this).parent().hide();
 	})
+
 	for(partido in media_partidos) {
-		var text_soma = (isNaN(media_partidos[partido]))?"---":media_partidos[partido]+"%";
-		$(".presenca_partido#"+partido).text(text_soma);
+		var text_soma = (isNaN(media_partidos[partido]))?($(".presenca_partido#"+partido).parent().hide()):media_partidos[partido]+"%";
+		$(".presenca_partido#"+partido).text(text_soma).parent().show();
 	}
+	$("#media_geral").text(Math.round((total_media_das_votacoes / votacoes_ids.length)*100) + "%")
 	
 }
 
@@ -549,9 +665,11 @@ function preenche_ficha (item) {
 	$("#ficha_abst").text(item.votos[2])
 	$("#ficha_n_votou").text(item.votos[4])
 
-	if ($("#ficha_foto").attr("src") != (complemento_foto + item.foto)) {
+	if (item.foto.indexOf(".jpg") != -1) complemento_camara = "http://s3-sa-east-1.amazonaws.com/estadaodados/fotos_deputados/";
+	var _foto = (((casa == "câmara")?complemento_camara:"") + item.foto)
+	if ($("#ficha_foto").attr("src") != _foto) {
 		$("#lendo_foto").show();
-		$("#ficha_foto").hide().attr("src",(complemento_foto + item.foto)).load(function(){
+		$("#ficha_foto").hide().attr("src",_foto).load(function(){
 			$(this).show();
 			$("#lendo_foto").hide();
 		})
@@ -579,7 +697,9 @@ function muda_votacao(){
 	$("#titulo_voto").html("<br>"+fim.LINGUAGEM_COMUM);
 	$("#texto_voto").html(fim.O_QUE_FOI_VOTADO);
 	$("#subtitulo_voto").html(fim.EMENTA);
-	$("#texto_data").html(fim.TIPO + " " + fim.NUMERO + " " + fim.ANO + " &rarr; <span id='t_data'>"+fim.data_parsed.getDate()+"/"+(fim.data_parsed.getMonth()+1)+"/"+fim.data_parsed.getFullYear()+"</span> - <span id='t_hora'>"+fim.data_parsed.getHours()+"h"+(fim.data_parsed.getMinutes()<10?"0":"")+fim.data_parsed.getMinutes()+" &rarr; Orientação do governo: <b>"+fim.ORIENTACAO_GOVERNO+"</b></span>");
+	if (fim.data_parsed) {
+		$("#texto_data").html(fim.TIPO + " " + fim.NUMERO + " " + fim.ANO + " &rarr; <span id='t_data'>"+fim.data_parsed.getDate()+"/"+(fim.data_parsed.getMonth()+1)+"/"+fim.data_parsed.getFullYear()+"</span> - <span id='t_hora'>"+fim.data_parsed.getHours()+"h"+(fim.data_parsed.getMinutes()<10?"0":"")+fim.data_parsed.getMinutes()+" &rarr; Orientação do governo: <b>"+fim.ORIENTACAO_GOVERNO+"</b></span>");
+	};
 
 	$('#partido_voto').html('<div id="governista" ></div><div id="oposicionista" ></div><div id="abstencao" ></div>');
 
@@ -592,9 +712,11 @@ function muda_votacao(){
 		partidos_sorted[cores[partidos[i]][1]] = partidos[i];
 	};
 	for (var i=0; i<partidos_sorted.length; i++){
-		$('#governista').append('<div id="v_g_'+partidos_sorted[i]+'" class="partido_row" ><small>'+partidos_sorted[i]+'</small></div>');
-		$('#oposicionista').append('<div id="v_o_'+partidos_sorted[i]+'" class="partido_row" ></div>');
-		$('#abstencao').append('<div id="v_a_'+partidos_sorted[i]+'" class="partido_row" ></div>');
+		if (partidos_sorted[i]) {
+			$('#governista').append('<div id="v_g_'+partidos_sorted[i]+'" class="partido_row'+(casa=="senado"?" sen_row":"")+'" ><small>'+partidos_sorted[i]+'</small></div>');
+			$('#oposicionista').append('<div id="v_o_'+partidos_sorted[i]+'" class="partido_row'+(casa=="senado"?" sen_row":"")+'" ></div>');
+			$('#abstencao').append('<div id="v_a_'+partidos_sorted[i]+'" class="partido_row'+(casa=="senado"?" sen_row":"")+'" ></div>');			
+		};
 	};
 
 	var count = 0;
@@ -643,8 +765,4 @@ function muda_votacao(){
 
 }
 
-
-
-$(document).ready(main(1));
-
-
+$(document).ready(main("Camara_2011"));

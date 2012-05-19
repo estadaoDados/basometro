@@ -3,10 +3,26 @@
 <head>
 <title>Estadão Dados: "Basômetro" - Meça a base do governo na Câmara dos Deputados</title>
 <meta name="Generator" content="EditPlus">
-<meta name="Author" content="Estadão.com.br - Amanda Rossi, Bruno Lupion, Carlos Lemos, Daniel Bramatti, José Roberto Toledo e Ricardo Periago">
+<meta name="Author" content="Estadão.com.br - Tcha-Tcho, Carlos Lemos, Daniel Bramatti, José Roberto Toledo, Amanda Rossi e Bruno Lupion">
 <meta name="Keywords" content="">
 <meta name="Description" content="">
 <link rel="stylesheet" href="estadao.basometro.css" />
+
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-166963-4']);
+	// _gaq.push(['_setDomainName', '.estadao.com.br']);
+	_gaq.push(['_setLocalGifPath', 'http://urchin.estadao.com.br/imagem/urchin.gif']);
+	_gaq.push(['_setLocalRemoteServerMode']);
+	_gaq.push(['_trackPageview']);
+
+	(function() {
+		var ga = document.createElement('script');     ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:'   == document.location.protocol ? 'https://ssl'   : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+</script>
+
 <script src="jquery-1.7.2.min.js"></script>
 <script src="jquery-ui-1.8.20.custom.min.js"></script>
 <script src="jquery.ui.touch-punch.min.js"></script>
@@ -92,7 +108,7 @@
 		<div id="navegacao_topo">
 			<a class="tool_name">Basômetro</a>
 			<a>do governo Dilma</a>
-			<a>na Câmara</a>
+			<a id="listar_casa" title="na_Câmara,no_Senado" class="last drop">na Câmara</a>
 			<!-- ,por_parlamentar -->
 			<a id="listar_tipos" title="por_bancadas_partidárias,por_votações" class="last drop">por bancadas partidárias</a>
 			<div id="choices"></div>
@@ -112,8 +128,9 @@
 
 			<div id="por_bancadas_partidárias" class="abas">
 				<div id="titulo" class="radius"></div>
-				<div id="legenda_partidos">
+				<div id="legenda_partidos" class="radius">
 
+					<div class="bt2" id="todos"><b>Todos</b><span id="media_geral"></span></div>
 					<div class="partido bt2"><div class="box" style="background-color: #a00100;"></div><abbr title="Partido dos Trabalhadores">PT</abbr><span id="PT" class="presenca_partido"></span></div>
 					<div class="partido bt2"><div class="box" style="background-color: #ab1c00;"></div><abbr title="Partido Trabalhista Cristão">PTC</abbr><span id="PTC" class="presenca_partido"></span></div>
 					<div class="partido bt2"><div class="box" style="background-color: #bf4600;"></div><abbr title="Partido Renovador Trabalhista Brasileiro">PRTB</abbr><span id="PRTB" class="presenca_partido"></span></div>
@@ -137,7 +154,7 @@
 					<div class="partido bt2"><div class="box" style="background-color: #74e7f6;"></div><abbr title="Partido Socialismo e Liberdade">PSOL</abbr><span id="PSOL" class="presenca_partido"></span></div>
 					<div class="partido bt2"><div class="box" style="background-color: #53b3eb;"></div><abbr title="Democratas">DEM</abbr><span id="DEM" class="presenca_partido"></span></div>
 					<div class="partido bt2"><div class="box" style="background-color: #246ec2;"></div><abbr title="Partido da Social Democracia Brasileira">PSDB</abbr><span id="PSDB" class="presenca_partido"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #999;"></div><abbr title="Sem partido">S.Part.</abbr><span id="S.Part." class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #999999;"></div><abbr title="Sem partido">S.Part.</abbr><span id="S.Part." class="presenca_partido"></span></div>
 
 				</div>
 
@@ -257,7 +274,7 @@
 					<div id="fim">
 						<div id="alca_fim" class="alca bt">Fim</div>
 					</div>
-					<div class="intervalo opaque30"><b id="vota_count">40</b></div>
+					<div class="intervalo opaque30"><b id="vota_count">...</b></div>
 				</div>
 			</div>
 			<div style="position:absolute;top:580px;margin-left:120px;">
@@ -276,7 +293,7 @@
 		<a href="https://twitter.com/share" class="twitter-share-button" data-via="estadaodados" data-lang="pt" data-hashtags="basometro">Tweetar</a>
 		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 		<br>
-		<div style="margin-top:5px;"
+		<div style="margin-top:5px;">
 			<a name="fb_share">Recomendar</a>
 			<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
 		</div>
@@ -300,23 +317,35 @@
 
 	<br clear="all" >
 	<br>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	<br>
+	<div id="links_capa" class="radius">
+		<b>Links relacionados:</b>
+		<br>
+		&#9679; <a href="http://www.estadao.com.br/noticias/nacional,nucleo-duro-de-dilma-na-camara-encolhe-em-2012-revela-basometro,872159,0.htm">‘Núcleo duro’ de Dilma na Câmara encolhe em 2012, revela Basômetro</a>
+		<br>
+		&#9679; <a href="http://www.estadao.com.br/noticias/nacional,ferramenta-mede-taxa-de-governismo-de-deputados,872160,0.htm">Ferramenta mede taxa de governismo de deputados</a>
+		<br>
+		&#9679; <a href="http://www.estadao.com.br/noticias/nacional,estadao-dados-une-transparencia-e-interatividade,872163,0.htm">Estadão Dados une transparência e interatividade</a>
+	</div>
+	<br clear="all" >
+	<div id="melhor_dos_usuarios" class="radius">
+		<h1 style="font-size:1.3em;margin-bottom:10px;">Como as pessoas estão usando o Basômetro e o que estão dizendo sobre ele</h1>
+		<div class="thumb">
+			<big>Alberto Cairo</big>
+			<br>
+			<a href="http://www.thefunctionalart.com/2012/05/visualization-on-what-brazilian.html"><img src="thumb_alberto.png" /></a>
+		</div>
+		<div class="thumb">
+			<big>Lucas Cunha</big>
+			<br>
+			<a href="http://estudoslegislativos.blogspot.com.br/2012/05/quais-sao-os-partidos-ruralistas-no.html"><img src="thumb_lucas.png" /></a>
+		</div>
+		<div class="thumb tweet">
+			<big>Humberto Dantas</big>
+			<br>
+			<a href="https://twitter.com/#!/HumbertoDantas"><img src="thumb_humberto.png" /></a>
+		</div>
+	</div>
 	<br clear="all" >
 	<div class="metodo" style="color:#999;">
 		<div style="display:inline-block; float:left; width:465px; padding:10px">
@@ -331,21 +360,35 @@
 
 			<p>Os partidos estão organizados de acordo com a taxa de apoio do governo em maio de 2012, do maior para o menor. Quanto mais governista, mais à esquerda no gráfico e mais acima na legenda. Também é possível clicar nos partidos e selecionar os que serão exibidos no Basômetro. Do lado direito, o usuário pode selecionar os Estados. Um campo de busca no topo da página ajuda a encontrar um deputado específico.</p>
 
+			<p>Além de mostrar os votos dos parlamentares e sua posição em relação ao governo, o Basômetro permite que o usuário faça suas próprias análises e compare a atuação das diferentes bancadas partidárias.</p>
 		</div>
 
 		<div style="display:inline-block; float:left; width:465px; padding:10px;">
 			<big> &nbsp;</big>
-			<p>Além de mostrar os votos dos parlamentares e sua posição em relação ao governo, o Basômetro permite que o usuário faça suas próprias análises e compare a atuação das diferentes bancadas partidárias.</p>
 
-			<p>Um slider (botão deslizável) da taxa de governismo, à direita, pode ser arrastado para cima (mais governista) ou para baixo (mais oposicionista). Após mover o slider, um título dinâmico no topo da tela aponta o número de deputados pró e contra o governo na taxa selecionada. Assim, em 98 votações, 239 deputados votaram com o governo em 90% das vezes ou mais e 272 votaram com o governo em menos de 90% das vezes.</p>
+			<p>Um slider (botão deslizável) da taxa de governismo, à direita, pode ser arrastado para cima (mais governista) ou para baixo (mais oposicionista). O título dinâmico no topo da tela aponta o número de deputados pró e contra o governo conforme a taxa e o período selecionados. Em 98 votações, 239 deputados votaram com o governo em 90% das vezes ou mais, por exemplo.</p>
 
-			<p>Na parte de baixo do Basômetro, uma linha do tempo permite ver o comportamento dos parlamentares ao longo das votações. As teclas início e fim podem ser movidas para selecionar o período desejado e o botão play mostra a evolução da taxa de governismo desde o início de 2011. As bolinhas que aparecem na tela mostram os parlamentares que estavam no cargo na data da última votação selecionada.</p>
+			<p>Na parte de baixo do Basômetro, uma linha do tempo permite ver o comportamento dos parlamentares ao longo das votações. Movendo as teclas "início" e "fim", seleciona-se um recorte de tempo. O botão "play" dá início a uma animação do movimento dos deputados desde o início de 2011. Só aparecem na tela os parlamentares que estavam no cargo na data da última votação selecionada.</p>
 
 			<p>Além de visualizar os votos por partido, o usuário pode optar por ver os dados por votação. Para isso, basta trocar "por bancada partidária", na aba no topo da página, por "por votações". Na nova janela, é possível ver como cada partido votou uma determinada medida.</p>
 
-			<p>Os código e os dados no Basômetro estão disponíveis no <a href="https://github.com/estadao/basometro" target="_blank">Github</a> e no Google Fusion Tables (<a href="http://migre.me/93ce4" target="_blank">votos em 2012</a>, <a href="http://migre.me/93cE1" target="_blank">votos em 2011</a>, <a href="http://migre.me/93cnT" target="_blank">lista de votações</a> ).</p>
+			<p>
+				Os códigos e os dados no Basômetro estão disponíveis no 
+				<a target="_blank" href="https://github.com/estadao/basometro">Github</a>
+				e no Google Docs (
+				<a target="_blank" href="http://migre.me/93v6U">votos em 2012</a>
+				,
+				<a target="_blank" href="http://migre.me/93v1Q">votos em 2011</a>
+				,
+				<a target="_blank" href="http://migre.me/93vha">lista de votações</a>
+				).
+			</p>
 
-			<p>O Estadão Dados é uma equipe formada por jornalistas, programadores e designers: José Roberto de Toledo, Daniel Bramatti, Eduardo Malpeli e Amanda Rossi. No projeto do Basômetro, colaboraram também Carlos Lemos, Bruno Lupion e Ricardo Periago.</p>
+			<p>
+				O Basômetro se inspirou no projeto Camaraws, de Leonardo Leite e Saulo Trento (PoliGNU - Grupo de Estudos de Software Livre da Poli-USP), que usou os resultados de votações na Câmara dos Deputados para avaliar o grau de semelhança entre os partidos (veja <a href="http://polignu.org/projetos/camaraws">aqui</a>).
+			</p>
+
+			<p>O Estadão Dados é uma equipe formada por jornalistas, programadores e designers: José Roberto de Toledo, Daniel Bramatti, Eduardo Malpeli e Amanda Rossi. No projeto do Basômetro, colaboraram também Carlos Lemos, Bruno Lupion e Ricardo Periago. O Basômetro também recebeu valiosas contribuições de Fabio Sales, diretor de Arte do Grupo Estado.</p>
 
 		</div>
 
@@ -356,20 +399,5 @@
 		<b>Grupo Estado</b> • Copyright © 2007-2012 • Todos os direitos reservados
 	</footer>
 	<script src="estadao.basometro.js" canvas="grafico"></script>
-
-	<script type="text/javascript">
-		var _gaq = _gaq || [];
-		_gaq.push(['_setAccount', 'UA-166963-4']);
-		_gaq.push(['_setDomainName', '.estadao.com.br']);
-		_gaq.push(['_setLocalGifPath', 'http://urchin.estadao.com.br/imagem/urchin.gif']);
-		_gaq.push(['_setLocalRemoteServerMode']);
-		_gaq.push(['_trackPageview']);
-
-		(function() {
-			var ga = document.createElement('script');     ga.type = 'text/javascript'; ga.async = true;
-			ga.src = ('https:'   == document.location.protocol ? 'https://ssl'   : 'http://www') + '.google-analytics.com/ga.js';
-			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		})();
-	</script>
 </body>
 </html>
