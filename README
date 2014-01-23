@@ -21,6 +21,6 @@ Além de visualizar os votos por partido, o usuário pode optar por ver os dados
 
 Os códigos e os dados no Basômetro estão disponíveis no Github e no Google Docs ( votos em 2012 , votos em 2011 , lista de votações ).
 
-O Basômetro se inspirou no projeto Camaraws, de Leonardo Leite e Saulo Trento (PoliGNU - Grupo de Estudos de Software Livre da Poli-USP), que usou os resultados de votações na Câmara dos Deputados para avaliar o grau de semelhança entre os partidos (veja aqui).
+O Basômetro se inspirou no projeto [Radar Parlamentar](http://radarparlamentar.polignu.org/ "Radar Parlamentar") (antigo Camaraws), de Leonardo Leite e Saulo Trento ([PoliGNU](http://polignu.org/ "PoliGNU") - Grupo de Estudos de Software Livre da Poli-USP), que usou os resultados de votações na Câmara dos Deputados para avaliar o grau de semelhança entre os partidos ([veja aqui](http://radarparlamentar.polignu.org/ "veja aqui")).
 
 O Estadão Dados é uma equipe formada por jornalistas, programadores e designers: José Roberto de Toledo, Daniel Bramatti, Eduardo Malpeli e Amanda Rossi. No projeto do Basômetro, colaboraram também Carlos Lemos, Bruno Lupion e Ricardo Periago. O Basômetro também recebeu valiosas contribuições de Fabio Sales, diretor de Arte do Grupo Estado.
