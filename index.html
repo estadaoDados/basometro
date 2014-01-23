@@ -1,33 +1,39 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<title>Estadão Dados: "Basômetro" - Meça a base do governo na Câmara dos Deputados</title>
-<meta name="Generator" content="EditPlus">
-<meta name="Author" content="Estadão.com.br - Tcha-Tcho, Carlos Lemos, Daniel Bramatti, José Roberto Toledo, Amanda Rossi e Bruno Lupion">
-<meta name="Keywords" content="">
-<meta name="Description" content="">
-<link rel="stylesheet" href="estadao.basometro.css" />
+	<!-- meta tags fixas do estadão dados -->
+	<meta charset="UTF-8">
+	<meta name="robots" content="index">
+	<meta name="creator" content="Estadão.com.br">
+	<meta name="creator" content="Estadão Dados">
+	<meta name="creator" content="José Roberto Toledo">
+	<meta name="creator" content="Daniel Bramatti"> 
+	<meta name="creator" content="Amanda Rossi">
+	<meta name="creator" content="Tcha-Tcho"> 
+	<meta name="creator" content="Carlos Lemos"> 
+    <meta name="creator" content="Diego Rabatone Oliveira"> 
+	<meta name="creator" content="Bruno Lupion">
+	<meta property="og:site_name" content="Estadão Dados"/>
+	<meta property="og:locale" content="pt_BR"/>
+	<!-- meta tags específicas de cada projeto -->
+	<meta name="author" content="Tcha-Tcho"> <!-- A pessoa responsável pelo desenvolvimento deste arquivo -->
+	<meta name="DC.creator" content="Tcha-Tcho" /> <!-- Desenvolvedor da página -->
+	<meta name="application-name" content="Basômetro"> <!-- O nome desta aplicação -->
+	<meta name="description" content="O Basômetro é uma ferramenta interativa que permite medir o apoio dos parlamentares ao governo e acompanhar como eles se posicionaram nas votações legislativas."> <!-- Descrição curta e precisa do conteúdo desta página -->
+	<meta name="keywords" content="parlamentares, base, aliados, legislativo"> <!-- Palavras reletantes relativas ao conteúdo dessa página. Em formato texto e separadas por vírgula. -->
+	<meta property="og:image" content="http://estadaodados.com/base/images/logo_estadao_dados.png"/> <!-- imagem que aparecerá no facebook quando o site for compartilhado -->
+	<link rel="image_src" href="http://estadaodados.com/base/images/logo_estadao_dados.png"/> <!-- Outra forma de definir a imagem mostrada quando do compartilhamento da página -->
+	<title>Estadão Dados: "Basômetro" - Meça a base do governo no Congresso</title>
+	<meta property="og:title" content="Estadão Dados: 'Basômetro' - Meça a base do governo no Congresso"/>
+	<meta property="og:url" content="http://estadaodados.com/html/basometro/"/> <!-- ex: http://estadaodados.com/html/coligacoes/ -->
 
-<script type="text/javascript">
-	var _gaq = _gaq || [];
-	_gaq.push(['_setAccount', 'UA-166963-4']);
-	// _gaq.push(['_setDomainName', '.estadao.com.br']);
-	_gaq.push(['_setLocalGifPath', 'http://urchin.estadao.com.br/imagem/urchin.gif']);
-	_gaq.push(['_setLocalRemoteServerMode']);
-	_gaq.push(['_trackPageview']);
+<link rel="stylesheet" href="css/estadao.basometro.css" />
 
-	(function() {
-		var ga = document.createElement('script');     ga.type = 'text/javascript'; ga.async = true;
-		ga.src = ('https:'   == document.location.protocol ? 'https://ssl'   : 'http://www') + '.google-analytics.com/ga.js';
-		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	})();
-</script>
+<script src="js/jquery-1.7.2.min.js"></script>
+<script src="js/jquery-ui-1.8.20.custom.min.js"></script>
+<script src="js/jquery.ui.touch-punch.min.js"></script>
+<script src="js/paper.js"></script>
 
-<script src="jquery-1.7.2.min.js"></script>
-<script src="jquery-ui-1.8.20.custom.min.js"></script>
-<script src="jquery.ui.touch-punch.min.js"></script>
-<script src="paper.js"></script>
-<!-- <script src="estadao.basometro.dados.js"></script> -->
 <style>
 
 	#barraEstadaoParceiros{width:980px; height:27px; background:white !important; display:table; margin:0px auto; margin-bottom:5px; }
@@ -55,7 +61,7 @@
 </head>
 <body>
 	<div id="como_usar" style="position:absolute;z-index:10000;">
-		<img src="como_usar.png" />
+		<img src="images/como_usar.png" />
 	</div>
 	<div id="barraEstadaoParceiros" class="radius_top">
 		<a href="http://www.estadao.com.br/" target="_top" title="Estadão.com.br" class="lgBarraEstadaoParceiros"><img src="http://www.estadao.com.br/estadao/novo/img/logoEstadao.gif" width="150" height="27" border="0" alt="Estadão.com.br" target="_top" title="Estadão.com.br"></a>
@@ -103,11 +109,12 @@
 
 	<header class="bt2 radius">
 		<h1>
-			<img id="estadao_dados" src="logo_estadao_dados.png" height="30px" title="Estadão.com.br" align="middle">
+			<img id="estadao_dados" src="images/logo_estadao_dados.png" height="30px" title="Estadão.com.br" align="middle">
 		</h1>
 		<div id="navegacao_topo">
-			<a class="tool_name">Basômetro</a>
-			<a>do governo Dilma</a>
+      <a id="listar_tools" title="Basômetro,Biomas2012,Coligações,Cotas,Eleições_2012,Fuvest_2013,IDEB,Intenção_de_Voto,Lista_ENEM_2011,Que_SP_vc_quer?,Religiões,São_Paulo_que_balança" class="last drop">Basômetro</a>
+			<a>do governo</a>
+			<a id="listar_governo" title="Lula_1,Lula_2,Dilma" class="last drop">Dilma</a>
 			<a id="listar_casa" title="na_Câmara,no_Senado" class="last drop">na Câmara</a>
 			<!-- ,por_parlamentar -->
 			<a id="listar_tipos" title="por_bancadas_partidárias,por_votações" class="last drop">por bancadas partidárias</a>
@@ -116,7 +123,7 @@
 		 
 		<aside> 
 			<input placeholder="buscar político" type="search" name="s" id="search">
-			<img src="search_icon.png" align="top"/>
+			<img src="images/search_icon.png" align="top"/>
 		</aside>
 
 
@@ -124,38 +131,53 @@
 	<article>
 		
 		<div id="infografico">
-			<div id="loading" style="display:none;" class="radius"> lendo dados ... <br><img src="ajax-loader.gif" /></div>
+			<div id="loading_first" style="z-index: 19999;" class="radius"> aguarde, carregando dados iniciais ... <br/> este processo pode demorar um pouco ... <br/><img src="images/ajax-loader.gif" /></div>
+			<div id="loading" style="display:none;" class="radius"> lendo dados ... <br/><br/><img src="images/ajax-loader.gif" /></div>
 
 			<div id="por_bancadas_partidárias" class="abas">
 				<div id="titulo" class="radius"></div>
 				<div id="legenda_partidos" class="radius">
 
 					<div class="bt2" id="todos"><b>Todos</b><span id="media_geral"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #a00100;"></div><abbr title="Partido dos Trabalhadores">PT</abbr><span id="PT" class="presenca_partido"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #ab1c00;"></div><abbr title="Partido Trabalhista Cristão">PTC</abbr><span id="PTC" class="presenca_partido"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #bf4600;"></div><abbr title="Partido Renovador Trabalhista Brasileiro">PRTB</abbr><span id="PRTB" class="presenca_partido"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #d57800;"></div><abbr title="Partido Comunista do Brasil">PCdoB</abbr><span id="PCdoB" class="presenca_partido"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #e9a900;"></div><abbr title="Partido Socialista Brasileiro">PSB</abbr><span id="PSB" class="presenca_partido"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #f9d100;"></div><abbr title="Partido Progressista">PP</abbr><span id="PP" class="presenca_partido"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #fff600;"></div><abbr title="Partido Social Liberal">PSL</abbr><span id="PSL" class="presenca_partido"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #f9e804;"></div><abbr title="Partido do Movimento Democrático Brasileiro">PMDB</abbr><span id="PMDB" class="presenca_partido"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #e7d20b;"></div><abbr title="Partido Trabalhista Brasileiro">PTB</abbr><span id="PTB" class="presenca_partido"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #cfb114;"></div><abbr title="Partido Republicano Brasileiro">PRB</abbr><span id="PRB" class="presenca_partido"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #9c7223;"></div><abbr title="Partido Social Democrático">PSD</abbr><span id="PSD" class="presenca_partido"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #9b7323;"></div><abbr title="Partido Social Cristão">PSC</abbr><span id="PSC" class="presenca_partido"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #816022;"></div><abbr title="Partido Trabalhista do Brasil">PTdoB</abbr><span id="PTdoB" class="presenca_partido"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #7a7020;"></div><abbr title="Partido Republicano Progressista">PRP</abbr><span id="PRP" class="presenca_partido"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #6a7f15;"></div><abbr title="Partido da Mobilização Nacional">PMN</abbr><span id="PMN" class="presenca_partido"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #5c9411;"></div><abbr title="Partido Democrático Trabalhista">PDT</abbr><span id="PDT" class="presenca_partido"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #51a911;"></div><abbr title="Partido Humanista da Solidariedade">PHS</abbr><span id="PHS" class="presenca_partido"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #4abd11;"></div><abbr title="Partido da República">PR</abbr><span id="PR" class="presenca_partido"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #4cd22e;"></div><abbr title="Partido Verde">PV</abbr><span id="PV" class="presenca_partido"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #6cebab;"></div><abbr title="Partido Popular Socialista">PPS</abbr><span id="PPS" class="presenca_partido"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #74e7f6;"></div><abbr title="Partido Socialismo e Liberdade">PSOL</abbr><span id="PSOL" class="presenca_partido"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #53b3eb;"></div><abbr title="Democratas">DEM</abbr><span id="DEM" class="presenca_partido"></span></div>
-					<div class="partido bt2"><div class="box" style="background-color: #246ec2;"></div><abbr title="Partido da Social Democracia Brasileira">PSDB</abbr><span id="PSDB" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #a00200;"></div><abbr title="Partido dos Trabalhadores">PT</abbr><span id="PT" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #a51001;"></div><abbr title="Partido Social Trabalhista">PST</abbr><span id="PST" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #aa1d01;"></div><abbr title="Partido Liberal">PL</abbr><span id="PL" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #b02b01;"></div><abbr title="Partido Trabalhista Cristão">PTC</abbr><span id="PTC" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #b53901;"></div><abbr title="Partido Comunista do Brasil">PCdoB</abbr><span id="PCdoB" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #ba4601;"></div><abbr title="Partido Progressista">PP</abbr><span id="PP" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #bf5301;"></div><abbr title="Partido Republicano Brasileiro">PRB</abbr><span id="PRB" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #c46102;"></div><abbr title="Partido Social Liberal">PSL</abbr><span id="PSL" class="presenca_partido"></span></div>
+                    <div class="partido bt2"><div class="box" style="background-color: #ca6f03;"></div><abbr title="Partido Pátria Livre">PPL</abbr><span id="PPL" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #cf7d03;"></div><abbr title="Partido Socialista Brasileiro">PSB</abbr><span id="PSB" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #d48b03;"></div><abbr title="Partido do Movimento Democrático Brasileiro">PMDB</abbr><span id="PMDB" class="presenca_partido"></span></div>
+                    <div class="partido bt2"><div class="box" style="background-color: #d99803;"></div><abbr title="Partido Republicano da Ordem Social">PROS</abbr><span id="PROS" class="presenca_partido"></span></div>
+                    <div class="partido bt2"><div class="box" style="background-color: #dea604;"></div><abbr title="Partido Renovador Trabalhista Brasileiro">PRTB</abbr><span id="PRTB" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #e4b304;"></div><abbr title="Partido Trabalhista Brasileiro">PTB</abbr><span id="PTB" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #e9c104;"></div><abbr title="Partido Republicano Progressista">PRP</abbr><span id="PRP" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #eece04;"></div><abbr title="Partido Democrático Trabalhista">PDT</abbr><span id="PDT" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #f3dc05;"></div><abbr title="Partido Humanista da Solidariedade">PHS</abbr><span id="PHS" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #f4e509;"></div><abbr title="Partido da República">PR</abbr><span id="PR" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #eae116;"></div><abbr title="Partido Social Cristão">PSC</abbr><span id="PSC" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #dfdd24;"></div><abbr title="Partido Municipalista Renovador">PMR</abbr><span id="PMR" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #d5d931;"></div><abbr title="Partido Trabalhista do Brasil">PTdoB</abbr><span id="PTdoB" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #cad63e;"></div><abbr title="Partido Verde">PV</abbr><span id="PV" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #c0d24b;"></div><abbr title="Partido da Mobilização Nacional">PMN</abbr><span id="PMN" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #b6ce58;"></div><abbr title="Partido Social Democrático">PSD</abbr><span id="PSD" class="presenca_partido"></span></div>
+                    <div class="partido bt2"><div class="box" style="background-color: #abc966;"></div><abbr title="Partido Ecológico Nacional">PEN</abbr><span id="PEN" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #a1c673;"></div><abbr title="Partido Solidariedade">SDD</abbr><span id="SDD" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #97c281;"></div><abbr title="Partido Socialismo e Liberdade">PSOL</abbr><span id="PSOL" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #8cbe8e;"></div><abbr title="Partido Popular Socialista">PPS</abbr><span id="PPS" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #82ba9b;"></div><abbr title="Democratas">DEM</abbr><span id="DEM" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #77b6a8;"></div><abbr title="Partido da Frente Liberal">PFL_DEM</abbr><span id="PFL_DEM" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #6db3b6;"></div><abbr title="Partido da Social Democracia Brasileira">PSDB</abbr><span id="PSDB" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #62afc3;"></div><abbr title="Partido da Reedificação da Ordem Nacional">PRONA</abbr><span id="PRONA" class="presenca_partido"></span></div>
+				    <div class="partido bt2"><div class="box" style="background-color: #58abd0;"></div><abbr title="Partido dos Aposentados da Nação">PAN</abbr><span id="PRONA" class="presenca_partido"></span></div>
+					<div class="partido bt2"><div class="box" style="background-color: #4da7de;"></div><abbr title="Partido Progressista Brasileiro">PPB</abbr><span id="PPB" class="presenca_partido"></span></div>
 					<div class="partido bt2"><div class="box" style="background-color: #999999;"></div><abbr title="Sem partido">S.Part.</abbr><span id="S.Part." class="presenca_partido"></span></div>
-
+					<div class="divisor">Por bancada</div>
+					<div class="bancada bt2"><abbr title="b_rur">RURALISTAS</abbr><span id="b_rur"></span></div>
+					<div class="bancada bt2"><abbr title="b_ev">EVANGÉLICOS</abbr><span id="b_ev"></span></div>
+					<div class="bancada bt2"><abbr title="b_amb">AMBIENTALISTAS</abbr><span id="b_amb"></span></div>
 				</div>
 
 				<div id="arte">
@@ -170,14 +192,14 @@
 						<div id="holder_v">
 							<div id="seletor_v" class="seletor bt">50%</div>
 						</div>
-						<div id="legenda_v">%<br><br>D<br>E<br><br>V<br>O<br>T<br>O<br>S<br><br>C<br>O<br>M<br><br>O<br><br>G<br>O<br>V<br>E<br>R<br>N<br>O</div>
+						<div id="legenda_v">%<br/><br/>D<br/>E<br/><br/>V<br/>O<br/>T<br/>O<br/>S<br/><br/>C<br/>O<br/>M<br/><br/>O<br/><br/>G<br/>O<br/>V<br/>E<br/>R<br/>N<br/>O</div>
 						<div class="marcador_h"></div>
 					</div>
 
 					<div>
 						<div id="ficha" class="unselectable opaque70" style="padding:10px;color:black;">
 							<div>
-								<div id="lendo_foto" style="width:100px;height:133px;background:white;text-align:center;"><br><br>lendo...</div>
+								<div id="lendo_foto" style="width:100px;height:133px;background:white;text-align:center;"><br/><br/>lendo...</div>
 								<img id="ficha_foto" src="" width="100px" align="middle" type="image/jpg" style="display:none;"/>
 								<div id="ficha_partido_cor" style="height:8px;margin-bottom:4px;"></div>
 								<big id="ficha_nome"></big>
@@ -186,11 +208,11 @@
 							</div>
 							<div>
 								<hr>
-								<div style="margin-top:5px;">taxa de governismo:<br><i style="font-size:3em;" id="ficha_taxa"></i></div>
+								<div style="margin-top:5px;">taxa de governismo:<br/><i style="font-size:3em;" id="ficha_taxa"></i></div>
 								<hr>
 								<div><b>votos/governo</b></div>
-								<div style="display:inline-block;float:left;width:48px;">contra:<br><big id="ficha_contra"></big></div>
-								<div style="border-left:1px dotted gray; padding-left: 3px; display:inline-block;float:left;width:48px;">a favor:<br><big id="ficha_favor"></big></div>
+								<div style="display:inline-block;float:left;width:48px;">contra:<br/><big id="ficha_contra"></big></div>
+								<div style="border-left:1px dotted gray; padding-left: 3px; display:inline-block;float:left;width:48px;">a favor:<br/><big id="ficha_favor"></big></div>
 								<br clear="all">
 								<hr>
 								<div style="margin-bottom:2px;">abstenção: <i style="float:right;" id="ficha_abst"></i></div>
@@ -241,14 +263,15 @@
 				<div style="text-align:left; height:135px">
 					<div>
 						<div id="titulo_voto"></div>
+						<div id="filtro_ativo" class="bt radius" >Desativar filtros: <b id="filtros_ativos"></b></div>
 						<div id="texto_data"></div>
 					</div>
-					<br>
+					<br/>
 					<div id="texto_voto"></div>
 					<div id="subtitulo_voto"></div>
 				</div>
-				<br>
-				<br>
+				<br/>
+				<br/>
 				<div id="partido_voto">
 					<div id="governista">
 						<div id="gov_counter">Voto pró-governo</div>
@@ -287,100 +310,161 @@
 		</div>
 
 	</article>
+	<div id="votacoes_de_interesse" style="display:none;">
+	<br clear="all" >
+	<br clear="all" >
+		<span class="bt2 filtro_votacao radius" id="b_rur">Votações de interesse ruralista</span>
+		<span class="bt2 filtro_votacao radius" id="b_amb">Votações de interesse ambientalista</span>
+		<span class="bt2 filtro_votacao radius" id="b_ev">Votações de interesse evangélicos</span>
+	</div>
+	<br clear="all" >
+	<br clear="all" >
 	<br clear="all" >
 	<br clear="all" >
 	<aside> 
 		<a href="https://twitter.com/share" class="twitter-share-button" data-via="estadaodados" data-lang="pt" data-hashtags="basometro">Tweetar</a>
 		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-		<br>
-		<div style="margin-top:5px;">
-			<a name="fb_share">Recomendar</a>
-			<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
-		</div>
+		<br/>
+         <div id="fb-root" style="margin-top:5px;">
+		    <script src="http://widgets.fbshare.me/files/fbshare.js"></script>
+        </div>
 	</aside>
 	<hr style="border:1px solid #222;">
 	<br clear="all" >
 	<div style="display:inline-block; float:left; width:475px;">
 		<h1 style="font-size:1.4em;font-family:sans-serif;">Veja tutorial: como usar o Basômetro</h1>
-		<!-- <embed id="mpl" width="455" height="380" flashvars="&file=http://img.estadao.com.br/videos/CB/09/96/CB09961A476F4E70A6EE4C4B347AF4D4.xml&autostart=false&playlistsize=90&image=http://tv.estadao.com.br/app/estadao/tvestadao/videos-proxy.php?guid=cb09961a-476f-4e70-a6ee-4c4b347af4d4" allowfullscreen="true" allowscriptaccess="always" quality="high" name="mpl" style="" src="http://www.estadao.com.br/estadao/novo/jwplayer/player.swf" /> -->
-		<br>
+		<!--embed id="mpl" width="455" height="380" flashvars="&file=http://img.estadao.com.br/videos/CB/09/96/CB09961A476F4E70A6EE4C4B347AF4D4.xml&autostart=false&playlistsize=90&image=http://tv.estadao.com.br/app/estadao/tvestadao/videos-proxy.php?guid=cb09961a-476f-4e70-a6ee-4c4b347af4d4" allowfullscreen="true" allowscriptaccess="always" quality="high" name="mpl" style="" src="http://www.estadao.com.br/estadao/novo/jwplayer/player.swf" />-->
+		<br/>
 		<iframe src="http://player.vimeo.com/video/41999200?title=0&amp;byline=0&amp;portrait=0" width="460" height="305" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 	</div>
 
 	<div style="display:inline-block; float:left; width:485px; padding-left:15px; border-left:1px dotted gray;">
 		<h1 style="font-size:1.4em;font-family:sans-serif;">"Núcleo duro" de Dilma na Câmara encolhe em 2012</h1>
-		<br>
+		<br/>
 
 		<iframe src="http://player.vimeo.com/video/42024209?title=0&amp;byline=0&amp;portrait=0" width="460" height="305" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-
 	</div>
-
 	<br clear="all" >
-	<br>
-	<br>
+	<br/>
+	<br/>
 	<div id="links_capa" class="radius">
-		<b>Links relacionados:</b>
-		<br>
-		&#9679; <a href="http://www.estadao.com.br/noticias/nacional,nucleo-duro-de-dilma-na-camara-encolhe-em-2012-revela-basometro,872159,0.htm">‘Núcleo duro’ de Dilma na Câmara encolhe em 2012, revela Basômetro</a>
-		<br>
-		&#9679; <a href="http://www.estadao.com.br/noticias/nacional,ferramenta-mede-taxa-de-governismo-de-deputados,872160,0.htm">Ferramenta mede taxa de governismo de deputados</a>
-		<br>
-		&#9679; <a href="http://www.estadao.com.br/noticias/nacional,estadao-dados-une-transparencia-e-interatividade,872163,0.htm">Estadão Dados une transparência e interatividade</a>
+		<b>Links relacionados:</b><br/>
+        &#9679; <a href="http://www.estadao.com.br/noticias/impresso,senado-supera-governismo-da-camara-em-2012-,875257,0.htm">Senado supera governismo da Câmara em 2012</a>
+        <br/>
+        &#9679; <a href="http://www.estadao.com.br/noticias/impresso,basometro--mostra-dupla--face-de-bancada-,881937,0.htm">Basômetro mostra dupla face de 'bancada'</a>
+        <br/>
+        &#9679; <a href="http://www.estadao.com.br/noticias/impresso,independentes-fogem-da-orientacao-do-partido-aponta-basometro,875685,0.htm">'Independentes' fogem da orientação do partido, aponta Basômetro</a>
+        <br/>
+        &#9679; <a href="http://www.estadao.com.br/noticias/nacional,nordeste-e-sul-lideram-governismo-no-basometro,874160,0.htm">Nordeste e sul lideram governismo no Basômetro</a>
+        <br/>
+        &#9679; <a href="http://www.estadao.com.br/noticias/nacional,basometro-revela-queda-do-governismo-do-psd-,872554,0.htm">Basômetro revela queda do governismo do PSD</a>
+        <br/>
+        &#9679; <a href="http://www.estadao.com.br/noticias/nacional,nucleo-duro-de-dilma-na-camara-encolhe-em-2012-revela-basometro,872159,0.htm">‘Núcleo duro’ de Dilma na Câmara encolhe em 2012, revela Basômetro</a>
+        <br/>
+        &#9679; <a href="http://www.estadao.com.br/noticias/nacional,ferramenta-mede-taxa-de-governismo-de-deputados,872160,0.htm">Ferramenta mede taxa de governismo de deputados</a>
+        <br/>
+        &#9679; <a href="http://www.estadao.com.br/noticias/nacional,estadao-dados-une-transparencia-e-interatividade,872163,0.htm">Estadão Dados une transparência e interatividade</a>
+        <br/>
+        &#9679; <a href="http://blogs.estadao.com.br/radar-politico/2012/06/01/basometro-10-analises-da-fidelidade-partidaria-do-governo-dilma/">BASÔMETRO: 10 análises sobre a fidelidade partidária do governo Dilma</a>
+        <br/>
+        &#9679; <a href="http://blogs.estadao.com.br/radar-politico/2012/06/01/analise-o-nao-voto-e-a-confianca-nos-deputados-federais/">ANÁLISE: O não voto e a confiança nos deputados federais</a>
+        <br/>
+        &#9679; <a href="http://blogs.estadao.com.br/radar-politico/2012/05/29/o-governismo-do-psd/">ANÁLISE: O governismo do PSD</a>
+        <br/>
+        &#9679; <a href="http://blogs.estadao.com.br/radar-politico/2012/05/25/artigo-quem-da-as-cartas-nas-bancadas-partidarias/">ANÁLISE: Quem dá as cartas nas bancadas partidárias?</a>
+        <br/>
+        &#9679; <a href="http://blogs.estadao.com.br/radar-politico/2012/06/06/sobre-disciplinas-e-fidelidades-partidarias/">ANÁLISE: Sobre disciplinas e fidelidades partidárias</a>
+        <br/>
+        &#9679; <a href="http://blogs.estadao.com.br/radar-politico/2012/06/08/o-governismo-como-estrategia-dominante-na-politica-brasileira/">ANÁLISE: O governismo como estratégia dominante na política brasileira </a>
+        <br/>
+        &#9679; <a href="http://blogs.estadao.com.br/radar-politico/2012/06/12/analise-conflitos-e-consensos-do-pt-e-psdb/">ANÁLISE: Conflitos e consensos do PT e PSDB</a>
+        <br/>
+        &#9679; <a href="http://blogs.estadao.com.br/radar-politico/2012/06/15/analise-partidos-de-adesao/">ANÁLISE: Partidos de adesão</a>
+        <br/>
+        &#9679; <a href="http://blogs.estadao.com.br/radar-politico/2012/06/19/psdb-postura-contradicoes-ambiguidades/">ANÁLISE: PSDB: postura, contradições, ambiguidades</a>
+        <br/>
+        &#9679; <a href="http://blogs.estadao.com.br/radar-politico/2012/06/22/analise-oposicao-em-mutacao-evidencias-do-basometro/">ANÁLISE: Oposição em Mutação? Evidências do Basômetro</a>
+        <br/>
+        &#9679; <a href="http://blogs.estadao.com.br/radar-politico/2012/06/26/entre-a-paixao-e-a-razao-politica-argumentos-sobre-a-alianca-pp-e-pt-em-sao-paulo/">ANÁLISE: Entre a paixão e a razão política: argumentos sobre a aliança PP e PT em São Paulo</a>
+		<br/>
 	</div>
 	<br clear="all" >
-	<div id="melhor_dos_usuarios" class="radius">
-		<h1 style="font-size:1.3em;margin-bottom:10px;">Como as pessoas estão usando o Basômetro e o que estão dizendo sobre ele</h1>
-		<div class="thumb">
-			<big>Alberto Cairo</big>
-			<br>
-			<a href="http://www.thefunctionalart.com/2012/05/visualization-on-what-brazilian.html"><img src="thumb_alberto.png" /></a>
-		</div>
-		<div class="thumb">
-			<big>Lucas Cunha</big>
-			<br>
-			<a href="http://estudoslegislativos.blogspot.com.br/2012/05/quais-sao-os-partidos-ruralistas-no.html"><img src="thumb_lucas.png" /></a>
-		</div>
-		<div class="thumb tweet">
-			<big>Humberto Dantas</big>
-			<br>
-			<a href="https://twitter.com/#!/HumbertoDantas"><img src="thumb_humberto.png" /></a>
-		</div>
-	</div>
-	<br clear="all" >
+    <br clear="all" >
 	<div class="metodo" style="color:#999;">
 		<div style="display:inline-block; float:left; width:465px; padding:10px">
 			<big>Entenda como foi feito o Basômetro</big>
-			<p>O Basômetro é uma ferramenta interativa que permite medir o apoio dos parlamentares ao governo e acompanhar como eles se posicionaram nas votações legislativas. Cada um é representado por uma bolinha com a cor do partido. Quanto mais próxima ela está do governo (no alto), maior é a taxa de governismo.</p>
 
-			<p>Os votos dos deputados foram obtidos no site da Câmara dos Deputados. Foram consideradas todas as votações nominais, as únicas em que o voto individual do deputado é computado, que ocorreram desde o início de 2011. Não entraram no levantamento os casos em que o governo não orientou os deputados sobre como votar. Futuramente, também serão incluídas no Basômetro as votações do Senado.</p>
+			<p>O Basômetro é uma ferramenta interativa que permite medir o apoio dos
+parlamentares ao governo e acompanhar como eles se posicionaram nas
+votações legislativas. Cada um é representado por uma bolinha com a cor do
+partido. Quanto mais próxima ela está do governo (no alto), maior é a taxa
+de governismo.</p>
 
-			<p>Ao clicar na bolinha, são mostrados detalhes da atuação do deputado, como quantas vezes ele votou com o governo e contra ele. A taxa de governismo também aparece na ficha dos parlamentares. Ela é o resultado da divisão do número de votos pró-governo pelo total de votos dados no período (a favor e contra o governo, abstenção e obstrução) pelo mesmo deputado.</p>
+			<p>Os votos dos parlamentares foram obtidos nos sites da Câmara dos Deputados
+e do Senado. Foram consideradas todas as votações nominais, as únicas em
+que o voto individual é computado, que ocorreram desde o início de 2011.
+No caso da Câmara, não entraram no levantamento os casos em que o governo
+não orientou os deputados sobre como votar. No Senado, foi usado como
+referência o voto do líder do governo na Casa.</p>
 
-			<p>O campo “não votou”, que também aparece na ficha individual, não significa que o parlamentar faltou na votação, mas que ele não registrou voto. Os votos do presidente da Casa, que pode optar por se abster, não foram considerados na taxa de governismo.</p>
+			<p>Ao clicar na bolinha, são mostrados detalhes da atuação do deputado ou
+senador, como quantas vezes ele votou com o governo e contra ele. A taxa
+de governismo também aparece na ficha dos parlamentares. Ela é o resultado
+da divisão do número de votos pró-governo pelo total de votos dados no
+período (a favor e contra o governo, abstenção e obstrução) pelo mesmo
+parlamentar.</p>
 
-			<p>Os partidos estão organizados de acordo com a taxa de apoio do governo em maio de 2012, do maior para o menor. Quanto mais governista, mais à esquerda no gráfico e mais acima na legenda. Também é possível clicar nos partidos e selecionar os que serão exibidos no Basômetro. Do lado direito, o usuário pode selecionar os Estados. Um campo de busca no topo da página ajuda a encontrar um deputado específico.</p>
+			<p>O campo não votou, que também aparece na ficha individual, não significa
+que o parlamentar faltou na votação, mas que ele não registrou voto. Os
+votos do presidente da Casa, que pode optar por se abster, não foram
+considerados na taxa de governismo.</p>
 
-			<p>Além de mostrar os votos dos parlamentares e sua posição em relação ao governo, o Basômetro permite que o usuário faça suas próprias análises e compare a atuação das diferentes bancadas partidárias.</p>
+			<p>Os partidos estão organizados de acordo com a taxa de apoio ao governo na
+Câmara em maio de 2012, do maior para o menor. Quanto mais governista,
+mais à esquerda no gráfico e mais acima na legenda. Também é possível
+clicar nos partidos e selecionar os que serão exibidos no Basômetro. Do
+lado direito, o usuário pode selecionar os Estados. Um campo de busca no
+topo da página ajuda a encontrar um deputado específico.</p>
+
+			<p>Além de mostrar os votos dos parlamentares e sua posição em relação ao
+governo, o Basômetro permite que o usuário faça suas próprias análises e
+compare a atuação das diferentes bancadas partidárias.</p>
 		</div>
 
 		<div style="display:inline-block; float:left; width:465px; padding:10px;">
 			<big> &nbsp;</big>
 
-			<p>Um slider (botão deslizável) da taxa de governismo, à direita, pode ser arrastado para cima (mais governista) ou para baixo (mais oposicionista). O título dinâmico no topo da tela aponta o número de deputados pró e contra o governo conforme a taxa e o período selecionados. Em 98 votações, 239 deputados votaram com o governo em 90% das vezes ou mais, por exemplo.</p>
+			<p>Um slider (botão deslizável) da taxa de governismo, à direita, pode ser
+arrastado para cima (mais governista) ou para baixo (mais oposicionista).
+O título dinâmico no topo da tela aponta o número de parlamentares pró e
+contra o governo conforme a taxa e o período selecionados. Em 98 votações,
+239 deputados votaram com o governo em 90% das vezes ou mais, por exemplo.</p>
 
-			<p>Na parte de baixo do Basômetro, uma linha do tempo permite ver o comportamento dos parlamentares ao longo das votações. Movendo as teclas "início" e "fim", seleciona-se um recorte de tempo. O botão "play" dá início a uma animação do movimento dos deputados desde o início de 2011. Só aparecem na tela os parlamentares que estavam no cargo na data da última votação selecionada.</p>
+			<p>Na parte de baixo do Basômetro, uma linha do tempo permite ver o
+comportamento dos parlamentares ao longo das votações. Movendo as teclas
+"início" e "fim", seleciona-se um recorte de tempo. O botão "play" dá
+início a uma animação do movimento desde o início de 2011. Só aparecem na
+tela os parlamentares que estavam no cargo na data da última votação
+selecionada.</p>
 
-			<p>Além de visualizar os votos por partido, o usuário pode optar por ver os dados por votação. Para isso, basta trocar "por bancada partidária", na aba no topo da página, por "por votações". Na nova janela, é possível ver como cada partido votou uma determinada medida.</p>
+			<p>Além de visualizar os votos por partido, o usuário pode optar por ver os
+dados por votação. Para isso, basta trocar "por bancada partidária", na
+aba no topo da página, por "por votações". Na nova janela, é possível ver
+como cada partido votou uma determinada medida.</p>
 
 			<p>
 				Os códigos e os dados no Basômetro estão disponíveis no 
 				<a target="_blank" href="https://github.com/estadao/basometro">Github</a>
 				e no Google Docs (
-				<a target="_blank" href="http://migre.me/93v6U">votos em 2012</a>
+				<a target="_blank" href="http://migre.me/93v6U">votos deputados em 2012</a>
 				,
-				<a target="_blank" href="http://migre.me/93v1Q">votos em 2011</a>
+				<a target="_blank" href="http://migre.me/93v1Q">votos deputados em 2011</a>
 				,
-				<a target="_blank" href="http://migre.me/93vha">lista de votações</a>
+				<a target="_blank" href="http://migre.me/93vha">lista de votações na Câmara</a>
+				,
+				<a target="_blank" href="https://docs.google.com/spreadsheet/ccc?key=0AieiGy7jvwSkdDdidjhTR2VuRlZTOUJNZzRjQ2RNZlE">votos senadores (2011 e 2012)</a>
+				,
+				<a target="_blank" href="https://docs.google.com/spreadsheet/ccc?key=0AieiGy7jvwSkdEltbm5fSUNPYmtlOEtOSXhUVWdnT1E">votações Senado</a>
 				).
 			</p>
 
@@ -396,8 +480,28 @@
 	<br clear="all" >
 
 	<footer>
-		<b>Grupo Estado</b> • Copyright © 2007-2012 • Todos os direitos reservados
+		<b>Grupo Estado</b> • Copyright © 2007-2013 • Alguns direitos reservados - Licença Affero GPL v3
 	</footer>
-	<script src="estadao.basometro.js" canvas="grafico"></script>
+
+	<script src="js/estadao.basometro.js" canvas="grafico"></script>
+  <script src="js/dados.basometro.js"></script>
+	<script src="js/start.basometro.js"></script>
+	
+    <div id="log"></div>
+	
+    <script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-166963-4']);
+		// _gaq.push(['_setDomainName', '.estadao.com.br']);
+		_gaq.push(['_setLocalGifPath', 'http://urchin.estadao.com.br/imagem/urchin.gif']);
+		_gaq.push(['_setLocalRemoteServerMode']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script');     ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:'   == document.location.protocol ? 'https://ssl'   : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
 </body>
 </html>
