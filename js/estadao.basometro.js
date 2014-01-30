@@ -329,7 +329,7 @@ function navegacao(){
 
 	$("#todos").unbind("click").click(function(){
 		$(".click").toggleClass("click");
-		muda(true);
+		muda();
 	})
 
 	$("#filtro_ativo").unbind("click").click(function(){
