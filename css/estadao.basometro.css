@@ -101,6 +101,17 @@ header h1 {
   text-transform:uppercase;
 }
 
+.historico {
+  color:white !important;
+  padding-right:30px !important;
+}
+
+.search {
+  z-index: 9999;
+  position: absolute;
+  margin-right: 10px;
+}
+
 .drop {
   color:white !important;
   padding-right:30px !important;
@@ -108,7 +119,7 @@ header h1 {
   background-repeat:no-repeat;
   background-position:right;
 }
-.drop:hover {
+.drop:hover, .historico:hover {
   text-shadow: -1px -1px black, 1px 1px #444 !important;
   color: lightblue !important;
   cursor: pointer;
@@ -132,11 +143,13 @@ header h1 {
   border-bottom:1px solid #111;
   cursor:pointer;
 }
+
 .submenu {
   background:#333;
   color:gray;
   font-size:1em;
 }
+
 .choices:hover {
   background:lightgrey;
   color:white;

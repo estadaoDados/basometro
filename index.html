@@ -64,7 +64,6 @@
   <div id="como_usar" style="position:absolute;z-index:10000;">
     <img src="images/como_usar.png" />
   </div>
-
   <header class="bt2 radius">
     <h1>
       <img id="estadao_dados" src="images/logo_estadao_dados.png" height="30px" title="Estadão.com.br" align="middle">
@@ -76,15 +75,14 @@
       <a id="listar_casa" title="na_Câmara,no_Senado" class="last drop">na Câmara</a>
       <!-- ,por_parlamentar -->
       <a id="listar_tipos" title="por_bancadas_partidárias,por_votações" class="last drop">por bancadas partidárias</a>
+      <a id="historico" title="Histórico" class="historico last">Histórico</a>
       <div id="choices"></div>
     </div>
 
     <aside>
-      <input placeholder="buscar político" type="search" name="s" id="search">
-      <img src="images/search_icon.png" align="top"/>
+      <div class="bt2 search"><input placeholder="buscar político" type="search" name="s" id="search" style="display:none;" onBlur="disable_search(this);"></div>
+      <a href="#" onClick="enable_search()"><img src="images/search_icon.png" align="top"/></a>
     </aside>
-
-
   </header>
   <article>
 
