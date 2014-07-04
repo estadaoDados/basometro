@@ -26,7 +26,7 @@ window.ReadyJson={
     "lula":{"camara": {1: false, 2: false}, "senado": {1: true, 2: true}}
 }
 
-var meses = [,,"mar",,,"jun",,,"set"];//intermediarios na legenda
+var meses = [,,,,,,"jul",,,,,];//intermediarios na legenda
 var altura = 450, largura = 765; // do canvas
 var ios = /(iPad|iPhone)/i.test(navigator.userAgent)
 var complemento_camara = "http://www2.camara.gov.br/deputados/pesquisa/ws_layouts_deputados_fotoBiograf?id="
