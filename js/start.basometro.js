@@ -92,4 +92,7 @@ $.ajax({
 //Carrega outros mandatos
 carregaDilmaSenado()
 
-$(document).ready(main("Dilma", 1, "Camara"))
+$(document).ready(function(){
+    main("Dilma", 1, "Camara");
+    draw_hist_graph();
+});

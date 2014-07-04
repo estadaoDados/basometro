@@ -75,7 +75,7 @@
       <a id="listar_casa" title="na_Câmara,no_Senado" class="last drop">na Câmara</a>
       <!-- ,por_parlamentar -->
       <a id="listar_tipos" title="por_bancadas_partidárias,por_votações" class="last drop">por bancadas partidárias</a>
-      <a id="historico" title="Histórico" class="historico last">Histórico</a>
+      <a id="historico" title="Histórico" class="historico last" onClick="toggleHistorico();">Histórico</a>
       <div id="choices"></div>
     </div>
 
@@ -149,6 +149,8 @@
           </div>
 
           <div>
+            <div id="janela_historico" class="unselectable opaque90 ficha_votacao" style="padding:10px;color:black;display:none;">
+            </div>
             <div id="ficha_votacao" class="unselectable opaque90 ficha_votacao" style="padding:10px;color:black;">
               <div>
                 <big id="ficha_votacao_id"></big>
@@ -446,6 +448,7 @@ como cada partido votou uma determinada medida.</p>
     <b>Grupo Estado</b> • Copyright © 2007-2013 • Alguns direitos reservados - Licença Affero GPL v3
   </footer>
 
+  <script src="js/d3.v3.min.js" canvas="grafico"></script>
   <script src="js/estadao.basometro.js" canvas="grafico"></script>
   <script src="js/dados.basometro.js"></script>
   <script src="js/start.basometro.js"></script>

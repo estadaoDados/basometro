@@ -101,9 +101,18 @@ header h1 {
   text-transform:uppercase;
 }
 
+#historico {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 .historico {
   color:white !important;
-  padding-right:30px !important;
+  /*padding-right:30px !important;*/
 }
 
 .search {
@@ -629,7 +638,7 @@ h3{
   font-size:1.1em;
 }
 
-#ficha_votacao {
+#ficha_votacao, #janela_historico {
   font-size: 16px;
   font-weight: normal;
   font-family: Georgia;
@@ -650,6 +659,13 @@ h3{
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
+}
+
+#janela_historico {
+  background: black;
+  width: 740px;
+  height: 450px;
+  top: 17px;
 }
 
 #ficha_votacao_id {
@@ -771,6 +787,7 @@ h3{
   width:765px;
   top:253px;
   border-top:1px white dotted;
+  z-index: 1000;
 }
 
 .marcador_v {
@@ -1115,3 +1132,23 @@ h3{
 #links_capa a:hover {
   color:lightblue !important;
 }
+
+/********************************************/
+/** GRAFICO DE LINHA HISTORICO **/
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
