@@ -101,20 +101,6 @@ header h1 {
   text-transform:uppercase;
 }
 
-#historico {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.historico {
-  color:white !important;
-  /*padding-right:30px !important;*/
-}
-
 .search {
   z-index: 9999;
   position: absolute;
@@ -638,7 +624,7 @@ h3{
   font-size:1.1em;
 }
 
-#ficha_votacao, #janela_historico {
+#ficha_votacao {
   font-size: 16px;
   font-weight: normal;
   font-family: Georgia;
@@ -659,13 +645,6 @@ h3{
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
-}
-
-#janela_historico {
-  background: black;
-  width: 740px;
-  height: 450px;
-  top: 17px;
 }
 
 #ficha_votacao_id {
@@ -1135,20 +1114,76 @@ h3{
 
 /********************************************/
 /** GRAFICO DE LINHA HISTORICO **/
+#janela_historico {
+  font-size: 16px;
+  font-weight: normal;
+  font-family: Georgia;
+  position:absolute;
+  background: black;
+  width: 740px;
+  height: 506px;
+  top: 6px;
+  left:0;
+  display:none;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  text-shadow:1px 1px 3px grey;
+  z-index:100;
+  border:2px solid white;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+
+#historico {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.historico {
+  color:white !important;
+  /*padding-right:30px !important;*/
+}
+
+
 .axis path,
 .axis line {
+  /*fill: white;*/
   fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+  stroke: #fff;
+  shape-rendering: auto;
+  stroke-width: 1px;
+  font-size: 11px;
+  text-shadow: none;
+  color: #fff;
+}
+
+.axis text {
+  fill: white;
+  stroke: none;
+  stroke-width: 0px;
+  font-size: 11px;
+  text-shadow: none;
+  color: #fff;
 }
 
 .x.axis path {
-  display: none;
+  display: block;
 }
 
 .line {
   fill: none;
   stroke: steelblue;
-  stroke-width: 1.5px;
+  stroke-width: 1px;
+}
+
+#hist_Geral .line {
+  stroke: red;
 }
 

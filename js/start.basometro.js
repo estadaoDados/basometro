@@ -94,5 +94,6 @@ carregaDilmaSenado()
 
 $(document).ready(function(){
     main("Dilma", 1, "Camara");
-    draw_hist_graph();
+    hist_prepare();
+    //draw_hist_graph();
 });
