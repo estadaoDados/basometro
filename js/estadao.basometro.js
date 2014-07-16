@@ -1,4 +1,4 @@
-﻿/*!
+﻿/*
  * Basômetro
  * Authors: http://github.com/tcha-tcho, estadaodados team.
  * http://estadaodados.com/html/basometro
@@ -51,7 +51,6 @@ var inicio = false,
     votos = [],
     passos = 7,
     filtros = {},
-    filtrar_bancada = false,
     filtros_votacoes = [],
     filtrar_votacoes = false,
     porcentagem,
@@ -217,9 +216,6 @@ function papel(){
             circulo.name = "id"+lista_politicos_local[politico].ID
             circulo.partido = lista_politicos_local[politico].PARTIDO
             circulo.politico = politico
-            circulo.b_rur = (lista_politicos_local[politico].B_RUR?"RURALISTAS":false)
-            circulo.b_ev = (lista_politicos_local[politico].B_EV?"EVANGÉLICOS":false)
-            circulo.b_amb = (lista_politicos_local[politico].B_AMB?"AMBIENTALISTAS":false)
             circulo.uf = lista_politicos_local[politico].UF
             circulo.mandato = lista_politicos_local[politico].ANO_MANDATO
             circulo.foto = (lista_politicos_local[politico].URL_FOTO || lista_politicos_local[politico].ARQUIVO_FOTO)
@@ -318,7 +314,7 @@ function navegacao(){
         };
     }).css("cursor", "pointer")
 
-    $(".partido, .estado, .bancada").unbind("click").click(function(){
+    $(".partido, .estado").unbind("click").click(function(){
         $(this).toggleClass("click");
         muda();
     })
@@ -471,7 +467,6 @@ function mudar_visualizacao() {
         $(".intervalo").fadeOut();
         $("#alca_inicio").fadeOut();
         $("#search").attr("placeholder","buscar votacao");
-        // filtrar_bancada = false;
       muda();
     };
     $("#loading").hide();
@@ -577,14 +572,14 @@ function desenha_eventos(callback){
     for (votacao in d.votacoes) {
         votacoes_totais ++;
         if (!filtrar_votacoes || (filtrar_votacoes && (filtros_votacoes.indexOf(d.votacoes[votacao].ID_VOTACAO) != -1))) {
-            var dt = String(d.votacoes[votacao].DATA).replace(/(\d+)(\d\d)(\d\d)/g,"$1-$2-$3").split("-")
-            if (!d.votacoes[votacao].HORA) console.log(d.votacoes[votacao],votacao);
-      dt = dt.concat(d.votacoes[votacao].HORA.split(":"))
-            if (dt[0] >= 10)
-                    d.votacoes[votacao].data_parsed = new Date("20"+dt[0],(dt[1]-1),dt[2],dt[3],dt[4])
-            else
-                    d.votacoes[votacao].data_parsed = new Date("200"+dt[0],(dt[1]-1),dt[2],dt[3],dt[4])
-            datas_sorted.push([d.votacoes[votacao].data_parsed,d.votacoes[votacao],votacao])
+          var dt = String(d.votacoes[votacao].DATA).replace(/(\d+)(\d\d)(\d\d)/g,"$1-$2-$3").split("-")
+          if (!d.votacoes[votacao].HORA) console.log(d.votacoes[votacao],votacao);
+          dt = dt.concat(d.votacoes[votacao].HORA.split(":"))
+          if (dt[0] >= 10)
+            d.votacoes[votacao].data_parsed = new Date("20"+dt[0],(dt[1]-1),dt[2],dt[3],dt[4])
+          else
+            d.votacoes[votacao].data_parsed = new Date("200"+dt[0],(dt[1]-1),dt[2],dt[3],dt[4])
+          datas_sorted.push([d.votacoes[votacao].data_parsed,d.votacoes[votacao],votacao])
         }
     }
     datas_sorted.sort(function(a,b){return b[0]-a[0]}).reverse()
@@ -750,7 +745,8 @@ function processar_mudanca(){
             }
 
             participantes["id"+d.votos[i][0]] = [d.votos[i][2],d.votos[i][3]] //ultimo partido e ultimo voto
-            if (fim.ID_VOTACAO == d.votos[i][1]) votantes["id"+d.votos[i][0]] = [d.votos[i][2],d.votos[i][3]] //só os votantes da última sessão
+
+            if (fim.ID_VOTACAO == d.votos[i][1]) { votantes["id"+d.votos[i][0]] = [d.votos[i][2],d.votos[i][3]] }//só os votantes da última sessão
             if (partidos.indexOf(d.votos[i][2]) == -1 /* && (filtrar_partido?(filtros_partido[d.votos[i][2]]):true) */) partidos.push(d.votos[i][2])
         }
     }
@@ -860,19 +856,15 @@ function onFrame(event){
 }
 
 function estabelece_filtros() {
-    filtros_partido = {}, filtros_uf = {}, filtros_bancada = {}, filtros_votacoes = [], filtrar_partido = false, filtrar_estado = false, filtrar_bancada = false, filtrar_votacoes = false;
-    $(".partido.click,.estado.click,.bancada.click,.filtro_votacao.click").each(function(){
+    filtros_partido = {}, filtros_uf = {}, filtros_votacoes = [], filtrar_partido = false, filtrar_estado = false, filtrar_votacoes = false;
+    $(".partido.click,.estado.click,.filtro_votacao.click").each(function(){
         if($(this).is(".partido")){
             filtros_partido[$(this).find("abbr").text()] = true;
             filtrar_partido = true;
         } else if($(this).is(".estado")) {
             filtros_uf[$(this).find("abbr").text()] = true;
             filtrar_estado = true;
-        } else if($(this).is(".bancada")) {
-            filtros_bancada[$(this).find("abbr").text()] = true;
-            filtrar_bancada = true;
-            $("#votacoes_de_interesse").show();
-        } else if($(this).is(".filtro_votacao")) {
+        }else if($(this).is(".filtro_votacao")) {
             filtros_votacoes = filtros_votacoes.concat(votacoes_bancadas[casa][$(this).attr("id")]);
             filtrar_votacoes = true;
         }
@@ -881,11 +873,10 @@ function estabelece_filtros() {
 
 
 function esta_presente(politico){
-    if (filtrar_partido || filtrar_estado || filtrar_bancada) {
+    if (filtrar_partido || filtrar_estado) {
         if ( !(
                     (filtrar_partido?filtros_partido[politico.partido]:true) &&
-                    (filtrar_estado?filtros_uf[politico.uf]:true) &&
-                    (filtrar_bancada?(filtros_bancada[politico.b_rur] || filtros_bancada[politico.b_ev] || filtros_bancada[politico.b_amb]):true)
+                    (filtrar_estado?filtros_uf[politico.uf]:true)
                     )
                 ) {
                 return false;
@@ -1145,13 +1136,4 @@ function muda_votacao(){
     abst <= 1 ?  plus1 = " voto" : plus1 = " votos";
     $('#abs_counter').append(' <i> • <b>'+abst+"</b>"+plus1+"</i>");
 
-    if (filtrar_bancada) {
-        var bancadas = ""
-        for(bancada in filtros_bancada){
-            bancadas += bancada + " ";
-        }
-        $("#filtro_ativo").show().find("#filtros_ativos").text(bancadas);
-    }else{
-        $("#filtro_ativo").hide();
-    };
 }
