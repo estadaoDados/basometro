@@ -14,7 +14,8 @@ var status_lula_1_camara = false;
 var status_lula_1_senado = true;
 var status_lula_2_camara = false;
 var status_lula_2_senado = true;
-var jsonURLBase = "https://s3-sa-east-1.amazonaws.com/estadaodados/basometro/";
+//var jsonURLBase = "https://s3-sa-east-1.amazonaws.com/estadaodados/basometro/";
+var jsonURLBase = "/basometro/dados/";
 
 window.DadosGerais={
     "dilma":{"câmara": {1: {}}, "senado": {1: {}}},
@@ -596,7 +597,7 @@ function desenha_eventos(callback){
                 $('#eventos_tag').append('<div class="evento_tag" style="left:'+posicao(i)+'">'+meses[datas_sorted[i][0].getMonth()]+'</div>')
             }
             var dt = datas_sorted[i][1].data_parsed
-            var titulo = (i+1) + " - " + dt.getDate() +"/"+ (dt.getMonth()+1) +"/"+ dt.getFullYear() + ((casa == "câmara")?(" "+ dt.getHours() + "h" + (dt.getMinutes()<10?"0":"")+ dt.getMinutes()):"" ) + " - " + datas_sorted[i][1].TIPO + datas_sorted[i][1].NUMERO + "/" + datas_sorted[i][1].ANO + " - "+datas_sorted[i][1].LINGUAGEM_COMUM + " ("+datas_sorted[i][1].ID_VOTACAO + ")";
+            var titulo = (i+1) + " - " + dt.getDate() +"/"+ (dt.getMonth()+1) +"/"+ dt.getFullYear() + ((casa == "câmara")?(" "+ dt.getHours() + "h" + (dt.getMinutes()<10?"0":"")+ dt.getMinutes()):"" ) + " - " + datas_sorted[i][1].TIPO + datas_sorted[i][1].NUMERO + "/" + datas_sorted[i][1].ANO + " - "+datas_sorted[i][1].LINGUAGEM_COMUM;
             votacoes_hints.push(titulo)
             $('#eventos').append(
                 '<div id="'+datas_sorted[i][2]+
@@ -642,7 +643,7 @@ function desenha_eventos(callback){
                 $('#eventos_tag').append('<div class="evento_tag" style="left:'+posicao(i)+'">Junho</div>')
             }
             var dt = datas_sorted[i][1].data_parsed;
-            var titulo = (i+1) + " - " + dt.getDate() +"/"+ (dt.getMonth()+1) +"/"+ dt.getFullYear() + ((casa == "câmara")?(" "+ dt.getHours() + "h" + (dt.getMinutes()<10?"0":"")+ dt.getMinutes()):"" ) + " - " +datas_sorted[i][1].LINGUAGEM_COMUM + " ("+datas_sorted[i][1].ID_VOTACAO + ")";
+            var titulo = (i+1) + " - " + dt.getDate() +"/"+ (dt.getMonth()+1) +"/"+ dt.getFullYear() + ((casa == "câmara")?(" "+ dt.getHours() + "h" + (dt.getMinutes()<10?"0":"")+ dt.getMinutes()):"" ) + " - " +datas_sorted[i][1].LINGUAGEM_COMUM;
             votacoes_hints.push(titulo);
             $('#eventos').append(
                 '<div id="'+datas_sorted[i][2]+
