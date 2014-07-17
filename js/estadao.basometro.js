@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Basômetro
  * Authors: http://github.com/tcha-tcho, estadaodados team.
  * http://estadaodados.com/html/basometro
