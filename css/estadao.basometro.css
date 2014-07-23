@@ -1118,13 +1118,12 @@ h3{
   font-size: 16px;
   font-weight: normal;
   font-family: Georgia;
-  position:absolute;
+  position: absolute;
   background: black;
   width: 740px;
   height: 506px;
-  top: 6px;
-  left:0;
-  display:none;
+  left: 0;
+  display: none;
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
   -ms-transition: all 0.3s ease;
@@ -1135,6 +1134,9 @@ h3{
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
+  padding: 10px;
+  padding-top: 4px;
+  color: black;
 }
 
 #historico {
