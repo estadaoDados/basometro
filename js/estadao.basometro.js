@@ -878,10 +878,7 @@ function preenche_ficha(item) {
 
     //if (item.foto.indexOf(".jpg") != -1) complemento_camara = "http://s3-sa-east-1.amazonaws.com/estadaodados/fotos_deputados/";
     //var _foto = (((casa == "câmara")?complemento_camara:"") + item.foto)
-  if (casa == 'senado')
     var _foto = item.foto
-  else
-    var _foto = complemento_camara + item.foto
     if ($("#ficha_foto").attr("src") != _foto) {
         $("#lendo_foto").show();
         $("#ficha_foto").hide().attr("src",_foto).load(function(){
