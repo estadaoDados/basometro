@@ -77,14 +77,31 @@ function hist_get_data(){
     });
 }
 
-function hist_draw_clicked(){
-    $("[id*='hist_part_'").remove();
-    $('.focus:not(.Geral)').remove();
-    $('.focus_text:not(.Geral)').remove();
-    for (idx in partidos_clicados) {
-        if (partidos_clicados[idx] in window.histData) {
-            hist_draw_line(partidos_clicados[idx]);
-            hist_draw_legend(partidos_clicados[idx],"");
+function hist_draw_clicked(element){
+    if (!element) {
+        partidos_clicados = [];
+        $("[id*='hist_part_'").remove();
+        $('.focus:not(.Geral)').remove();
+        $('.focus_text:not(.Geral)').remove();
+    } else {
+        partido = element.find("abbr").text();
+        if (element.hasClass("click")) {
+            // Se o elemento possui a classe 'click' significa que ele está "clicado"/"selecionado"
+            if (partidos_clicados.indexOf(partido) == -1) {
+            //Se o elemento não está na lista de partidos clicados, é porque ele acabou de ser clicado e o gráfico precisa ser gerado.
+                partidos_clicados.push(partido);
+                hist_draw_line(partido);
+                hist_draw_legend(partido,"");
+            }
+        } else {
+        //Se o elemento não possui a classe 'click' é porque ele está desselecionado e
+            if (partidos_clicados.indexOf(partido) > -1) {
+            //Se o elemento estiver na lista de partidos_clicados, ele precisa ser removido, assim como seu gráfico.
+                partidos_clicados.splice(partidos_clicados.indexOf(partido), 1) // remove o elemento da lista
+                $('.focus.'+partido).remove();
+                $('.focus_text.'+partido).remove();
+                $('#hist_part_'+partido).remove();
+            }
         }
     }
 }
@@ -228,9 +245,6 @@ function hist_first_draw(){
                     d1 = data[i],
                     d = x0 - d0.date > d1.date - x0 ? d1 : d0;
                 var focus = d3.select(".focus." + partido);
-                if (partido == "PSL") {
-                    console.log(data);
-                }
                 if (d.valor == undefined){
                     focus.style("display","none");
                     hist_legend_update(partido, " -- ");

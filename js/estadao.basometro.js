@@ -7,70 +7,6 @@
  * http://www.gnu.org/licenses/gpl.html
 */
 
-var primeira_iteracao = true;
-var status_dilma_1_camara = false;
-var status_dilma_1_senado = false;
-var status_lula_1_camara = false;
-var status_lula_1_senado = true;
-var status_lula_2_camara = false;
-var status_lula_2_senado = true;
-//var jsonURLBase = "https://s3-sa-east-1.amazonaws.com/estadaodados/basometro/";
-var jsonURLBase = "/basometro/dados/";
-
-window.DadosGerais={
-    "dilma":{"câmara": {1: {}}, "senado": {1: {}}},
-    "lula":{"câmara": {1:{}, 2:{}}, "senado": {1:{},2:{}}}
-}
-
-window.ReadyJson={
-    "dilma":{"camara": {1: false }, "senado": {1: false}},
-    "lula":{"camara": {1: false, 2: false}, "senado": {1: true, 2: true}}
-}
-
-var meses = [,,,,,,"jul",,,,,];//intermediarios na legenda
-var altura = 450, largura = 765; // do canvas
-var ios = /(iPad|iPhone)/i.test(navigator.userAgent)
-var complemento_camara = "http://www2.camara.gov.br/deputados/pesquisa/ws_layouts_deputados_fotoBiograf?id="
-var inicio = false,
-    fim = false,
-    d,//dados e grupo que contem os pontos
-    g,
-    casa = "câmara",
-    governo = "Dilma",
-    legislatura = "1",
-    first_time = true,
-    datas_sorted = [],
-    votacoes = [],
-    votacoes_totais,
-    antigas_votacoes_totais,
-    participantes = [],
-    votacoes_ids = [],
-    participantes = {},
-    votantes = {},
-    votantes_sorted = [],
-    partidos = [],
-    votos = [],
-    passos = 7,
-    filtros = {},
-    filtros_votacoes = [],
-    filtrar_votacoes = false,
-    porcentagem,
-    enter_frame = 0,
-    tip_path,
-    item_selected = false,
-    media_por_votacao = {},
-    media_da_votacao = {},
-    politicos_hints = [],
-    votacoes_hints = [],
-    visualizacao = "por_bancadas_partidárias",
-    is_fim = false,
-    inicio_left = 0,
-    play_interval,
-    tocando = false,
-    primeiro_toque = true,
-      bolinha_camara = 3, // do canvas
-    bolinha_senado = 5; // do canvas
-
 $.ui.autocomplete.prototype._renderItem = function( ul, item){
   var term = this.term.split(' ').join('|');
   var re = new RegExp("(" + term + ")", "gi") ;
@@ -234,90 +170,14 @@ function papel(){
 
 }
 
-$("#choices").hide()
-$("#navegacao_topo a.drop").click(function(){
-    if ($("#choices").is(":visible")) {
-        $("#choices").hide()
-    }else{
-        var choices = $(this).attr("title").split(",")
-        choices_parsed = ""
-        for (var i = 0; i < choices.length; i++) {
-            choices_parsed += "<div id='choice_"+choices[i]+"' class='"+((choices[i].indexOf("#") == -1)?"choices":"submenu")+"'>"+choices[i].replace(/_/g," ").replace(/#/g,"")+"</div>"
-        }
-        $("#choices").html(choices_parsed).css("left",$(this).position().left + "px").width($(this).outerWidth()).show().css("cursor", "pointer")
-    }
-})
-
 function navegacao(){
 
-    $(".choices").die("click")
-    $(".choices").live("click",function(){
-        $("#choices").hide()
-        escolha = $(this).attr("id")
-        if (/(Biomas2012)/.test(escolha)) {
-        window.location.href = "../../html/biomas2012"
-        } else if (/(Coligações)/.test(escolha)) {
-            window.location.href="../../html/coligacoes"
-        } else if (/(Cotas)/.test(escolha)) {
-            window.location.href="../../html/cotas"
-        } else if (/(Eleições_2012)/.test(escolha)) {
-            window.location.href="../../html/eleicoes2012"
-        } else if (/(Fuvest_2013)/.test(escolha)) {
-            window.location.href="../../html/fuvest2013"
-        } else if (/(IDEB)/.test(escolha)) {
-            window.location.href="../../html/ideb"
-        } else if (/(Intenção_de_Voto)/.test(escolha)) {
-            window.location.href="../../html/intencaodevoto"
-        } else if (/(Lista_ENEM_2011)/.test(escolha)) {
-            window.location.href="../../html/listaenem2011"
-        } else if (/(Que_SP_vc_quer?)/.test(escolha)) {
-            window.location.href="../../html/quespvcquer"
-        } else if (/(Religiões)/.test(escolha)) {
-            window.location.href="../../html/religiao"
-        } else if (/(São_Paulo_que_balança)/.test(escolha)) {
-            window.location.href="../../html/saopauloquebalanca"
-
-        } else if (/(Câmara|Senado)/.test(escolha)) {
-            nova_casa = /Câmara/.test(escolha)?"câmara":"senado"
-            if (nova_casa != casa) {
-                $("#loading").show()
-                casa = nova_casa
-                rebuild();
-                $("#listar_casa").text(escolha.substr(7).replace(/_/g," "))
-                escolha = escolha.replace("â","a")
-                $(".click").toggleClass("click")
-                main(governo, legislatura, escolha.substr(10))
-                $("#loading").hide()
-            }
-        } else if (/(Lula_1|Lula_2|Dilma)/.test(escolha)) {
-            novo_governo = /Dilma/.test(escolha)?"dilma":"lula"
-            if (novo_governo == "dilma") {
-                nova_legislatura = 1
-            } else {
-                nova_legislatura = /Lula_1/.test(escolha)?"1":"2"
-            }
-            if (novo_governo != governo || nova_legislatura != legislatura) {
-                $("#loading").show()
-                governo = novo_governo
-                legislatura = nova_legislatura
-                rebuild()
-                $("#listar_governo").text(escolha.substr(7).replace(/_/g," "))
-                $(".click").toggleClass("click")
-                main(governo, legislatura, casa.replace("â","a"))
-                $("#loading").hide()
-            }
-        } else {
-            $("#loading").show()
-            visualizacao = escolha.substr(7)
-            $("#listar_tipos").text(visualizacao.replace(/_/g," "))
-            mudar_visualizacao();
-            $("#loading").hide()
-        };
-    }).css("cursor", "pointer")
+    menu_de_navegacao();
 
     $(".partido, .estado").unbind("click").click(function(){
         $(this).toggleClass("click");
         muda();
+        hist_draw_clicked($(this));
     })
 
     $(".filtro_votacao").unbind("click").click(function(){
@@ -328,6 +188,7 @@ function navegacao(){
     $("#todos").unbind("click").click(function(){
         $(".click").toggleClass("click");
         muda();
+        hist_draw_clicked(false);
     })
 
     $("#filtro_ativo").unbind("click").click(function(){
