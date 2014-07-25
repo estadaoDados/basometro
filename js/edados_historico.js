@@ -56,7 +56,7 @@ function hist_legend_update(partido, conteudo){
 function hist_get_data(){
     //carrega os dados do histórico
 
-    var base_hist_url = "http://localhost/basometro/dados/",
+    var base_hist_url = "/basometro/dados/",
         file_url = base_hist_url + "hist_" + governo + "_" + casa.replace("â","a") + "_" + legislatura + ".json";
 
     $.ajax({
