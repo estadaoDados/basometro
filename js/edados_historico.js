@@ -37,7 +37,7 @@ function hist_draw_base(){
         .attr("id","svg_hist")
         .attr("width", width)
         .attr("height", height)
-        .attr("transform","translate(0,1)")
+        .attr("transform","translate(0,8)")
         .on("click",esconder_janela_historico);
 }
 

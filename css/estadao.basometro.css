@@ -1121,7 +1121,8 @@ h3{
   position: absolute;
   background: black;
   width: 740px;
-  height: 506px;
+  height: 524px;
+  top: -7px;
   left: 0;
   display: none;
   -webkit-transition: all 0.3s ease;
