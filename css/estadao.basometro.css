@@ -1231,7 +1231,7 @@ h3{
 }
 
 /* CORES DOS PARTIDOS - nas linhas*/
-.line.PT { stroke: #a00200; }
+.line.PT { stroke: #ff0300; }
 .line.PST { stroke: #a51001; }
 .line.PL { stroke: #aa1d01; }
 .line.PTC { stroke: #b02b01; }
@@ -1267,7 +1267,7 @@ h3{
 .line.PSDC { stroke: #4da7de; }
 
 /* Cores dos textos */
-.focus.PT text, #lista_valores_historico .focus_text.PT { fill: #a00200; color: #a00200; }
+.focus.PT text, #lista_valores_historico .focus_text.PT { fill: #ff0300; color: #ff0300; }
 .focus.PST text, #lista_valores_historico .focus_text.PST { fill: #a51001; color: #a51001; }
 .focus.PL text, #lista_valores_historico .focus_text.PL { fill: #aa1d01; color: #aa1d01; }
 .focus.PTC text, #lista_valores_historico .focus_text.PTC { fill: #b02b01; color: #b02b01; }

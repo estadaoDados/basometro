@@ -168,6 +168,7 @@ function hist_first_draw(){
     // Desenha "linha geral"
     var line = d3.svg.line()
         .defined(function(d){return d.valor >= 0; })
+        .interpolate("cardinal")
         .x(function(d) { return x(d.date); })
         .y(function(d) { return y(d.valor); });
 
@@ -298,6 +299,7 @@ function hist_draw_line(partido) {
 
     var line = d3.svg.line()
         .defined(function(d){ return d.valor >= 0; })
+        .interpolate("cardinal")
         .x(function(d) { return x(d.date); })
         .y(function(d) { return y(d.valor); });
 
