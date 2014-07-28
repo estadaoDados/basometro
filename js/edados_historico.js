@@ -167,6 +167,7 @@ function hist_first_draw(){
 
     // Desenha "linha geral"
     var line = d3.svg.line()
+        .defined(function(d){return d.valor >= 0; })
         .x(function(d) { return x(d.date); })
         .y(function(d) { return y(d.valor); });
 
@@ -245,7 +246,7 @@ function hist_first_draw(){
                     d1 = data[i],
                     d = x0 - d0.date > d1.date - x0 ? d1 : d0;
                 var focus = d3.select(".focus." + partido);
-                if (d.valor == undefined){
+                if (d.valor == undefined || d.valor == -1){
                     focus.style("display","none");
                     hist_legend_update(partido, " -- ");
                 } else {
@@ -296,6 +297,7 @@ function hist_draw_line(partido) {
     y.domain([0,100]);
 
     var line = d3.svg.line()
+        .defined(function(d){ return d.valor >= 0; })
         .x(function(d) { return x(d.date); })
         .y(function(d) { return y(d.valor); });
 
