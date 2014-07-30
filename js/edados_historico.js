@@ -33,7 +33,10 @@ function hist_draw_base(){
         'class': 'data_considerada',
         }).appendTo("#lista_valores_historico");
 
-    d3.select("#janela_historico").append("svg").append("g")
+    d3.select("#janela_historico").append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
         .attr("id","svg_hist")
         .attr("width", width)
         .attr("height", height)
