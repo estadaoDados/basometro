@@ -745,7 +745,7 @@ h3{
   height:50px;
   text-align: center;
   line-height: 50px;
-  cursor:pointer;
+  cursor:move;
   color:#666;
 }
 
@@ -766,7 +766,7 @@ h3{
   width:765px;
   top:253px;
   border-top:1px white dotted;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .marcador_v {
@@ -1120,8 +1120,8 @@ h3{
   font-family: Georgia;
   position: absolute;
   background: black;
-  width: 740px;
-  height: 524px;
+  width: 804px;
+  height: 576px;
   top: -7px;
   left: 0;
   display: none;
@@ -1130,7 +1130,7 @@ h3{
   -ms-transition: all 0.3s ease;
   -o-transition: all 0.3s ease;
   text-shadow:1px 1px 3px grey;
-  z-index:100;
+  z-index:1000;
   border:2px solid white;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -1322,7 +1322,3 @@ h3{
   margin-left: 5px;
   margin-right: 5px;
 }
-
-/*.data_considerada {*/
-  /*padding-right: 10px;*/
-/*}*/

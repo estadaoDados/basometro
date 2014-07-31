@@ -7,10 +7,20 @@ window.histData = {};
 
 function toggleHistorico(){
     $("#janela_historico").toggle();
+    if ($("#janela_historico").css("display") == "block") {
+        $("#seletor_v.seletor").css("pointer-events",'none');
+        $("#seletor_v.seletor").draggable('disable');
+    } else {
+        $("#seletor_v.seletor").css("pointer-events",'auto');
+        $("#seletor_v.seletor").draggable('enable');
+    }
 }
 
 function esconder_janela_historico(){
     $("#janela_historico").hide();
+    $("#seletor_v.seletor").css("pointer-events",'auto');
+    $("#seletor_v.seletor").draggable('enable');
+
 }
 
 function hist_prepare(){
@@ -21,8 +31,8 @@ function hist_prepare(){
 
 function hist_draw_base(){
     /* Gera o SVG e cria abase para os gráficos de linha de histórico. */
-    var width = 740,
-        height = 505;
+    var width = 804,
+        height = 557;
 
     $('<ul/>', {
         'id':'lista_valores_historico',
@@ -113,8 +123,8 @@ function hist_first_draw(){
     //Desenha os eixos e o histórico geral, além do layer de mouseover
 
     var margin = {top: 11, right: 0, bottom: 42, left: 35},
-        width = 715 - margin.left - margin.right,
-        height = 505 - margin.top - margin.bottom;
+        width = 779 - margin.left - margin.right,
+        height = 557 - margin.top - margin.bottom;
 
     var x = d3.time.scale()
         .range([0, width]);
@@ -271,8 +281,8 @@ function hist_first_draw(){
 function hist_draw_line(partido) {
 
     var margin = {top: 11, right: 0, bottom: 42, left: 35},
-        width = 715 - margin.left - margin.right,
-        height = 505 - margin.top - margin.bottom;
+        width = 779 - margin.left - margin.right,
+        height = 557 - margin.top - margin.bottom;
 
     var x = d3.time.scale()
         .range([0, width]);
