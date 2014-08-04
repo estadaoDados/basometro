@@ -50,6 +50,7 @@ function menu_de_navegacao(){
                 escolha = escolha.replace("â","a")
                 $(".click").toggleClass("click")
                 main(governo, legislatura, escolha.substr(10))
+                hist_prepare();
                 $("#loading").hide()
             }
         } else if (/(Lula_1|Lula_2|Dilma)/.test(escolha)) {
@@ -67,6 +68,7 @@ function menu_de_navegacao(){
                 $("#listar_governo").text(escolha.substr(7).replace(/_/g," "))
                 $(".click").toggleClass("click")
                 main(governo, legislatura, casa.replace("â","a"))
+                hist_prepare();
                 $("#loading").hide()
             }
         } else {

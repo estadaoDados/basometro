@@ -24,12 +24,16 @@ function esconder_janela_historico(){
 }
 
 function hist_prepare(){
+    console.log("construindo gráfico de histórico");
     hist_draw_base();
     hist_get_data();
     hist_first_draw();
 }
 
 function hist_draw_base(){
+    /* Limpando a janela de histórico */
+    $("#janela_historico").empty();
+
     /* Gera o SVG e cria abase para os gráficos de linha de histórico. */
     var width = 804,
         height = 557;
@@ -68,9 +72,7 @@ function hist_legend_update(partido, conteudo){
 
 function hist_get_data(){
     //carrega os dados do histórico
-
-    var base_hist_url = "/basometro/dados/",
-        file_url = base_hist_url + "hist_" + governo + "_" + casa.replace("â","a") + "_" + legislatura + ".json";
+    var file_url = "dados/"+ "hist_" + governo + "_" + casa.replace("â","a") + "_" + legislatura + ".json";
 
     $.ajax({
         type: 'GET',
