@@ -245,13 +245,13 @@ function hist_first_draw(){
     //var partido = $(this).data("partido");
     $("#hist_overlay")
         .on("mouseover", function() {
-            d3.selectAll(".focus").style("display", null);
+            d3.selectAll(".focus").style("display", "block");
         })
         .on("mouseout", function() {
             d3.selectAll(".focus").style("display", "none");
         })
         .on("mousemove", function(el){
-            var _x_pos = el.offsetX;
+            var _x_pos = (el.offsetX || el.clientX - $(el.target).offset().left + 35);
 
             $(".focus").each(function(){
                 var partido = $(this).data("partido"),
