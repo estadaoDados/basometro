@@ -4,7 +4,7 @@ var status_lula_1_camara = false;
 var status_lula_1_senado = true;
 var status_lula_2_camara = false;
 var status_lula_2_senado = true;
-var jsonURLBase = "https://s3-sa-east-1.amazonaws.com/estadaodados/basometro/";
+var jsonURLBase = "dados/"
 
 window.cores = {
     "PT"       :["#a00200",1],
