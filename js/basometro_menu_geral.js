@@ -18,27 +18,37 @@ function menu_de_navegacao(){
         $("#choices").hide()
         escolha = $(this).attr("id")
         if (/(Biomas2012)/.test(escolha)) {
-        window.location.href = "../../html/biomas2012"
+        window.location.href = "/biomas2012"
         } else if (/(Coligações)/.test(escolha)) {
-            window.location.href="../../html/coligacoes"
+            window.location.href="/coligacoes"
         } else if (/(Cotas)/.test(escolha)) {
-            window.location.href="../../html/cotas"
+            window.location.href="/cotas"
+        } else if (/(Cruzador_de_Opiniões)/.test(escolha)) {
+            window.location.href="/cruzador"
         } else if (/(Eleições_2012)/.test(escolha)) {
-            window.location.href="../../html/eleicoes2012"
+            window.location.href="/eleicoes2012"
         } else if (/(Fuvest_2013)/.test(escolha)) {
-            window.location.href="../../html/fuvest2013"
+            window.location.href="/fuvest2013"
         } else if (/(IDEB)/.test(escolha)) {
-            window.location.href="../../html/ideb"
+            window.location.href="/ideb"
         } else if (/(Intenção_de_Voto)/.test(escolha)) {
-            window.location.href="../../html/intencaodevoto"
+            window.location.href="/intencaodevoto"
+        } else if (/(Pirâmide_Eleitoral)/.test(escolha)) {
+            window.location.href="/piramide_eleitoral"
         } else if (/(Lista_ENEM_2011)/.test(escolha)) {
-            window.location.href="../../html/listaenem2011"
+            window.location.href="/listaenem2011"
         } else if (/(Que_SP_vc_quer?)/.test(escolha)) {
-            window.location.href="../../html/quespvcquer"
+            window.location.href="/quespvcquer"
         } else if (/(Religiões)/.test(escolha)) {
-            window.location.href="../../html/religiao"
+            window.location.href="/religiao"
+        } else if (/(Ringue_2014)/.test(escolha)) {
+            window.location.href="/ringue2014"
+        } else if (/(Perfil_Eleitorado)/.test(escolha)) {
+            window.location.href="/perfil_eleitorado"
+        } else if (/(Santa_Maria)/.test(escolha)) {
+            window.location.href="/santamaria"
         } else if (/(São_Paulo_que_balança)/.test(escolha)) {
-            window.location.href="../../html/saopauloquebalanca"
+            window.location.href="/saopauloquebalanca"
 
         } else if (/(Câmara|Senado)/.test(escolha)) {
             nova_casa = /Câmara/.test(escolha)?"câmara":"senado"
