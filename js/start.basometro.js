@@ -1,6 +1,6 @@
 function carregaLula2(){
     $.ajax({
-        url: jsonURLBase + "lula_2_camara.json",
+        url: jsonURLBase + "lula2_camara.json",
         async: true,
         type: 'GET',
         dataType: 'json',
@@ -17,7 +17,7 @@ function carregaLula2(){
 
 function carregaLula1(){
     $.ajax({
-        url: jsonURLBase + "lula_1_camara.json",
+        url: jsonURLBase + "lula1_camara.json",
         async: true,
         type: 'GET',
         dataType: 'json',
@@ -35,7 +35,7 @@ function carregaLula1(){
 
 function carregaDilmaCamara(){
     $.ajax({
-        url: jsonURLBase + "dilma_1_camara.json",
+        url: jsonURLBase + "dilma1_camara.json",
         async: true,
         type: 'GET',
         dataType: 'json',
@@ -53,7 +53,7 @@ function carregaDilmaCamara(){
 
 function carregaDilmaSenado(){
     $.ajax({
-        url: jsonURLBase + "dilma_1_senado.json",
+        url: jsonURLBase + "dilma1_senado.json",
         async: true,
         type: 'GET',
         dataType: 'json',
@@ -73,7 +73,7 @@ function carregaDilmaSenado(){
 
 //Carrega Dilma 1 - Câmara - Primeira visualização do projeto
 $.ajax({
-    url: jsonURLBase + "dilma_1_camara.json",
+    url: jsonURLBase + "dilma1_camara.json",
     async: false,
     type: 'GET',
     dataType: 'json',

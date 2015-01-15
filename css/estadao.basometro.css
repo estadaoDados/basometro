@@ -294,13 +294,15 @@ h3{
 }
 
 #titulo {
-  padding:5px 15px;
+  padding:5px;
   color:#999;
   margin:5px 0px;
-  font-size:1.1em;
+  font-size:1.05em;
   background:black;
   z-index:0;
   height:16px;
+  text-align:center;
+  white-space: nowrap;
 }
 #titulo b {
   font-weight: bold;

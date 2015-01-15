@@ -7,6 +7,8 @@
  * http://www.gnu.org/licenses/gpl.html
 */
 
+//TODO - Hardcoded
+
 $.ui.autocomplete.prototype._renderItem = function( ul, item){
   var term = this.term.split(' ').join('|');
   var re = new RegExp("(" + term + ")", "gi") ;
@@ -81,7 +83,7 @@ function main(governo,legislatura,casa){
     if(!primeira_iteracao){
         var dld_status = status_download_json(governo,legislatura,casa)
         while (!dld_status){
-            setTimeout(function(){},10000)
+            setTimeout(function(){},5000)
             dld_status = status_download_json(governo, legislatura, casa)
         }
         d = retorna_dados(governo,legislatura,casa)
@@ -155,6 +157,7 @@ function papel(){
             circulo.politico = politico
             circulo.uf = lista_politicos_local[politico].UF
             circulo.mandato = lista_politicos_local[politico].ANO_MANDATO
+            circulo.situacao = lista_politicos_local[politico].situacao
             circulo.foto = (lista_politicos_local[politico].URL_FOTO || lista_politicos_local[politico].ARQUIVO_FOTO)
             circulo.votos = [0,0,0,0,0,0,0];//o ultimo são os votos com o governo
         g.addChild(circulo)
@@ -578,7 +581,8 @@ function processar_mudanca(){
     for (var i = 0; i < g.children.length; i++) {
         g.children[i].visible = false
         g.children[i]._index = 0
-        if (esta_presente(g.children[i])) incluidos.push(g.children[i]._name)
+        //if (esta_presente(g.children[i])) incluidos.push(g.children[i]._name)
+        incluidos.push(g.children[i]._name)
     }//reset visibility
 
     for (var i = 0; i < d.votos.length; i++) {//votos = [POLITICO,ID_VOTACAO,PARTIDO,VOTO]
@@ -608,7 +612,8 @@ function processar_mudanca(){
 
             participantes["id"+d.votos[i][0]] = [d.votos[i][2],d.votos[i][3]] //ultimo partido e ultimo voto
 
-            if (fim.ID_VOTACAO == d.votos[i][1]) { votantes["id"+d.votos[i][0]] = [d.votos[i][2],d.votos[i][3]] }//só os votantes da última sessão
+            votantes["id"+d.votos[i][0]] = [d.votos[i][2],d.votos[i][3]]
+            //if (fim.ID_VOTACAO == d.votos[i][1]) { votantes["id"+d.votos[i][0]] = [d.votos[i][2],d.votos[i][3]] }//só os votantes da última sessão
             if (partidos.indexOf(d.votos[i][2]) == -1 /* && (filtrar_partido?(filtros_partido[d.votos[i][2]]):true) */) partidos.push(d.votos[i][2])
         }
     }
@@ -761,17 +766,19 @@ function totalizacao(){
         };
     }
 
-    politicos_votantes = 0, governismo_geral = 0, governistas = 0, porcentagem = parseInt($("#seletor_v").text());
+    politicos_votantes = 0, governismo_geral = 0, governistas = 0, exercentes = 0, porcentagem = parseInt($("#seletor_v").text());
     for (var i = 0; i < g.children.length; i++) {
         if(g.children[i].visible){
             politicos_votantes ++;
             governismo_geral += g.children[i].governismo;
             if ((g.children[i].governismo*100) >= porcentagem && g.children[i].governismo != 0) {
                 governistas ++;
+                if (g.children[i].situacao == "ativo") exercentes ++;
             }
         }
     };
-    $('#titulo').html("Em <b>"+ votacoes_ids.length +"</b> votações, <b>"+ governistas + "</b> "+(casa=="câmara"?"deputados":"senadores")+" votaram com o governo em <b>"+ $("#seletor_v").text() +"</b> das vezes ou mais; e <b>"+ (politicos_votantes-governistas) +"</b> votaram com o governo em "+(($("#seletor_v").text() == "0%")?"":"menos de")+" <b>"+ $("#seletor_v").text() +"</b> das vezes")
+
+    $('#titulo').html("Em <b>"+ votacoes_ids.length +"</b> votações, <b>"+ governistas + "</b> "+(casa=="câmara"?"deputados":"senadores")+" (" + exercentes + " exercem o mandato hoje) votaram com o governo em <b>"+ $("#seletor_v").text() +"</b> das vezes ou mais; e <b>"+ (politicos_votantes-governistas) +"</b> "+(($("#seletor_v").text() == "0%")?"":"menos de")+" <b>"+ $("#seletor_v").text() +"</b>")
     .effect( "highlight", {color:tocando?"#111":"#333"}, 500 );
 
     $("#media_geral").text(Math.round((governismo_geral/politicos_votantes)*100) + "%")
