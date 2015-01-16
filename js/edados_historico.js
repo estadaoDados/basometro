@@ -196,7 +196,7 @@ function hist_first_draw(){
         .attr("class", "line")
         .attr("d", line);
 
-    hist_draw_legend("Geral", "bla 123");
+    hist_draw_legend("Geral", " ");
 
     //Desenha elemento de grupo que receberá os 'focus'
     d3.select("#svg_hist").append("g")
