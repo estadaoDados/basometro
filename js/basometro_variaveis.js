@@ -1,3 +1,5 @@
+var status_dilma_2_camara = false;
+var status_dilma_2_senado = false;
 var status_dilma_1_camara = false;
 var status_dilma_1_senado = false;
 var status_lula_1_camara = false;
@@ -47,12 +49,12 @@ window.cores = {
 }
 
 window.DadosGerais={
-  "dilma":{"câmara": {1: {}}, "senado": {1: {}}},
+  "dilma":{"câmara": {1: {}, 2:{}}, "senado": {1: {}, 2:{}}},
   "lula":{"câmara": {1:{}, 2:{}}, "senado": {1:{},2:{}}}
 }
 
 window.ReadyJson={
-  "dilma":{"camara": {1: false }, "senado": {1: false}},
+  "dilma":{"camara": {1: false, 2: false }, "senado": {1: false, 2:false}},
   "lula":{"camara": {1: false, 2: false}, "senado": {1: true, 2: true}}
 }
 
@@ -69,7 +71,7 @@ var inicio = false,
     g,
     casa = "câmara",
     governo = "Dilma",
-    legislatura = "1",
+    legislatura = "2",
     first_time = true,
     datas_sorted = [],
     votacoes = [],

@@ -63,13 +63,10 @@ function menu_de_navegacao(){
                 hist_prepare();
                 $("#loading").hide()
             }
-        } else if (/(Lula_1|Lula_2|Dilma)/.test(escolha)) {
+        } else if (/(Lula_1|Lula_2|Dilma_1|Dilma_2)/.test(escolha)) {
             novo_governo = /Dilma/.test(escolha)?"dilma":"lula"
-            if (novo_governo == "dilma") {
-                nova_legislatura = 1
-            } else {
-                nova_legislatura = /Lula_1/.test(escolha)?"1":"2"
-            }
+            nova_legislatura = /1/.test(escolha)?"1":"2"
+            console.log(novo_governo,nova_legislatura)
             if (novo_governo != governo || nova_legislatura != legislatura) {
                 $("#loading").show()
                 governo = novo_governo

@@ -109,6 +109,10 @@ function retorna_dados(governo,legislatura,casa) {
         return DadosGerais["dilma"]["câmara"][1]
     } else if (governo == "dilma" && legislatura == "1" && casa == "senado") {
         return DadosGerais["dilma"]["senado"][1]
+    } else if (governo == "dilma" && legislatura == "2" && casa == "camara") {
+        return DadosGerais["dilma"]["câmara"][2]
+    } else if (governo == "dilma" && legislatura == "2" && casa == "senado") {
+        return DadosGerais["dilma"]["senado"][2]
     }
     return null
 }
@@ -123,6 +127,10 @@ function status_download_json(governo,legislatura,casa) {
         return status_dilma_1_camara
     } else if (governo == "dilma" && legislatura == "1" && casa == "senado") {
         return status_dilma_1_senado
+    } else if (governo == "dilma" && legislatura == "2" && casa == "camara") {
+        return status_dilma_2_camara
+    } else if (governo == "dilma" && legislatura == "2" && casa == "senado") {
+        return status_dilma_2_senado
     } else if (governo == "lula" && casa == "senado") {
         return true
     }
