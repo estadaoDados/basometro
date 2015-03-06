@@ -1251,6 +1251,8 @@ h3{
 .line.PDT { stroke: #eece04; }
 .line.PHS { stroke: #f3dc05; }
 .line.PR { stroke: #f4e509; }
+.line.PTN { stroke: #f4e509; }
+
 .line.PSC { stroke: #eae116; }
 .line.PMR { stroke: #dfdd24; }
 .line.PTdoB { stroke: #d5d931; }
@@ -1287,6 +1289,8 @@ h3{
 .focus.PDT text, #lista_valores_historico .focus_text.PDT { fill: #eece04; color: #eece04; }
 .focus.PHS text, #lista_valores_historico .focus_text.PHS { fill: #f3dc05; color: #f3dc05; }
 .focus.PR text, #lista_valores_historico .focus_text.PR { fill: #f4e509; color: #f4e509; }
+.focus.PTN text, #lista_valores_historico .focus_text.PR { fill: #f4e509; color: #f4e509; }
+
 .focus.PSC text, #lista_valores_historico .focus_text.PSC { fill: #eae116; color: #eae116; }
 .focus.PMR text, #lista_valores_historico .focus_text.PMR { fill: #dfdd24; color: #dfdd24; }
 .focus.PTdoB text, #lista_valores_historico .focus_text.PTdoB { fill: #d5d931; color: #d5d931; }

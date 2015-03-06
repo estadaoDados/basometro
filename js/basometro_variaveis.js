@@ -28,7 +28,8 @@ window.cores = {
     "PDT"      :["#eece04",16],
     "PHS"      :["#f3dc05",17],
     "PR"       :["#f4e509",18],
-    "PSC"      :["#eae116",19],
+    "PTN"     :["#f4e509",19],
+    "PSC"      :["#eae116",20],
     "PMR"      :["#dfdd24",20],
     "PTdoB"    :["#d5d931",21],
     "PV"       :["#cad63e",22],
@@ -44,8 +45,9 @@ window.cores = {
     "PRONA"    :["#62afc3",32],
     "PAN"      :["#58abd0",33],
     "PSDC"     :["#4da7de",34],
+
     // "ZZZ"   :["#43a3eb",35],
-    "S.Part."   :["#999999",35]
+    "S.Part."   :["#999999",36]
 }
 
 window.DadosGerais={
@@ -61,6 +63,7 @@ window.ReadyJson={
 window.histData = {};
 
 var primeira_iteracao = true;
+var primeira_alca = true;
 var meses = [,,,,,,"jul",,,,,];//intermediarios na legenda
 var altura = 450, largura = 765; // do canvas
 var ios = /(iPad|iPhone)/i.test(navigator.userAgent)

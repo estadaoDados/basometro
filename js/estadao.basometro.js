@@ -111,9 +111,9 @@ function retorna_dados(governo,legislatura,casa) {
         return DadosGerais["dilma"]["senado"][1]
     } else if (governo == "dilma" && legislatura == "2" && casa == "camara") {
         return DadosGerais["dilma"]["câmara"][2]
-    } else if (governo == "dilma" && legislatura == "2" && casa == "senado") {
-        return DadosGerais["dilma"]["senado"][2]
-    }
+    } // else if (governo == "dilma" && legislatura == "2" && casa == "senado") {
+      //  return DadosGerais["dilma"]["senado"][2]
+    //}
     return null
 }
 
@@ -130,7 +130,7 @@ function status_download_json(governo,legislatura,casa) {
     } else if (governo == "dilma" && legislatura == "2" && casa == "camara") {
         return status_dilma_2_camara
     } else if (governo == "dilma" && legislatura == "2" && casa == "senado") {
-        return status_dilma_2_senado
+        return true//  return status_dilma_2_senado
     } else if (governo == "lula" && casa == "senado") {
         return true
     }
@@ -346,11 +346,18 @@ function mudar_visualizacao() {
 }
 
 function mover_alca(alca,votacao_num) {
-    is_fim = (alca == "fim");
+    var is_fim = (alca == "fim");
     var j_alca = $("#alca_" + alca);
     var votacao = $("#"+votacao_num);
-    j_alca.css("left",votacao.position().left+ "px");
-    if ( alca == "fim" ) {
+    //gambiarra necessária para a alça inicial ficar na posição 0 quando há poucas votações
+    if (primeira_alca) {
+        j_alca.css("left","0px")
+        primeira_alca = false;
+    } else {
+        j_alca.css("left",votacao.position().left+ "px");
+
+    }
+    if (is_fim) {
         fim = d.votacoes[votacao_num];
     } else {
         inicio = d.votacoes[votacao_num];
@@ -461,7 +468,8 @@ function desenha_eventos(callback){
     $('#eventos').html("")
     function posicao(i){return Math.round((i*intervalo)+intervalo)+"px"}//TODO: pixels dont allow floats, so we have a problem on positioning scale
     //DESENHA A BARRA DE TEMPO.....
-    if (governo=="dilma") {
+
+    if (governo=="burga") { //era dilma antes, mudei só para ver se funciona com o outro
         for (var i = 0; i < datas_sorted.length; i++) {
             if(data_anterior.getFullYear() != datas_sorted[i][0].getFullYear()){
                 $('#eventos_tag').append('<div class="evento_tag" style="left:'+posicao(i)+'">'+datas_sorted[i][0].getFullYear()+'</div>')
