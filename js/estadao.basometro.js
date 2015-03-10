@@ -8,6 +8,20 @@
 */
 
 //TODO - Hardcoded
+var hexDigits = new Array
+("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f");
+
+function hex(x) {
+    return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
+}
+
+//Function to convert hex format to a rgb color
+function rgb2hex(rgb) {
+    rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+    return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+}
+
+
 
 $.ui.autocomplete.prototype._renderItem = function( ul, item){
   var term = this.term.split(' ').join('|');
@@ -93,9 +107,59 @@ function main(governo,legislatura,casa){
     if (!d) {
         alert ('Dados não disponíves ou inacessíveis para este governo.')
     } else {
+        adiciona_partidos()
         papel()
         navegacao()
         mudar_visualizacao()
+    }
+}
+
+function adiciona_partidos() {
+    var pai = $("#legenda_partidos")
+    var dic_partidos = {
+        PT: ['Partido dos Trabalhadores','rgb(160, 2, 0)'],
+        PST: ['Partido Social Trabalhista','rgb(165, 16, 1)'],
+        PL: ['Partido Liberal','rgb(170, 29, 1)'],
+        PTC: ['Partido Trabalhista Cristão','rgb(176, 43, 1)'],
+        PCdoB: ['Partido Comunista do Brasil','rgb(181, 57, 1)'],
+        PP: ['Partido Progressista','rgb(186, 70, 1)'],
+        PRB: ['Partido Republicano Brasileiro','rgb(191, 83, 1)'],
+        PSL: ['Partido Social Liberal','rgb(196, 97, 2)'],
+        PPL: ['Partido Pátria Livre','rgb(202, 111, 3)'],
+        PSB: ['Partido Socialista Brasileiro','rgb(207, 125, 3)'],
+        PMDB: ['Partido do Movimento Democrático Brasileiro','rgb(212, 139, 3)'],
+        PROS: ['Partido Republicano da Ordem Social','rgb(217, 152, 3)'],
+        PRTB: ['Partido Renovador Trabalhista Brasileiro','rgb(222, 166, 4)'],
+        PTB: ['Partido Trabalhista Brasileiro','rgb(228, 179, 4)'],
+        PRP: ['Partido Republicano Progressista','rgb(233, 193, 4)'],
+        PDT: ['Partido Democrático Trabalhista','rgb(238, 206, 4)'],
+        PHS: ['Partido Humanista da Solidariedade','rgb(243, 220, 5)'],
+        PR: ['Partido da República','rgb(244, 229, 9)'],
+        PTN: ['Partido Trabalhista Nacional','rgb(244, 229, 9)'],
+        PSC: ['Partido Social Cristão','rgb(234, 225, 22)'],
+        PMR: ['Partido Municipalista Renovador','rgb(223, 221, 36)'],
+        PTdoB: ['Partido Trabalhista do Brasil','rgb(213, 217, 49)'],
+        PV: ['Partido Verde','rgb(202, 214, 62)'],
+        PMN: ['Partido da Mobilização Nacional','rgb(192, 210, 75)'],
+        PSD: ['Partido Social Democrático','rgb(182, 206, 88)'],
+        PEN: ['Partido Ecológico Nacional','rgb(171, 201, 102)'],
+        SDD: ['Partido Solidariedade','rgb(161, 198, 115)'],
+        PSOL: ['Partido Socialismo e Liberdade','rgb(151, 194, 129)'],
+        PPS: ['Partido Popular Socialista','rgb(140, 190, 142)'],
+        DEM: ['Democratas','rgb(130, 186, 155)'],
+        PFL_DEM: ['Partido da Frente Liberal','rgb(119, 182, 168)'],
+        PSDB: ['Partido da Social Democracia Brasileira','rgb(109, 179, 182)'],
+        PRONA: ['Partido da Reedificação da Ordem Nacional','rgb(98, 175, 195)'],
+        PAN: ['Partido dos Aposentados da Nação','rgb(88, 171, 208)'],
+        PPB: ['Partido Progressista Brasileiro','rgb(77, 167, 222)']
+    }
+    for (p in dic_partidos) {
+        var codigo =
+            '<div class="partido bt2"><div class="box" style="background-color:' + rgb2hex(dic_partidos[p][1]) + ';"></div>' +
+                '<abbr title="' + dic_partidos[p][0] + '">' + p + '</abbr>' +
+                '<span id="' + p + '" class="presenca_partido"></span>' +
+            '</div>'
+        pai.append(codigo)
     }
 }
 
@@ -428,6 +492,25 @@ $("#tocar_votacao").click(function(){
     };
 })
 
+function destaca(partido) {
+    if (partido) {
+        for (var i = 0; i < g.children.length; i++) {
+            if (g.children[i].partido != partido) {
+                g.children[i].opacity = 0.3
+            } else {
+                g.children[i].opacity = 1
+            }
+        }
+    } else {
+        if (destaque_hover == false) {
+            for (var i = 0; i < g.children.length; i++) {
+                g.children[i].opacity = 1
+            }
+        }
+    }
+    paper.view.zoom = 1
+}
+
 function selecionar_politico(nome) {
     for (var i = 0; i < g.children.length; i++) {
         g.children[i].strokeColor = null
@@ -641,6 +724,7 @@ function processar_mudanca(){
             }
     } //initiate array of partidos
 
+
     for(votante in votantes){
         if (esta_presente(g.children[votante])) {
             politicos_hints.push(g.children[votante].politico)
@@ -657,6 +741,7 @@ function processar_mudanca(){
             delete votantes[votante]
         }
     }
+
 
     politicos_hints.sort();
     if (first_time) {
@@ -835,7 +920,17 @@ function atualiza_partidos(){
 
     for(partido in media_partidos) {
         var text_soma = (isNaN(media_partidos[partido]))?($(".presenca_partido#"+partido).parent().hide()):media_partidos[partido]+"%";
+        console.log(partido)
         $(".presenca_partido#"+partido).text(text_soma).parent().show();
+        $(".presenca_partido#"+partido).parent()
+            .mouseenter(function (d) {
+                destaque_hover = true
+                destaca($(d.target).find("span").attr("id"))
+            })
+            .mouseleave(function (d) {
+                setTimeout(destaca,500)
+                destaque_hover = false
+            })
     }
 
     for (var i = 0; i < partidos.length; i++) {
@@ -848,20 +943,22 @@ function atualiza_partidos(){
 
 //Função de mouse over nos deputados
 function onMouseDown(event){
-    for (var i = 0; i < g.children.length; i++) {g.children[i].strokeColor = null}
-    var hit = project.hitTest(event.point, {segments: false, stroke: false, fill: true, tolerance: 3 });
-    if(hit && hit.item.visible){
-        if(hit) {
-            esconder_ficha_votacao();
-            $("#ficha").show();
-            preenche_ficha(hit.item)
-            draw_tip_arc(hit.item)//vai para o lado esquerdo
+    if (event) {
+        for (var i = 0; i < g.children.length; i++) {g.children[i].strokeColor = null}
+        var hit = project.hitTest(event.point, {segments: false, stroke: false, fill: true, tolerance: 3 });
+        if(hit && hit.item.visible){
+            if(hit) {
+                esconder_ficha_votacao();
+                $("#ficha").show();
+                preenche_ficha(hit.item)
+                draw_tip_arc(hit.item)//vai para o lado esquerdo
+            }else{
+                esconder_ficha();
+            }
         }else{
+            esconder_ficha_votacao();
             esconder_ficha();
         }
-    }else{
-        esconder_ficha_votacao();
-        esconder_ficha();
     }
 }
 

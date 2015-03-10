@@ -50,6 +50,49 @@ window.cores = {
     "S.Part."   :["#999999",36]
 }
 
+window.cores = {
+    "PT"       :["#592659",1],
+    "PST"      :["#8F598F",2],
+    "PL"       :["#B88FB8",3],
+    "PTC"      :["#402659",4],
+    "PCdoB"    :["#7D598F",5],
+    "PP"       :["#A38FB8",6],
+    "PPB"       :["#262659",6],
+    "PRB"      :["#59598F",7],
+    "PSL"      :["#8F8FB8",8],
+    "PPL"      :["#264059",9],
+    "PSB"      :["#597D8F",10],
+    "PMDB"     :["#8FA3B8",11],
+    "PROS"     :["#265959",12],
+    "PRTB"     :["#598F8F",13],
+    "PTB"      :["#8FB8B8",14],
+    "PRP"      :["#265940",15],
+    "PDT"      :["#598F7D",16],
+    "PHS"      :["#8FB8A3",17],
+    "PR"       :["#265926",18],
+    "PTN"     :["#598F59",19],
+    "PSC"      :["#8FB88F",20],
+    "PMR"      :["#405926",20],
+    "PTdoB"    :["#7D8F59",21],
+    "PV"       :["#A3B88F",22],
+    "PMN"      :["#595926",23],
+    "PSD"      :["#8F8F59",24],
+    "PEN"      :["#B8B88F",25],
+    "SDD"      :["#592626",26],
+    "PSOL"     :["#8F5959",27],
+    "PPS"      :["#B8A38F",28],
+    "DEM"      :["#592640",29],
+    "PFL_DEM"  :["#77b6a8",30],
+    "PSDB"     :["#8F597D",31],
+    "PRONA"    :["#62afc3",32],
+    "PAN"      :["#58abd0",33],
+    "PSDC"     :["#B88FA3",34],
+
+    // "ZZZ"   :["#43a3eb",35],
+    "S.Part."   :["#999999",36]
+}
+
+
 window.DadosGerais={
   "dilma":{"câmara": {1: {}, 2:{}}, "senado": {1: {}, 2:{}}},
   "lula":{"câmara": {1:{}, 2:{}}, "senado": {1:{},2:{}}}
@@ -105,6 +148,7 @@ var inicio = false,
     play_interval,
     tocando = false,
     primeiro_toque = true,
+    destaque_hover = false,
       bolinha_camara = 3, // do canvas
     bolinha_senado = 5; // do canvas
 
