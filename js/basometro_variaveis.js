@@ -9,7 +9,7 @@ var status_lula_2_senado = true;
 var jsonURLBase = "dados/"
 
 window.cores = {
-    "PT"       :["#a00200",1],
+    "PT"       :["#a00200",20],
     "PST"      :["#a51001",2],
     "PL"       :["#aa1d01",3],
     "PTC"      :["#b02b01",4],
@@ -50,48 +50,88 @@ window.cores = {
     "S.Part."   :["#999999",36]
 }
 
-window.cores = {
-    "PT"       :["#592659",1],
-    "PST"      :["#8F598F",2],
-    "PL"       :["#B88FB8",3],
-    "PTC"      :["#402659",4],
-    "PCdoB"    :["#7D598F",5],
-    "PP"       :["#A38FB8",6],
-    "PPB"       :["#262659",6],
-    "PRB"      :["#59598F",7],
-    "PSL"      :["#8F8FB8",8],
-    "PPL"      :["#264059",9],
-    "PSB"      :["#597D8F",10],
-    "PMDB"     :["#8FA3B8",11],
-    "PROS"     :["#265959",12],
-    "PRTB"     :["#598F8F",13],
-    "PTB"      :["#8FB8B8",14],
-    "PRP"      :["#265940",15],
-    "PDT"      :["#598F7D",16],
-    "PHS"      :["#8FB8A3",17],
-    "PR"       :["#265926",18],
-    "PTN"     :["#598F59",19],
-    "PSC"      :["#8FB88F",20],
-    "PMR"      :["#405926",20],
-    "PTdoB"    :["#7D8F59",21],
-    "PV"       :["#A3B88F",22],
-    "PMN"      :["#595926",23],
-    "PSD"      :["#8F8F59",24],
-    "PEN"      :["#B8B88F",25],
-    "SDD"      :["#592626",26],
-    "PSOL"     :["#8F5959",27],
-    "PPS"      :["#B8A38F",28],
-    "DEM"      :["#592640",29],
-    "PFL_DEM"  :["#77b6a8",30],
-    "PSDB"     :["#8F597D",31],
-    "PRONA"    :["#62afc3",32],
-    "PAN"      :["#58abd0",33],
-    "PSDC"     :["#B88FA3",34],
 
-    // "ZZZ"   :["#43a3eb",35],
-    "S.Part."   :["#999999",36]
+window.paleta = {
+    0:'#A11217',
+    1:'#BE003E',
+    2:'#BC005C',
+    3:'#BA007C',
+    4:'#98007F',
+    5:'#7B057E',
+    6:'#5E196F',
+    7:'#45187D',
+    8:'#3A3A8B',
+    9:'#00408F',
+    10:'#00528B',
+    11:'#0066A4',
+    12:'#007CC0',
+    13:'#009BDB',
+    14:'#0096B2',
+    15:'#009493',
+    16:'#008270',
+    17:'#009045',
+    18:'#00602D',
+    19: '#5F8930',
+    20:'#7BAC39',
+    21:'#A3BD31',
+    22:'#CAD226',
+    23:'#FEEE00',
+    24:'#E9BC00',
+    25:'#B6720A',
+    26:'#9A740F',
+    27: '#634600'
 }
 
+window.ordem_partido = {
+    lula: {
+        1:['PST','PMN','PT','PSL','PSB','PCdoB','PL','PSC','PTC','PTB','PP','PMDB','PMR','PPS','PDT','PV','PPB','PSOL','PRP','PSDB','DEM','PRONA','PRB'],
+        2:['PMN','PT','PSB','PRB','PCdoB','PHS','PTdoB','PR','PAN','PSC','PTC','PTB','PP','PMDB','PPS','PDT','PRTB','PV','PPB','PSOL','PRP','PSDB','DEM']
+    },
+    dilma: {
+        1: ['PT','PMN','PCdoB','PSL','PHS','PRB','PRP','PROS','PSDC','PTdoB','PDT','PR','PP','PSB','PMDB','PTB','PSC','PRTB','PV','PTC','PSD','PEN','SDD','PSOL','PPS','DEM','PSDB'],
+        2: ['PTC','PT','PCdoB','PSL','PRB','PRTB','PP','PHS','PMDB','PTB','PRP','PSB','PROS','PTN','PDT','PR','PTdoB','PV','PSC','PMN','PSD','PEN','PSDC','SDD','PSOL','PPS','DEM','PSDB']
+    }
+}
+
+window.dic_partidos = {
+    PT: 'Partido dos Trabalhadores',
+    PST: 'Partido Social Trabalhista',
+    PL: 'Partido Liberal',
+    PTC: 'Partido Trabalhista Cristão',
+    PCdoB: 'Partido Comunista do Brasil',
+    PP: 'Partido Progressista',
+    PRB: 'Partido Republicano Brasileiro',
+    PSL: 'Partido Social Liberal',
+    PPL: 'Partido Pátria Livre',
+    PSB: 'Partido Socialista Brasileiro',
+    PMDB: 'Partido do Movimento Democrático Brasileiro',
+    PROS: 'Partido Republicano da Ordem Social',
+    PRTB: 'Partido Renovador Trabalhista Brasileiro',
+    PTB: 'Partido Trabalhista Brasileiro',
+    PRP: 'Partido Republicano Progressista',
+    PDT: 'Partido Democrático Trabalhista',
+    PHS: 'Partido Humanista da Solidariedade',
+    PR: 'Partido da República',
+    PTN: 'Partido Trabalhista Nacional',
+    PSC: 'Partido Social Cristão',
+    PMR: 'Partido Municipalista Renovador',
+    PTdoB: 'Partido Trabalhista do Brasil',
+    PV: 'Partido Verde',
+    PMN: 'Partido da Mobilização Nacional',
+    PSD: 'Partido Social Democrático',
+    PEN: 'Partido Ecológico Nacional',
+    SDD: 'Partido Solidariedade',
+    PSOL: 'Partido Socialismo e Liberdade',
+    PPS: 'Partido Popular Socialista',
+    DEM: 'Democratas',
+    PFL_DEM: 'Partido da Frente Liberal',
+    PSDB: 'Partido da Social Democracia Brasileira',
+    PRONA: 'Partido da Reedificação da Ordem Nacional',
+    PAN: 'Partido dos Aposentados da Nação',
+    PPB: 'Partido Progressista Brasileiro',
+    PSDC:'Partido Social Democrático Cristão',
+    "S.Part.": "Sem Partido"
+}
 
 window.DadosGerais={
   "dilma":{"câmara": {1: {}, 2:{}}, "senado": {1: {}, 2:{}}},
@@ -149,8 +189,9 @@ var inicio = false,
     tocando = false,
     primeiro_toque = true,
     destaque_hover = false,
-      bolinha_camara = 3, // do canvas
-    bolinha_senado = 5; // do canvas
+    bolinha_camara = 3, // do canvas
+    bolinha_senado = 5, // do canvas
+    cores = {}
 
 var partidos_clicados = [];
 

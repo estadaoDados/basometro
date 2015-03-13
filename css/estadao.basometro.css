@@ -360,7 +360,7 @@ h3{
 
 #infografico{
   width:980px;
-  height:620px
+  height:640px
 }
 
 #legenda_partidos{
@@ -1231,82 +1231,6 @@ h3{
   fill: #fff;
   font: 12px sans-serif;
 }
-
-/* CORES DOS PARTIDOS - nas linhas*/
-.line.PT { stroke: #ff0300; }
-.line.PST { stroke: #a51001; }
-.line.PL { stroke: #aa1d01; }
-.line.PTC { stroke: #b02b01; }
-.line.PCdoB { stroke: #b53901; }
-.line.PP { stroke: #ba4601; }
-.line.PRB { stroke: #bf5301; }
-.line.PSL { stroke: #c46102; }
-.line.PPL { stroke: #ca6f03; }
-.line.PSB { stroke: #cf7d03; }
-.line.PMDB { stroke: #d48b03; }
-.line.PROS { stroke: #d99803; }
-.line.PRTB { stroke: #dea604; }
-.line.PTB { stroke: #e4b304; }
-.line.PRP { stroke: #e9c104; }
-.line.PDT { stroke: #eece04; }
-.line.PHS { stroke: #f3dc05; }
-.line.PR { stroke: #f4e509; }
-.line.PTN { stroke: #f4e509; }
-
-.line.PSC { stroke: #eae116; }
-.line.PMR { stroke: #dfdd24; }
-.line.PTdoB { stroke: #d5d931; }
-.line.PV { stroke: #cad63e; }
-.line.PMN { stroke: #c0d24b; }
-.line.PSD { stroke: #b6ce58; }
-.line.PEN { stroke: #abc966; }
-.line.SDD { stroke: #a1c673; }
-.line.PSOL { stroke: #97c281; }
-.line.PPS { stroke: #8cbe8e; }
-.line.DEM { stroke: #82ba9b; }
-.line.PFL_DEM { stroke: #77b6a8; }
-.line.PSDB { stroke: #6db3b6; }
-.line.PRONA { stroke: #62afc3; }
-.line.PAN { stroke: #58abd0; }
-.line.PSDC { stroke: #4da7de; }
-
-/* Cores dos textos */
-.focus.PT text, #lista_valores_historico .focus_text.PT { fill: #ff0300; color: #ff0300; }
-.focus.PST text, #lista_valores_historico .focus_text.PST { fill: #a51001; color: #a51001; }
-.focus.PL text, #lista_valores_historico .focus_text.PL { fill: #aa1d01; color: #aa1d01; }
-.focus.PTC text, #lista_valores_historico .focus_text.PTC { fill: #b02b01; color: #b02b01; }
-.focus.PCdoB text, #lista_valores_historico .focus_text.PCdoB { fill: #b53901; color: #b53901; }
-.focus.PP text, #lista_valores_historico .focus_text.PP { fill: #ba4601; color: #ba4601; }
-.focus.PRB text, #lista_valores_historico .focus_text.PRB { fill: #bf5301; color: #bf5301; }
-.focus.PSL text, #lista_valores_historico .focus_text.PSL { fill: #c46102; color: #c46102; }
-.focus.PPL text, #lista_valores_historico .focus_text.PPL { fill: #ca6f03; color: #ca6f03; }
-.focus.PSB text, #lista_valores_historico .focus_text.PSB { fill: #cf7d03; color: #cf7d03; }
-.focus.PMDB text, #lista_valores_historico .focus_text.PMDB { fill: #d48b03; color: #d48b03; }
-.focus.PROS text, #lista_valores_historico .focus_text.PROS { fill: #d99803; color: #d99803; }
-.focus.PRTB text, #lista_valores_historico .focus_text.PRTB { fill: #dea604; color: #dea604; }
-.focus.PTB text, #lista_valores_historico .focus_text.PTB { fill: #e4b304; color: #e4b304; }
-.focus.PRP text, #lista_valores_historico .focus_text.PRP { fill: #e9c104; color: #e9c104; }
-.focus.PDT text, #lista_valores_historico .focus_text.PDT { fill: #eece04; color: #eece04; }
-.focus.PHS text, #lista_valores_historico .focus_text.PHS { fill: #f3dc05; color: #f3dc05; }
-.focus.PR text, #lista_valores_historico .focus_text.PR { fill: #f4e509; color: #f4e509; }
-.focus.PTN text, #lista_valores_historico .focus_text.PR { fill: #f4e509; color: #f4e509; }
-
-.focus.PSC text, #lista_valores_historico .focus_text.PSC { fill: #eae116; color: #eae116; }
-.focus.PMR text, #lista_valores_historico .focus_text.PMR { fill: #dfdd24; color: #dfdd24; }
-.focus.PTdoB text, #lista_valores_historico .focus_text.PTdoB { fill: #d5d931; color: #d5d931; }
-.focus.PV text, #lista_valores_historico .focus_text.PV { fill: #cad63e; color: #cad63e; }
-.focus.PMN text, #lista_valores_historico .focus_text.PMN { fill: #c0d24b; color: #c0d24b; }
-.focus.PSD text, #lista_valores_historico .focus_text.PSD { fill: #b6ce58; color: #b6ce58; }
-.focus.PEN text, #lista_valores_historico .focus_text.PEN { fill: #abc966; color: #abc966; }
-.focus.SDD text, #lista_valores_historico .focus_text.SDD { fill: #a1c673; color: #a1c673; }
-.focus.PSOL text, #lista_valores_historico .focus_text.PSOL { fill: #97c281; color: #97c281; }
-.focus.PPS text, #lista_valores_historico .focus_text.PPS { fill: #8cbe8e; color: #8cbe8e; }
-.focus.DEM text, #lista_valores_historico .focus_text.DEM { fill: #82ba9b; color: #82ba9b; }
-.focus.PFL_DEM text, #lista_valores_historico .focus_text.PFL_DEM { fill: #77b6a8; color: #77b6a8; }
-.focus.PSDB text, #lista_valores_historico .focus_text.PSDB { fill: #6db3b6; color: #6db3b6; }
-.focus.PRONA text, #lista_valores_historico .focus_text.PRONA { fill: #62afc3; color: #62afc3; }
-.focus.PAN text, #lista_valores_historico .focus_text.PAN { fill: #58abd0; color: #58abd0; }
-.focus.PSDC text, #lista_valores_historico .focus_text.PSDC { fill: #4da7de; color: #4da7de; }
 
 #lista_valores_historico {
   margin: 0;

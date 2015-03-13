@@ -24,7 +24,6 @@ function esconder_janela_historico(){
 }
 
 function hist_prepare(){
-    console.log("construindo gráfico de histórico");
     hist_draw_base();
     hist_get_data();
     hist_first_draw();
@@ -61,8 +60,10 @@ function hist_draw_base(){
 function hist_draw_legend(partido, conteudo){
     $('<li/>', {
         'class': "focus_text " + partido,
-        'html': function(){ return partido + ": " + conteudo ;},
-    }).appendTo('#lista_valores_historico')
+        'html': function(){ return partido + ": " + conteudo; }
+    })
+        .css("color",(partido=="Geral")?"#fff":cores[partido][0])
+        .appendTo('#lista_valores_historico')
 }
 
 function hist_legend_update(partido, conteudo){
@@ -326,7 +327,7 @@ function hist_draw_line(partido) {
         .datum(data)
         .attr("class", "line " + partido)
         .attr("d", line)
-        .style("stroke", cores[partido]);
+        .style("stroke", cores[partido][0]);
 
     var focus = d3.select("#hist_focus_group").append("g")
               .attr("class", "focus " + partido)
@@ -337,24 +338,27 @@ function hist_draw_line(partido) {
         .attr("class", "x")
         .attr("y1", y(0) - 6)
         .attr("y2", y(0) + 6)
-        .style("fill", "#fff")
-        .style("stroke", "#fff");
+        .style("fill", cores[partido][0])
+        .style("stroke", cores[partido][0]);
 
     focus.append("line")
         .attr("class", "y")
         .attr("x1", width - 6)
         .attr("x2", width + 6)
-        .style("fill", "#fff")
-        .style("stroke", "#fff");
+        .style("fill", cores[partido][0])
+        .style("stroke", cores[partido][0]);
 
     focus.append("circle")
         .attr("class", "y")
         .attr("r", 4)
-        .style("fill", "#fff")
-        .style("stroke", "#fff");
+        .style("fill", cores[partido][0])
+        .style("stroke", cores[partido][0]);
 
     focus.append("text")
         .attr("class", "y")
-        .attr("dy", "-1em");
+        .attr("dy", "-1em")
+        .style("fill",cores[partido][0])
+        .style("color",cores[partido][0]);
+
 
  }

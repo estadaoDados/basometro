@@ -20,6 +20,21 @@ function rgb2hex(rgb) {
     rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
     return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
 }
+//função para encontrar a cor entre duas cores
+function hexAverage() {
+    var args = Array.prototype.slice.call(arguments);
+    return args.reduce(function (previousValue, currentValue) {
+        return currentValue
+            .replace(/^#/, '')
+            .match(/.{2}/g)
+            .map(function (value, index) {
+                return previousValue[index] + parseInt(value, 16);
+            });
+    }, [0, 0, 0])
+        .reduce(function (previousValue, currentValue) {
+            return previousValue + Math.floor(currentValue / args.length).toString(16);
+        }, '#');
+}
 
 
 
@@ -56,6 +71,10 @@ this.tooltip = function(el){
 }
 
 function rebuild(){
+    //remove a lista atual de partidos, que será reconstruída com base na ordem de cada governo
+    $("#legenda_partidos").find("div").remove();
+
+    //agora zeramos as variáveis globais que vamos recalcular
     datas_sorted = [],
     votacoes = [],
     participantes = [],
@@ -113,53 +132,44 @@ function main(governo,legislatura,casa){
         mudar_visualizacao()
     }
 }
-
+//função que adiciona a lista de partidos da esquerda
 function adiciona_partidos() {
     var pai = $("#legenda_partidos")
-    var dic_partidos = {
-        PT: ['Partido dos Trabalhadores','rgb(160, 2, 0)'],
-        PST: ['Partido Social Trabalhista','rgb(165, 16, 1)'],
-        PL: ['Partido Liberal','rgb(170, 29, 1)'],
-        PTC: ['Partido Trabalhista Cristão','rgb(176, 43, 1)'],
-        PCdoB: ['Partido Comunista do Brasil','rgb(181, 57, 1)'],
-        PP: ['Partido Progressista','rgb(186, 70, 1)'],
-        PRB: ['Partido Republicano Brasileiro','rgb(191, 83, 1)'],
-        PSL: ['Partido Social Liberal','rgb(196, 97, 2)'],
-        PPL: ['Partido Pátria Livre','rgb(202, 111, 3)'],
-        PSB: ['Partido Socialista Brasileiro','rgb(207, 125, 3)'],
-        PMDB: ['Partido do Movimento Democrático Brasileiro','rgb(212, 139, 3)'],
-        PROS: ['Partido Republicano da Ordem Social','rgb(217, 152, 3)'],
-        PRTB: ['Partido Renovador Trabalhista Brasileiro','rgb(222, 166, 4)'],
-        PTB: ['Partido Trabalhista Brasileiro','rgb(228, 179, 4)'],
-        PRP: ['Partido Republicano Progressista','rgb(233, 193, 4)'],
-        PDT: ['Partido Democrático Trabalhista','rgb(238, 206, 4)'],
-        PHS: ['Partido Humanista da Solidariedade','rgb(243, 220, 5)'],
-        PR: ['Partido da República','rgb(244, 229, 9)'],
-        PTN: ['Partido Trabalhista Nacional','rgb(244, 229, 9)'],
-        PSC: ['Partido Social Cristão','rgb(234, 225, 22)'],
-        PMR: ['Partido Municipalista Renovador','rgb(223, 221, 36)'],
-        PTdoB: ['Partido Trabalhista do Brasil','rgb(213, 217, 49)'],
-        PV: ['Partido Verde','rgb(202, 214, 62)'],
-        PMN: ['Partido da Mobilização Nacional','rgb(192, 210, 75)'],
-        PSD: ['Partido Social Democrático','rgb(182, 206, 88)'],
-        PEN: ['Partido Ecológico Nacional','rgb(171, 201, 102)'],
-        SDD: ['Partido Solidariedade','rgb(161, 198, 115)'],
-        PSOL: ['Partido Socialismo e Liberdade','rgb(151, 194, 129)'],
-        PPS: ['Partido Popular Socialista','rgb(140, 190, 142)'],
-        DEM: ['Democratas','rgb(130, 186, 155)'],
-        PFL_DEM: ['Partido da Frente Liberal','rgb(119, 182, 168)'],
-        PSDB: ['Partido da Social Democracia Brasileira','rgb(109, 179, 182)'],
-        PRONA: ['Partido da Reedificação da Ordem Nacional','rgb(98, 175, 195)'],
-        PAN: ['Partido dos Aposentados da Nação','rgb(88, 171, 208)'],
-        PPB: ['Partido Progressista Brasileiro','rgb(77, 167, 222)']
-    }
-    for (p in dic_partidos) {
+
+    //pega a ordem que os partidos devem aparecer
+    var ordem = ordem_partido[governo.toLowerCase()][legislatura]
+
+    //faz um multiplicador que transformará o index de cada partido em um número entre 0 e o total de cores da paleta)
+    var multiplicador = Object.keys(paleta).length/ordem.length
+
+
+    for (p in ordem) {
+        var cor = parseInt(p*multiplicador)
+
+        //após calcular o index novo do partido, adiciona isso numa variável global
+        cores[ordem[p]] = [paleta[cor],p]
+
+        //e agora adiciona o elemento na lista de partidos
         var codigo =
-            '<div class="partido bt2"><div class="box" style="background-color:' + rgb2hex(dic_partidos[p][1]) + ';"></div>' +
-                '<abbr title="' + dic_partidos[p][0] + '">' + p + '</abbr>' +
-                '<span id="' + p + '" class="presenca_partido"></span>' +
+            '<div class="partido bt2"><div class="box" style="background-color:' + paleta[cor] + ';"></div>' +
+                '<abbr title="' + dic_partidos[ordem[p]] + '">' + ordem[p] + '</abbr>' +
+                '<span id="' + ordem[p] + '" class="presenca_partido"></span>' +
             '</div>'
         pai.append(codigo)
+    }
+
+    //se faltar algum partido, adiciona no final da lista
+    for (p in dic_partidos) {
+        if (!(ordem.indexOf(p)>-1)) {
+            cores[p] = [paleta[cor],Object.keys(paleta).length]
+
+            var codigo =
+                '<div class="partido bt2"><div class="box" style="background-color:' + ';"></div>' +
+                '<abbr title="' + dic_partidos[p] + '">' + p + '</abbr>' +
+                '<span id="' + p + '" class="presenca_partido"></span>' +
+                '</div>'
+            pai.append(codigo)
+        }
     }
 }
 
@@ -552,98 +562,52 @@ function desenha_eventos(callback){
     function posicao(i){return Math.round((i*intervalo)+intervalo)+"px"}//TODO: pixels dont allow floats, so we have a problem on positioning scale
     //DESENHA A BARRA DE TEMPO.....
 
-    if (governo=="burga") { //era dilma antes, mudei só para ver se funciona com o outro
-        for (var i = 0; i < datas_sorted.length; i++) {
-            if(data_anterior.getFullYear() != datas_sorted[i][0].getFullYear()){
-                $('#eventos_tag').append('<div class="evento_tag" style="left:'+posicao(i)+'">'+datas_sorted[i][0].getFullYear()+'</div>')
-            } else if(data_anterior.getMonth() != datas_sorted[i][0].getMonth() && meses[datas_sorted[i][0].getMonth()]){
-                $('#eventos_tag').append('<div class="evento_tag" style="left:'+posicao(i)+'">'+meses[datas_sorted[i][0].getMonth()]+'</div>')
-            }
-            var dt = datas_sorted[i][1].data_parsed
-            var titulo = (i+1) + " - " + dt.getDate() +"/"+ (dt.getMonth()+1) +"/"+ dt.getFullYear() + ((casa == "câmara")?(" "+ dt.getHours() + "h" + (dt.getMinutes()<10?"0":"")+ dt.getMinutes()):"" ) + " - " + datas_sorted[i][1].TIPO + datas_sorted[i][1].NUMERO + "/" + datas_sorted[i][1].ANO + " - "+datas_sorted[i][1].LINGUAGEM_COMUM;
-            votacoes_hints.push(titulo)
-            $('#eventos').append(
-                '<div id="'+datas_sorted[i][2]+
-                '" class="evento" data="'+datas_sorted[i][0].getTime()+
-                '" title="'+titulo+
-                '" style="left:'+posicao(i)+
-                '" data-date="'+dt.getDate()+"/"+(dt.getMonth()+1)+"/"+ dt.getFullYear()+((casa == "câmara")?(" "+ dt.getHours() + "h" + (dt.getMinutes()<10?"0":"")+ dt.getMinutes()):"" )+
-                '" data-tipo="'+datas_sorted[i][1].TIPO+
-                '" data-numero="'+datas_sorted[i][1].NUMERO+
-                '" data-ano="'+datas_sorted[i][1].ANO+
-                '" data-comum="'+datas_sorted[i][1].LINGUAGEM_COMUM+
-                '" data-hora="'+datas_sorted[i][1].HORA+
-                '" data-orientacao="'+datas_sorted[i][1].ORIENTACAO_GOVERNO+
-                '" data-ementa="'+datas_sorted[i][1].EMENTA+
-                '" data-texto="'+datas_sorted[i][1].O_QUE_FOI_VOTADO+
-                '"></div>'
-            );
-            if (i == datas_sorted.length -1) {
-                //Preenchendo ficha de votação
-                var next = $("#" + datas_sorted[i][2])
-                var dados_votacao = {
-                    "DATA": next.attr("data-date"),
-                    "TIPO": next.attr("data-tipo"),
-                    "NUMERO": next.attr("data-numero"),
-                    "ANO": next.attr("data-ano"),
-                    "LINGUAGEM_COMUM": next.attr("data-comum"),
-                    "HORA": next.attr("data-hora"),
-                    "ORIENTACAO_GOVERNO": next.attr("data-orientacao"),
-                    "EMENTA": next.attr("data-ementa"),
-                    "O_QUE_FOI_VOTADO": next.attr("data-texto")
-                }
-                preenche_ficha_votacao(dados_votacao);
-                $("#slider_tip").click(function(){$("#ficha_votacao").show()});
-            }
-            data_anterior = datas_sorted[i][0]
+    for (var i = 0; i < datas_sorted.length; i++) {
+        if(data_anterior.getFullYear() != datas_sorted[i][0].getFullYear()){
+            $('#eventos_tag').append('<div class="evento_tag" style="left:'+posicao(i)+'">'+datas_sorted[i][0].getFullYear()+'</div>')
+        //} else if(data_anterior.getMonth() != datas_sorted[i][0].getMonth() && meses[datas_sorted[i][0].getMonth()] && datas_sorted[i][0].getMonth() == 6){
+        } else if(data_anterior.getMonth() != datas_sorted[i][0].getMonth() && datas_sorted[i][0].getMonth() == 6){
+            $('#eventos_tag').append('<div class="evento_tag" style="left:'+posicao(i)+'">Junho</div>')
         }
-    } else {
-        for (var i = 0; i < datas_sorted.length; i++) {
-            if(data_anterior.getFullYear() != datas_sorted[i][0].getFullYear()){
-                $('#eventos_tag').append('<div class="evento_tag" style="left:'+posicao(i)+'">'+datas_sorted[i][0].getFullYear()+'</div>')
-            //} else if(data_anterior.getMonth() != datas_sorted[i][0].getMonth() && meses[datas_sorted[i][0].getMonth()] && datas_sorted[i][0].getMonth() == 6){
-            } else if(data_anterior.getMonth() != datas_sorted[i][0].getMonth() && datas_sorted[i][0].getMonth() == 6){
-                $('#eventos_tag').append('<div class="evento_tag" style="left:'+posicao(i)+'">Junho</div>')
+        var dt = datas_sorted[i][1].data_parsed;
+        var titulo = (i+1) + " - " + dt.getDate() +"/"+ (dt.getMonth()+1) +"/"+ dt.getFullYear() + ((casa == "câmara")?(" "+ dt.getHours() + "h" + (dt.getMinutes()<10?"0":"")+ dt.getMinutes()):"" ) + " - " +datas_sorted[i][1].LINGUAGEM_COMUM;
+        votacoes_hints.push(titulo);
+        $('#eventos').append(
+            '<div id="'+datas_sorted[i][2]+
+            '" class="evento" data="'+datas_sorted[i][0].getTime()+
+            '" title="'+titulo+
+            '" style="left:'+posicao(i)+
+            '" data-date="'+dt.getDate()+"/"+(dt.getMonth()+1)+"/"+ dt.getFullYear()+((casa == "câmara")?(" "+ dt.getHours() + "h" + (dt.getMinutes()<10?"0":"")+ dt.getMinutes()):"" )+
+            '" data-tipo="'+datas_sorted[i][1].TIPO+
+            '" data-numero="'+datas_sorted[i][1].NUMERO+
+            '" data-ano="'+datas_sorted[i][1].ANO+
+            '" data-comum="'+datas_sorted[i][1].LINGUAGEM_COMUM+
+            '" data-hora="'+datas_sorted[i][1].HORA+
+            '" data-orientacao="'+datas_sorted[i][1].ORIENTACAO_GOVERNO+
+            '" data-ementa="'+datas_sorted[i][1].EMENTA+
+            '" data-texto="'+datas_sorted[i][1].O_QUE_FOI_VOTADO+
+            '"></div>'
+        );
+        if (i == datas_sorted.length -1) {
+            //Preenchendo ficha de votação
+            var next = $("#" + datas_sorted[i][2])
+            var dados_votacao = {
+                "DATA": next.attr("data-date"),
+                "TIPO": next.attr("data-tipo"),
+                "NUMERO": next.attr("data-numero"),
+                "ANO": next.attr("data-ano"),
+                "LINGUAGEM_COMUM": next.attr("data-comum"),
+                "HORA": next.attr("data-hora"),
+                "ORIENTACAO_GOVERNO": next.attr("data-orientacao"),
+                "EMENTA": next.attr("data-ementa"),
+                "O_QUE_FOI_VOTADO": next.attr("data-texto")
             }
-            var dt = datas_sorted[i][1].data_parsed;
-            var titulo = (i+1) + " - " + dt.getDate() +"/"+ (dt.getMonth()+1) +"/"+ dt.getFullYear() + ((casa == "câmara")?(" "+ dt.getHours() + "h" + (dt.getMinutes()<10?"0":"")+ dt.getMinutes()):"" ) + " - " +datas_sorted[i][1].LINGUAGEM_COMUM;
-            votacoes_hints.push(titulo);
-            $('#eventos').append(
-                '<div id="'+datas_sorted[i][2]+
-                '" class="evento" data="'+datas_sorted[i][0].getTime()+
-                '" title="'+titulo+
-                '" style="left:'+posicao(i)+
-                '" data-date="'+dt.getDate()+"/"+(dt.getMonth()+1)+"/"+ dt.getFullYear()+((casa == "câmara")?(" "+ dt.getHours() + "h" + (dt.getMinutes()<10?"0":"")+ dt.getMinutes()):"" )+
-                '" data-tipo="'+datas_sorted[i][1].TIPO+
-                '" data-numero="'+datas_sorted[i][1].NUMERO+
-                '" data-ano="'+datas_sorted[i][1].ANO+
-                '" data-comum="'+datas_sorted[i][1].LINGUAGEM_COMUM+
-                '" data-hora="'+datas_sorted[i][1].HORA+
-                '" data-orientacao="'+datas_sorted[i][1].ORIENTACAO_GOVERNO+
-                '" data-ementa="'+datas_sorted[i][1].EMENTA+
-                '" data-texto="'+datas_sorted[i][1].O_QUE_FOI_VOTADO+
-                '"></div>'
-            );
-            if (i == datas_sorted.length -1) {
-                //Preenchendo ficha de votação
-                var next = $("#" + datas_sorted[i][2])
-                var dados_votacao = {
-                    "DATA": next.attr("data-date"),
-                    "TIPO": next.attr("data-tipo"),
-                    "NUMERO": next.attr("data-numero"),
-                    "ANO": next.attr("data-ano"),
-                    "LINGUAGEM_COMUM": next.attr("data-comum"),
-                    "HORA": next.attr("data-hora"),
-                    "ORIENTACAO_GOVERNO": next.attr("data-orientacao"),
-                    "EMENTA": next.attr("data-ementa"),
-                    "O_QUE_FOI_VOTADO": next.attr("data-texto")
-                }
-                preenche_ficha_votacao(dados_votacao);
-                $("#slider_tip").click(function(){$("#ficha_votacao").show()});
-            }
-            data_anterior = datas_sorted[i][0];
+            preenche_ficha_votacao(dados_votacao);
+            $("#slider_tip").click(function(){$("#ficha_votacao").show()});
         }
+        data_anterior = datas_sorted[i][0];
     }
+
     inicio = datas_sorted[0][1];
     fim = datas_sorted[datas_sorted.length-1][1];
     if(callback != undefined) {
@@ -920,7 +884,6 @@ function atualiza_partidos(){
 
     for(partido in media_partidos) {
         var text_soma = (isNaN(media_partidos[partido]))?($(".presenca_partido#"+partido).parent().hide()):media_partidos[partido]+"%";
-        console.log(partido)
         $(".presenca_partido#"+partido).text(text_soma).parent().show();
         $(".presenca_partido#"+partido).parent()
             .mouseenter(function (d) {
@@ -1025,7 +988,6 @@ function draw_tip_arc (item) {
 }
 
 function muda_votacao(){
-
     $("#titulo_voto").html("<br>"+fim.LINGUAGEM_COMUM);
     $("#texto_voto").html(fim.O_QUE_FOI_VOTADO);
     $("#subtitulo_voto").html(fim.EMENTA);
