@@ -72,7 +72,7 @@ this.tooltip = function(el){
 
 function rebuild(){
     //remove a lista atual de partidos, que será reconstruída com base na ordem de cada governo
-    $("#legenda_partidos").find("div").remove();
+    $("#legenda_partidos").find(".partido").remove();
 
     //agora zeramos as variáveis globais que vamos recalcular
     datas_sorted = [],
