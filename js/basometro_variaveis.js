@@ -135,7 +135,7 @@ window.dic_partidos = {
 
 window.DadosGerais={
   "dilma":{"câmara": {1: {}, 2:{}}, "senado": {1: {}, 2:{}}},
-  "lula":{"câmara": {1:{}, 2:{}}, "senado": {1:{},2:{}}}
+  "lula":{"câmara": {1:{}, 2:{}}, "senad             o": {1:{},2:{}}}
 }
 
 window.ReadyJson={

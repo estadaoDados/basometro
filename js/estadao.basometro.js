@@ -123,6 +123,7 @@ function main(governo,legislatura,casa){
     } else {
         primeira_iteracao = false
     }
+
     if (!d) {
         alert ('Dados não disponíves ou inacessíveis para este governo.')
     } else {
@@ -185,6 +186,8 @@ function retorna_dados(governo,legislatura,casa) {
         return DadosGerais["dilma"]["senado"][1]
     } else if (governo == "dilma" && legislatura == "2" && casa == "camara") {
         return DadosGerais["dilma"]["câmara"][2]
+    }  else if (governo == "dilma" && legislatura == "2" && casa == "senado") {
+        return DadosGerais["dilma"]["senado"][2]
     } // else if (governo == "dilma" && legislatura == "2" && casa == "senado") {
       //  return DadosGerais["dilma"]["senado"][2]
     //}
