@@ -691,7 +691,7 @@ function processar_mudanca(){
             }
     } //initiate array of partidos
 
-
+    console.log("VOTANTES",votantes)
     for(votante in votantes){
         if (esta_presente(g.children[votante])) {
             politicos_hints.push(g.children[votante].politico)
@@ -727,6 +727,7 @@ function processar_mudanca(){
     for(politico in votantes) {
         votantes_sorted[cores[g.children[politico].partido][1]].push(votantes[politico])
     }
+    console.log(votantes_sorted)
 
     for (var i = 0; i < votantes_sorted.length; i++) {
         if (votantes_sorted[i]) {
