@@ -97,6 +97,7 @@ function main(governo,legislatura,casa){
             dld_status = status_download_json(governo, legislatura, casa)
         }
         d = retorna_dados(governo,legislatura,casa)
+        
     } else {
         primeira_iteracao = false
     }
@@ -660,7 +661,6 @@ function processar_mudanca(){
                 }
 
             }
-
             participantes["id"+d.votos[i][0]] = [d.votos[i][2],d.votos[i][3]] //ultimo partido e ultimo voto
             votantes["id"+d.votos[i][0]] = [d.votos[i][2],d.votos[i][3]]
 
@@ -685,17 +685,21 @@ function processar_mudanca(){
 
     var i = 0
     for(votante in votantes){
-        i++;
-        politicos_hints.push(g.children[votante].politico)
-        g.children[votante].visible = true
-        g.children[votante].partido = votantes[votante][0]
-        g.children[votante].fillColor = cores[votantes[votante][0]][0]
-        g.children[votante].fillColor.alpha = 0.7
-        g.children[votante].aceleracao = 0
-        g.children[votante].destino_y = 0 //eixo vertical
-        g.children[votante].destino_x = 0 //eixo horizontal
-        g.children[votante].votos = [0,0,0,0,0,0,0] //o ultimo são os votos com o governo
-        votantes[votante].push(votante,g.children[votante].politico); //[PARTIDO,ULTIMO_VOTO,ID_POLITICO,NOME_CASA]
+        if (esta_presente(g.children[votante])) {
+            i++;
+            politicos_hints.push(g.children[votante].politico)
+            g.children[votante].visible = true
+            g.children[votante].partido = votantes[votante][0]
+            g.children[votante].fillColor = cores[votantes[votante][0]][0]
+            g.children[votante].fillColor.alpha = 0.7
+            g.children[votante].aceleracao = 0
+            g.children[votante].destino_y = 0 //eixo vertical
+            g.children[votante].destino_x = 0 //eixo horizontal
+            g.children[votante].votos = [0,0,0,0,0,0,0] //o ultimo são os votos com o governo
+            votantes[votante].push(votante,g.children[votante].politico); //[PARTIDO,ULTIMO_VOTO,ID_POLITICO,NOME_CASA]
+            } else {
+                delete votantes[votante];
+            }
     }
 
     politicos_hints.sort();
@@ -753,6 +757,22 @@ function processar_mudanca(){
     muda_votacao();
 }
 
+function esta_presente(politico){
+    if (filtrar_partido || filtrar_estado) {
+        if ( !(
+            (filtrar_partido?filtros_partido[politico.partido]:true) &&
+            (filtrar_estado?filtros_uf[politico.uf]:true)
+            )
+            ) {
+                return false;
+            } else {
+                return true;
+            };
+        } else {
+            return true;
+        };
+}
+
 function onFrame(event){
     if (enter_frame < passos){
         enter_frame++;
@@ -794,6 +814,7 @@ function estabelece_filtros() {
 }
 
 function totalizacao(){
+    //função que calcula os números gerais de governismo dependendo do filtro vertical
     if (item_selected) {
         if (item_selected.visible) {
             preenche_ficha(item_selected)
@@ -803,19 +824,19 @@ function totalizacao(){
         };
     }
 
-    politicos_votantes = 0, governismo_geral = 0, governistas = 0, exercentes = 0, porcentagem = parseInt($("#seletor_v").text());
+    politicos_votantes = 0, governismo_geral = 0, governistas = 0, porcentagem = parseInt($("#seletor_v").text());
     for (var i = 0; i < g.children.length; i++) {
         if(g.children[i].visible){
             politicos_votantes ++;
             governismo_geral += g.children[i].governismo;
             if ((g.children[i].governismo*100) >= porcentagem && g.children[i].governismo != 0) {
                 governistas ++;
-                if (g.children[i].situacao == "ativo") exercentes ++;
+                //if (g.children[i].situacao == "ativo") exercentes ++;
             }
         }
     };
 
-    $('#titulo').html("Em <b>"+ votacoes_ids.length +"</b> votações, <b>"+ governistas + "</b> "+(casa=="câmara"?"deputados":"senadores")+" (" + exercentes + " participaram da última votação) votaram com o governo em <b>"+ $("#seletor_v").text() +"</b> das vezes ou mais; e <b>"+ (politicos_votantes-governistas) +"</b> "+(($("#seletor_v").text() == "0%")?"":"menos de")+" <b>"+ $("#seletor_v").text() +"</b>")
+    $('#titulo').html("Em <b>"+ votacoes_ids.length +"</b> votações, <b>"+ governistas + "</b> "+(casa=="câmara"?"deputados":"senadores")+" votaram com o governo em <b>"+ $("#seletor_v").text() +"</b> das vezes ou mais; e <b>"+ (politicos_votantes-governistas) +"</b> "+(($("#seletor_v").text() == "0%")?"":"menos de")+" <b>"+ $("#seletor_v").text() +"</b> (" + votantes_votacao[fim.ID_VOTACAO].length + " participaram da última votação)")
     .effect( "highlight", {color:tocando?"#111":"#333"}, 500 );
 
     $("#media_geral").text(Math.round((governismo_geral/politicos_votantes)*100) + "%")
@@ -869,7 +890,6 @@ function atualiza_partidos(){
     }
 
     for (var i = 0; i < partidos.length; i++) {
-        partidos[i]
         var text_soma = (isNaN(media_partidos[partidos[i]]))?"---":media_partidos[partidos[i]]+"%";
         $(".presenca_partido#"+partidos[i]).text(text_soma).parent().show();
     };
@@ -1002,6 +1022,7 @@ function muda_votacao(){
 
         OBS: A OBSTRUÇÃO pode ser considerada como um voto contra ou como um voto a favor, a depender da orientação do governo.
     */
+    var faltaram = votantes_votacao[fim.ID_VOTACAO]
 
     for (var i = 0; i < votantes_sorted.length; i++) {
         if(votantes_sorted[i]){
@@ -1010,6 +1031,8 @@ function muda_votacao(){
 
                     //só vai colocar barrinhas se esse votante estiver nessa votação, como calculamos lá em cima na função processa_mudanca()
                     if(votantes_votacao[fim.ID_VOTACAO].indexOf(votantes_sorted[i][j][2]) > -1) {
+                        faltaram.splice(faltaram.indexOf(votantes_sorted[i][j][2]),1)
+
 
                         // tipos_de_voto = ["NAO","SIM","ABSTENCAO","OBSTRUCAO","NAO VOTOU","PRESIDENTE"];
                         var class_;
@@ -1022,9 +1045,9 @@ function muda_votacao(){
                             opos++;
                             class_ = "oposicionista_voto", type = "o" //TODO: OBSTRUÇÃO
                             //class_ = "oposicionista_voto obstrucao", type = "o";
-                        } else if (votantes_sorted[i][j][1] == 5){
-                            abst++;
-                            class_ = "abstencao_voto /cod_17", type = "a";
+                        } else if (votantes_sorted[i][j][1] == 5){ //PRESIDENTE
+                            //abst++;
+                            //class_ = "abstencao_voto /cod_17", type = "a";
                         } else if ((fim.ORIENTACAO_GOVERNO == "Sim" && votantes_sorted[i][j][1] == 1) || (fim.ORIENTACAO_GOVERNO == "Não" && votantes_sorted[i][j][1] == 0) || (fim.ORIENTACAO_GOVERNO == "Obstrução" && votantes_sorted[i][j][1] == 3)){ //TODO: OBSTRUÇÃO
                             //} else if ((fim.ORIENTACAO_GOVERNO == "Sim" && votantes_sorted[i][j][1] == 1) || (fim.ORIENTACAO_GOVERNO == "Não" && votantes_sorted[i][j][1] == 0)){
                             govs++;
@@ -1045,6 +1068,7 @@ function muda_votacao(){
         }
     };
 
+    console.log(faltaram.length,faltaram)
     var plus1;
     govs <= 1 ?  plus1 = " voto" : plus1 = " votos";
     $('#gov_counter').append(' <i> • <b>'+govs+"</b>"+plus1+"</i>");
