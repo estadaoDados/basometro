@@ -79,13 +79,11 @@ function menu_de_navegacao(){
                 $("#loading").hide()
             }
         } else {
-            //$("#loading").show()
-            alert("O modo de visualização por votações foi desabilitado temporariamente.")
-            //visualizacao = escolha.substr(7)
-            //console.log(visualizacao)
-            //$("#listar_tipos").text(visualizacao.replace(/_/g," "))
-            //mudar_visualizacao();
-            //$("#loading").hide()
+            $("#loading").show()
+            visualizacao = escolha.substr(7)
+            $("#listar_tipos").text(visualizacao.replace(/_/g," "))
+            mudar_visualizacao();
+            $("#loading").hide()
         };
     }).css("cursor", "pointer")
 }

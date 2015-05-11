@@ -15,29 +15,6 @@ function hex(x) {
     return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
 }
 
-//Function to convert hex format to a rgb color
-function rgb2hex(rgb) {
-    rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-    return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
-}
-//função para encontrar a cor entre duas cores
-function hexAverage() {
-    var args = Array.prototype.slice.call(arguments);
-    return args.reduce(function (previousValue, currentValue) {
-        return currentValue
-            .replace(/^#/, '')
-            .match(/.{2}/g)
-            .map(function (value, index) {
-                return previousValue[index] + parseInt(value, 16);
-            });
-    }, [0, 0, 0])
-        .reduce(function (previousValue, currentValue) {
-            return previousValue + Math.floor(currentValue / args.length).toString(16);
-        }, '#');
-}
-
-
-
 $.ui.autocomplete.prototype._renderItem = function( ul, item){
   var term = this.term.split(' ').join('|');
   var re = new RegExp("(" + term + ")", "gi") ;
@@ -215,7 +192,6 @@ function status_download_json(governo,legislatura,casa) {
 }
 
 function papel(){
-
     if (first_time) {
         paper.install(window)
         paper.setup('grafico')
@@ -233,6 +209,7 @@ function papel(){
     // g.position.y = 5;
     //var lista_politicos_local = politicos_json[governo][casa][legislatura]
     var lista_politicos_local = d.politicos
+
     for(politico in lista_politicos_local){
         lista_politicos_local[politico].ID_POLITICO = politico
         var circulo = new Path.Circle([380,5], ((casa=="câmara")?bolinha_camara:bolinha_senado))
@@ -392,6 +369,7 @@ function slider_finishing(el) {
 }
 
 function mudar_visualizacao() {
+
     $(".abas").hide();
     $("#"+visualizacao).show();
 
@@ -422,7 +400,9 @@ function mudar_visualizacao() {
     $("#loading").hide();
 }
 
-function mover_alca(alca,votacao_num) {
+function mover_alca(alca,votacao_num,atualiza) {
+    atualiza = typeof atualiza !== 'undefined' ? atualiza : true
+
     var is_fim = (alca == "fim");
     var j_alca = $("#alca_" + alca);
     var votacao = $("#"+votacao_num);
@@ -441,7 +421,8 @@ function mover_alca(alca,votacao_num) {
     };
     slider_finishing(j_alca);
     $("#slider_tip").text(votacao.attr("title"));
-    muda();
+    if (atualiza) muda()
+
 }
 
 $("#somar_votacao").click(function(){
@@ -616,8 +597,8 @@ function desenha_eventos(callback){
     if(callback != undefined) {
         callback();
     }else{
-        mover_alca("inicio",inicio.ID_VOTACAO)
-        mover_alca("fim",fim.ID_VOTACAO)
+        mover_alca("inicio",inicio.ID_VOTACAO,false)
+        mover_alca("fim",fim.ID_VOTACAO,false)
     }
 }
 
@@ -631,8 +612,10 @@ function muda(desenhar){
 }
 
 function processar_mudanca(){
-    enter_frame = 0, politicos_hints = [], votacoes_ids = [], participantes = {}, votantes = {}, partidos = [], votos = [], votantes_sorted = [], media_por_votacao = {},  media_da_votacao = {};
+    //essa é a função principal que coloca as bolinhas e faz os cálculos de governismo de acordo com os filtros selecionados
+    enter_frame = 0, politicos_hints = [], votacoes_ids = [], participantes = {}, votantes = {}, partidos = [], votos = [], votantes_sorted = [], media_por_votacao = {},  media_da_votacao = {}, votantes_votacao = {};
 
+    //aqui, descobre quais são as votações existentes no período selecionado
     if (inicio.data_parsed > fim.data_parsed) inicio = fim;
     for (var i = 0; i < datas_sorted.length; i++) {
         if(datas_sorted[i][1].data_parsed >= inicio.data_parsed && datas_sorted[i][1].data_parsed <= fim.data_parsed) {
@@ -643,6 +626,7 @@ function processar_mudanca(){
     };
     $("#vota_count").text(votacoes_ids.length)
 
+    //agora pega todos os ids dos políticos em questão e esconde todas as bolinhas
     var incluidos = []
     for (var i = 0; i < g.children.length; i++) {
         g.children[i].visible = false
@@ -651,6 +635,7 @@ function processar_mudanca(){
         incluidos.push(g.children[i]._name)
     }//reset visibility
 
+    //aqui fazemos os cálculos das médias de governismo de acordo com voto e orientação
     for (var i = 0; i < d.votos.length; i++) {//votos = [POLITICO,ID_VOTACAO,PARTIDO,VOTO]
         if(votacoes_ids.indexOf(String(d.votos[i][1])) != -1){ //todos os votos aqui já estão subselecteds
             votos.push(d.votos[i])
@@ -677,8 +662,15 @@ function processar_mudanca(){
             }
 
             participantes["id"+d.votos[i][0]] = [d.votos[i][2],d.votos[i][3]] //ultimo partido e ultimo voto
-
             votantes["id"+d.votos[i][0]] = [d.votos[i][2],d.votos[i][3]]
+
+            //essa variável mostra quais são os votantes para cada votação
+            if (!(String(d.votos[i][1]) in votantes_votacao)) {
+                votantes_votacao[String(d.votos[i][1])] = [];
+                votantes_votacao[String(d.votos[i][1])].push("id"+d.votos[i][0]);
+            }  else
+                votantes_votacao[String(d.votos[i][1])].push("id"+d.votos[i][0])
+
             //if (fim.ID_VOTACAO == d.votos[i][1]) { votantes["id"+d.votos[i][0]] = [d.votos[i][2],d.votos[i][3]] }//só os votantes da última sessão
             if (partidos.indexOf(d.votos[i][2]) == -1 /* && (filtrar_partido?(filtros_partido[d.votos[i][2]]):true) */) partidos.push(d.votos[i][2])
         }
@@ -691,24 +683,20 @@ function processar_mudanca(){
             }
     } //initiate array of partidos
 
-    console.log("VOTANTES",votantes)
+    var i = 0
     for(votante in votantes){
-        if (esta_presente(g.children[votante])) {
-            politicos_hints.push(g.children[votante].politico)
-            g.children[votante].visible = true
-            g.children[votante].partido = votantes[votante][0]
-            g.children[votante].fillColor = cores[votantes[votante][0]][0]
-            g.children[votante].fillColor.alpha = 0.7
-            g.children[votante].aceleracao = 0
-            g.children[votante].destino_y = 0 //eixo vertical
-            g.children[votante].destino_x = 0 //eixo horizontal
-            g.children[votante].votos = [0,0,0,0,0,0,0] //o ultimo são os votos com o governo
-            votantes[votante].push(votante,g.children[votante].politico); //[PARTIDO,ULTIMO_VOTO,ID_POLITICO,NOME_CASA]
-        } else {
-            delete votantes[votante]
-        }
+        i++;
+        politicos_hints.push(g.children[votante].politico)
+        g.children[votante].visible = true
+        g.children[votante].partido = votantes[votante][0]
+        g.children[votante].fillColor = cores[votantes[votante][0]][0]
+        g.children[votante].fillColor.alpha = 0.7
+        g.children[votante].aceleracao = 0
+        g.children[votante].destino_y = 0 //eixo vertical
+        g.children[votante].destino_x = 0 //eixo horizontal
+        g.children[votante].votos = [0,0,0,0,0,0,0] //o ultimo são os votos com o governo
+        votantes[votante].push(votante,g.children[votante].politico); //[PARTIDO,ULTIMO_VOTO,ID_POLITICO,NOME_CASA]
     }
-
 
     politicos_hints.sort();
     if (first_time) {
@@ -727,7 +715,6 @@ function processar_mudanca(){
     for(politico in votantes) {
         votantes_sorted[cores[g.children[politico].partido][1]].push(votantes[politico])
     }
-    console.log(votantes_sorted)
 
     for (var i = 0; i < votantes_sorted.length; i++) {
         if (votantes_sorted[i]) {
@@ -738,7 +725,6 @@ function processar_mudanca(){
             });
         }
     };
-
     var x_pos = 10, distancia = ((largura-30)/politicos_hints.length);
 
     for (var i = 0; i < votantes_sorted.length; i++) {
@@ -807,24 +793,6 @@ function estabelece_filtros() {
     });
 }
 
-
-function esta_presente(politico){
-    if (filtrar_partido || filtrar_estado) {
-        if ( !(
-                    (filtrar_partido?filtros_partido[politico.partido]:true) &&
-                    (filtrar_estado?filtros_uf[politico.uf]:true)
-                    )
-                ) {
-                return false;
-        } else {
-            return true;
-        };
-    } else {
-        return true;
-    };
-
-}
-
 function totalizacao(){
     if (item_selected) {
         if (item_selected.visible) {
@@ -847,7 +815,7 @@ function totalizacao(){
         }
     };
 
-    $('#titulo').html("Em <b>"+ votacoes_ids.length +"</b> votações, <b>"+ governistas + "</b> "+(casa=="câmara"?"deputados":"senadores")+" (" + exercentes + " exercem o mandato hoje) votaram com o governo em <b>"+ $("#seletor_v").text() +"</b> das vezes ou mais; e <b>"+ (politicos_votantes-governistas) +"</b> "+(($("#seletor_v").text() == "0%")?"":"menos de")+" <b>"+ $("#seletor_v").text() +"</b>")
+    $('#titulo').html("Em <b>"+ votacoes_ids.length +"</b> votações, <b>"+ governistas + "</b> "+(casa=="câmara"?"deputados":"senadores")+" (" + exercentes + " participaram da última votação) votaram com o governo em <b>"+ $("#seletor_v").text() +"</b> das vezes ou mais; e <b>"+ (politicos_votantes-governistas) +"</b> "+(($("#seletor_v").text() == "0%")?"":"menos de")+" <b>"+ $("#seletor_v").text() +"</b>")
     .effect( "highlight", {color:tocando?"#111":"#333"}, 500 );
 
     $("#media_geral").text(Math.round((governismo_geral/politicos_votantes)*100) + "%")
@@ -1034,38 +1002,42 @@ function muda_votacao(){
 
         OBS: A OBSTRUÇÃO pode ser considerada como um voto contra ou como um voto a favor, a depender da orientação do governo.
     */
+
     for (var i = 0; i < votantes_sorted.length; i++) {
         if(votantes_sorted[i]){
             for (var j = 0; j < votantes_sorted[i].length; j++) {//[PARTIDO,ULTIMO_VOTO,ID_POLITICO,NOME_CASA]
                 if (votantes_sorted[i][j] && votantes_sorted[i][j][1] != 4) {
 
-                    // tipos_de_voto = ["NAO","SIM","ABSTENCAO","OBSTRUCAO","NAO VOTOU","PRESIDENTE"];
-                    var class_;
-                    var type;
-                    if (votantes_sorted[i][j][1] == 2){
-                        abst++;
-                        class_ = "abstencao_voto", type = "a";
-                    } else if (votantes_sorted[i][j][1] == 3 && fim.ORIENTACAO_GOVERNO != "Obstrução"){ //TODO: OBSTRUÇÃO
-                    //} else if (votantes_sorted[i][j][1] == 3){
-                        opos++;
-                        class_ = "oposicionista_voto", type = "o" //TODO: OBSTRUÇÃO
-                        //class_ = "oposicionista_voto obstrucao", type = "o";
-                    } else if (votantes_sorted[i][j][1] == 5){
-                        abst++;
-                        class_ = "abstencao_voto /cod_17", type = "a";
-                    } else if ((fim.ORIENTACAO_GOVERNO == "Sim" && votantes_sorted[i][j][1] == 1) || (fim.ORIENTACAO_GOVERNO == "Não" && votantes_sorted[i][j][1] == 0) || (fim.ORIENTACAO_GOVERNO == "Obstrução" && votantes_sorted[i][j][1] == 3)){ //TODO: OBSTRUÇÃO
-                    //} else if ((fim.ORIENTACAO_GOVERNO == "Sim" && votantes_sorted[i][j][1] == 1) || (fim.ORIENTACAO_GOVERNO == "Não" && votantes_sorted[i][j][1] == 0)){
-                        govs++;
-                        class_ = "governista_voto", type = "g";
-                    }else {
-                        opos++;
-                        class_ = "oposicionista_voto", type = "o";
+                    //só vai colocar barrinhas se esse votante estiver nessa votação, como calculamos lá em cima na função processa_mudanca()
+                    if(votantes_votacao[fim.ID_VOTACAO].indexOf(votantes_sorted[i][j][2]) > -1) {
+
+                        // tipos_de_voto = ["NAO","SIM","ABSTENCAO","OBSTRUCAO","NAO VOTOU","PRESIDENTE"];
+                        var class_;
+                        var type;
+                        if (votantes_sorted[i][j][1] == 2){
+                            abst++;
+                            class_ = "abstencao_voto", type = "a";
+                        } else if (votantes_sorted[i][j][1] == 3 && fim.ORIENTACAO_GOVERNO != "Obstrução"){ //TODO: OBSTRUÇÃO
+                            //} else if (votantes_sorted[i][j][1] == 3){
+                            opos++;
+                            class_ = "oposicionista_voto", type = "o" //TODO: OBSTRUÇÃO
+                            //class_ = "oposicionista_voto obstrucao", type = "o";
+                        } else if (votantes_sorted[i][j][1] == 5){
+                            abst++;
+                            class_ = "abstencao_voto /cod_17", type = "a";
+                        } else if ((fim.ORIENTACAO_GOVERNO == "Sim" && votantes_sorted[i][j][1] == 1) || (fim.ORIENTACAO_GOVERNO == "Não" && votantes_sorted[i][j][1] == 0) || (fim.ORIENTACAO_GOVERNO == "Obstrução" && votantes_sorted[i][j][1] == 3)){ //TODO: OBSTRUÇÃO
+                            //} else if ((fim.ORIENTACAO_GOVERNO == "Sim" && votantes_sorted[i][j][1] == 1) || (fim.ORIENTACAO_GOVERNO == "Não" && votantes_sorted[i][j][1] == 0)){
+                            govs++;
+                            class_ = "governista_voto", type = "g";
+                        }else {
+                            opos++;
+                            class_ = "oposicionista_voto", type = "o";
+                        }
+                        var parlamentar = $('<div class="'+class_+'" title="'+g.children[votantes_sorted[i][j][2]].politico+', '+votantes_sorted[i][j][0]+'" style="background-color:'+cores[votantes_sorted[i][j][0]][0]+';" ></div>')
+
+                        $("#v_"+type+"_"+votantes_sorted[i][j][0]).append(parlamentar);
+                        tooltip(parlamentar);
                     }
-                    var parlamentar = $('<div class="'+class_+'" title="'+g.children[votantes_sorted[i][j][2]].politico+', '+votantes_sorted[i][j][0]+'" style="background-color:'+cores[votantes_sorted[i][j][0]][0]+';" ></div>')
-
-                    $("#v_"+type+"_"+votantes_sorted[i][j][0]).append(parlamentar);
-                    tooltip(parlamentar);
-
                 }else{
                     nao_votou ++;
                 };
