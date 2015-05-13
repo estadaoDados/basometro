@@ -97,7 +97,7 @@ function main(governo,legislatura,casa){
             dld_status = status_download_json(governo, legislatura, casa)
         }
         d = retorna_dados(governo,legislatura,casa)
-        
+
     } else {
         primeira_iteracao = false
     }
@@ -1022,7 +1022,6 @@ function muda_votacao(){
 
         OBS: A OBSTRUÇÃO pode ser considerada como um voto contra ou como um voto a favor, a depender da orientação do governo.
     */
-    var faltaram = votantes_votacao[fim.ID_VOTACAO]
 
     for (var i = 0; i < votantes_sorted.length; i++) {
         if(votantes_sorted[i]){
@@ -1031,8 +1030,6 @@ function muda_votacao(){
 
                     //só vai colocar barrinhas se esse votante estiver nessa votação, como calculamos lá em cima na função processa_mudanca()
                     if(votantes_votacao[fim.ID_VOTACAO].indexOf(votantes_sorted[i][j][2]) > -1) {
-                        faltaram.splice(faltaram.indexOf(votantes_sorted[i][j][2]),1)
-
 
                         // tipos_de_voto = ["NAO","SIM","ABSTENCAO","OBSTRUCAO","NAO VOTOU","PRESIDENTE"];
                         var class_;
@@ -1068,7 +1065,6 @@ function muda_votacao(){
         }
     };
 
-    console.log(faltaram.length,faltaram)
     var plus1;
     govs <= 1 ?  plus1 = " voto" : plus1 = " votos";
     $('#gov_counter').append(' <i> • <b>'+govs+"</b>"+plus1+"</i>");
