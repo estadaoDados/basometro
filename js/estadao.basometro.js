@@ -636,9 +636,16 @@ function processar_mudanca(){
         incluidos.push(g.children[i]._name)
     }//reset visibility
 
+    //vamos criar um dicionário de tradução do nome dos políticos, de acordo com o ID
+    var traducao_politico = {}
+    for (politico in d.politicos) {
+        traducao_politico["id"+d.politicos[politico]["ID"]] = politico
+    }
+
     //aqui fazemos os cálculos das médias de governismo de acordo com voto e orientação
     for (var i = 0; i < d.votos.length; i++) {//votos = [POLITICO,ID_VOTACAO,PARTIDO,VOTO]
-        if(votacoes_ids.indexOf(String(d.votos[i][1])) != -1){ //todos os votos aqui já estão subselecteds
+        var votacao = String(d.votos[i][1])
+        if(votacoes_ids.indexOf(votacao) != -1){ //todos os votos aqui já estão subselecteds
             votos.push(d.votos[i])
 
             if (incluidos.indexOf("id" + d.votos[i][0]) != -1) {
@@ -666,11 +673,18 @@ function processar_mudanca(){
             votantes["id"+d.votos[i][0]] = [d.votos[i][2],d.votos[i][3]]
 
             //essa variável mostra quais são os votantes para cada votação
-            if (!(String(d.votos[i][1]) in votantes_votacao)) {
-                votantes_votacao[String(d.votos[i][1])] = [];
-                votantes_votacao[String(d.votos[i][1])].push("id"+d.votos[i][0]);
-            }  else
-                votantes_votacao[String(d.votos[i][1])].push("id"+d.votos[i][0])
+            if (!(votacao in votantes_votacao)) {
+                votantes_votacao[votacao] = [];
+            }
+
+            var politico = {
+                id:"id"+d.votos[i][0],
+                nome:traducao_politico["id"+d.votos[i][0]],
+                partido: d.votos[i][2],
+                voto: d.votos[i][3]
+            }
+
+            votantes_votacao[votacao].push(politico)
 
             //if (fim.ID_VOTACAO == d.votos[i][1]) { votantes["id"+d.votos[i][0]] = [d.votos[i][2],d.votos[i][3]] }//só os votantes da última sessão
             if (partidos.indexOf(d.votos[i][2]) == -1 /* && (filtrar_partido?(filtros_partido[d.votos[i][2]]):true) */) partidos.push(d.votos[i][2])
@@ -1025,47 +1039,31 @@ function muda_votacao(){
         OBS: A OBSTRUÇÃO pode ser considerada como um voto contra ou como um voto a favor, a depender da orientação do governo.
     */
 
-    for (var i = 0; i < votantes_sorted.length; i++) {
-        if(votantes_sorted[i]){
-            for (var j = 0; j < votantes_sorted[i].length; j++) {//[PARTIDO,ULTIMO_VOTO,ID_POLITICO,NOME_CASA]
-                if (votantes_sorted[i][j] && votantes_sorted[i][j][1] != 4) {
-
-                    //só vai colocar barrinhas se esse votante estiver nessa votação, como calculamos lá em cima na função processa_mudanca()
-                    if(votantes_votacao[fim.ID_VOTACAO].indexOf(votantes_sorted[i][j][2]) > -1) {
-
-                        // tipos_de_voto = ["NAO","SIM","ABSTENCAO","OBSTRUCAO","NAO VOTOU","PRESIDENTE"];
-                        var class_;
-                        var type;
-                        if (votantes_sorted[i][j][1] == 2){
-                            abst++;
-                            class_ = "abstencao_voto", type = "a";
-                        } else if (votantes_sorted[i][j][1] == 3 && fim.ORIENTACAO_GOVERNO != "Obstrução"){ //TODO: OBSTRUÇÃO
-                            //} else if (votantes_sorted[i][j][1] == 3){
-                            opos++;
-                            class_ = "oposicionista_voto", type = "o" //TODO: OBSTRUÇÃO
-                            //class_ = "oposicionista_voto obstrucao", type = "o";
-                        } else if (votantes_sorted[i][j][1] == 5){ //PRESIDENTE
-                            //abst++;
-                            //class_ = "abstencao_voto /cod_17", type = "a";
-                        } else if ((fim.ORIENTACAO_GOVERNO == "Sim" && votantes_sorted[i][j][1] == 1) || (fim.ORIENTACAO_GOVERNO == "Não" && votantes_sorted[i][j][1] == 0) || (fim.ORIENTACAO_GOVERNO == "Obstrução" && votantes_sorted[i][j][1] == 3)){ //TODO: OBSTRUÇÃO
-                            //} else if ((fim.ORIENTACAO_GOVERNO == "Sim" && votantes_sorted[i][j][1] == 1) || (fim.ORIENTACAO_GOVERNO == "Não" && votantes_sorted[i][j][1] == 0)){
-                            govs++;
-                            class_ = "governista_voto", type = "g";
-                        }else {
-                            opos++;
-                            class_ = "oposicionista_voto", type = "o";
-                        }
-                        var parlamentar = $('<div class="'+class_+'" title="'+g.children[votantes_sorted[i][j][2]].politico+', '+votantes_sorted[i][j][0]+'" style="background-color:'+cores[votantes_sorted[i][j][0]][0]+';" ></div>')
-
-                        $("#v_"+type+"_"+votantes_sorted[i][j][0]).append(parlamentar);
-                        tooltip(parlamentar);
-                    }
-                }else{
-                    nao_votou ++;
-                };
-            };
+    votantes_votacao[fim.ID_VOTACAO].forEach(function (d) {
+        var voto = d.voto;
+        var class_;
+        var type;
+        if (voto == 2) {
+            abst++;
+            class_ = "abstencao_voto", type = "a";
+        } else if (voto == 3 && fim.ORIENTACAO_GOVERNO != "Obstrução") { //TODO: OBSTRUÇÃO
+            opos++;
+            class_ = "oposicionista_voto", type = "o" //TODO: OBSTRUÇÃO
+        } else if (voto == 5) { //PRESIDENTE
+            //abst++;
+            //class_ = "abstencao_voto /cod_17", type = "a";
+        } else if ((fim.ORIENTACAO_GOVERNO == "Sim" && voto == 1) || (fim.ORIENTACAO_GOVERNO == "Não" && voto == 0) || (fim.ORIENTACAO_GOVERNO == "Obstrução" && voto == 3)) { //TODO: OBSTRUÇÃO
+            govs++;
+            class_ = "governista_voto", type = "g";
+        } else {
+            opos++;
+            class_ = "oposicionista_voto", type = "o";
         }
-    };
+        var parlamentar = $('<div class="' + class_ + '" title="' + d.nome + ', ' + d.partido + '" style="background-color:' + cores[d.partido][0] + ';" ></div>')
+
+        $("#v_" + type + "_" + d.partido).append(parlamentar);
+        tooltip(parlamentar);
+    })
 
     var plus1;
     govs <= 1 ?  plus1 = " voto" : plus1 = " votos";

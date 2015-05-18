@@ -79,12 +79,12 @@ function menu_de_navegacao(){
                 $("#loading").hide()
             }
         } else {
-            //$("#loading").show()
-            //visualizacao = escolha.substr(7)
-            //$("#listar_tipos").text(visualizacao.replace(/_/g," "))
-            //mudar_visualizacao();
-            //$("#loading").hide()
-            alert("Visualização por votação não acessível no momento")
+            $("#loading").show()
+            visualizacao = escolha.substr(7)
+            $("#listar_tipos").text(visualizacao.replace(/_/g," "))
+            mudar_visualizacao();
+            $("#loading").hide()
+            //alert("Visualização por votação não acessível no momento")
         };
     }).css("cursor", "pointer")
 }
