@@ -662,6 +662,7 @@ function processar_mudanca(){
 
             }
             participantes["id"+d.votos[i][0]] = [d.votos[i][2],d.votos[i][3]] //ultimo partido e ultimo voto
+
             votantes["id"+d.votos[i][0]] = [d.votos[i][2],d.votos[i][3]]
 
             //essa variável mostra quais são os votantes para cada votação
@@ -707,6 +708,7 @@ function processar_mudanca(){
         $("#search").autocomplete("option", { source: politicos_hints });
         first_time = false;
     }
+
 
     for (var i = 0; i < votos.length; i++) {
         //TODO: dupla iteração de votos???
