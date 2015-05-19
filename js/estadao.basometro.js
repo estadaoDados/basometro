@@ -1003,12 +1003,12 @@ function muda_votacao(){
         $("#texto_data").html(fim.TIPO + " " + fim.NUMERO + " " + fim.ANO + " &rarr; <span id='t_data'>"+fim.data_parsed.getDate()+"/"+(fim.data_parsed.getMonth()+1)+"/"+fim.data_parsed.getFullYear()+"</span> - <span id='t_hora'>"+fim.data_parsed.getHours()+"h"+(fim.data_parsed.getMinutes()<10?"0":"")+fim.data_parsed.getMinutes()+" &rarr; Orientação do governo: <b>"+fim.ORIENTACAO_GOVERNO+"</b></span>");
     };
 
-    $('#partido_voto').html('<div id="governista" ></div><div id="oposicionista" ></div><div id="abstencao" ></div>');
+    $('#partido_voto').html('<div id="governista" ></div><div id="oposicionista" ></div><div id="obstrucao" ></div><div id="abstencao" ></div>');
 
-    var govs = 0, opos = 0, abst = 0, nao_votou = 0, partidos_sorted = [];
+    var govs = 0, opos = 0, obs = 0, abst = 0, partidos_sorted = [];
     $('#governista').html('<div id="gov_counter">Pró-governo</div><br>');
-    $('#oposicionista').html('<div id="ops_counter">Contra o governo</div><br>') //TODO: OBSTRUÇÃO
-    // $('#oposicionista').html('<div id="ops_counter">Contra o governo + obstruções</div><br>');
+    $('#oposicionista').html('<div id="ops_counter">Contra o governo</div><br>')
+    $('#obstrucao').html('<div id="obs_counter">Obstrução</div><br>')
     $('#abstencao').html('<div id="abs_counter">Abstenção</div><br>');
 
     for (var i = 0; i < partidos.length; i++) {
@@ -1018,6 +1018,7 @@ function muda_votacao(){
         if (partidos_sorted[i]) {
             $('#governista').append('<div id="v_g_'+partidos_sorted[i]+'" class="partido_row'+(casa=="senado"?" sen_row":"")+'" ><small>'+partidos_sorted[i]+'</small></div>');
             $('#oposicionista').append('<div id="v_o_'+partidos_sorted[i]+'" class="partido_row'+(casa=="senado"?" sen_row":"")+'" ></div>');
+            $('#obstrucao').append('<div id="v_obs_'+partidos_sorted[i]+'" class="partido_row'+(casa=="senado"?" sen_row":"")+'" ></div>');
             $('#abstencao').append('<div id="v_a_'+partidos_sorted[i]+'" class="partido_row'+(casa=="senado"?" sen_row":"")+'" ></div>');
         };
     };
@@ -1046,13 +1047,13 @@ function muda_votacao(){
         if (voto == 2) {
             abst++;
             class_ = "abstencao_voto", type = "a";
-        } else if (voto == 3 && fim.ORIENTACAO_GOVERNO != "Obstrução") { //TODO: OBSTRUÇÃO
-            opos++;
-            class_ = "oposicionista_voto", type = "o" //TODO: OBSTRUÇÃO
+        } else if (voto == 3 ) {
+            obs++;
+            class_ = "obstrucao_voto", type = "obs"
         } else if (voto == 5) { //PRESIDENTE
             //abst++;
             //class_ = "abstencao_voto /cod_17", type = "a";
-        } else if ((fim.ORIENTACAO_GOVERNO == "Sim" && voto == 1) || (fim.ORIENTACAO_GOVERNO == "Não" && voto == 0) || (fim.ORIENTACAO_GOVERNO == "Obstrução" && voto == 3)) { //TODO: OBSTRUÇÃO
+        } else if ((fim.ORIENTACAO_GOVERNO == "Sim" && voto == 1) || (fim.ORIENTACAO_GOVERNO == "Não" && voto == 0) ) {
             govs++;
             class_ = "governista_voto", type = "g";
         } else {
@@ -1064,13 +1065,13 @@ function muda_votacao(){
         $("#v_" + type + "_" + d.partido).append(parlamentar);
         tooltip(parlamentar);
     })
-
     var plus1;
     govs <= 1 ?  plus1 = " voto" : plus1 = " votos";
     $('#gov_counter').append(' <i> • <b>'+govs+"</b>"+plus1+"</i>");
     opos <= 1 ?  plus1 = " voto" : plus1 = " votos";
     $('#ops_counter').append(' <i> • <b>'+opos+"</b>"+plus1+"</i>");
-    abst <= 1 ?  plus1 = " voto" : plus1 = " votos";
-    $('#abs_counter').append(' <i> • <b>'+abst+"</b>"+plus1+"</i>");
+
+    $('#obs_counter').append(' <i> • <b>'+obs+"</i>");
+    $('#abs_counter').append(' <i> • <b>'+abst+"</i>");
 
 }
