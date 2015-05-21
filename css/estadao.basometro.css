@@ -939,23 +939,30 @@ h3{
 }
 
 #governista{
-  width:415px;
+  width:400px;
   float:left;
   text-align:center;
 }
 
 #oposicionista{
-  width:400px;
+  width:330px;
   float:left;
   text-align:center;
   border-left:2px white solid;
 }
 
 #abstencao{
-  width:140px;
+  width:85px;
   border-left:1px white dotted;
   float:left;
   text-align:right;
+}
+
+#obstrucao{
+    width:120px;
+    border-left:1px white dotted;
+    float:left;
+    text-align:center;
 }
 
 .partido_row{
@@ -995,14 +1002,22 @@ h3{
   margin-left:1px;
   float:right;
 }
-.sen_row .governista_voto, .sen_row .oposicionista_voto, .sen_row .abstencao_voto {
+
+.obstrucao_voto {
+    height:10px;
+    width:4px;
+    background-color:white;
+    margin-left:1px;
+    float:right;
+}
+.sen_row .governista_voto, .sen_row .oposicionista_voto, .sen_row .obstrucao_voto, .sen_row .abstencao_voto {
   width:14px;
 }
 
-#gov_counter i, #ops_counter i, #abs_counter i {
+#gov_counter i, #obs_counter i, #ops_counter i, #abs_counter i {
   color:gray;
 }
-#gov_counter b, #ops_counter b, #abs_counter b {
+#gov_counter b, #obs_counter b, #ops_counter b, #abs_counter b {
   font-size:1.2em;
 }
 
