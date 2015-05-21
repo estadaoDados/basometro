@@ -152,44 +152,14 @@ function adiciona_partidos() {
     }
 }
 
-/* Isso está muito feio!! Tem que fazer com um "dicionário" e/ou "mapa" */
 function retorna_dados(governo,legislatura,casa) {
-    if (governo == "lula" && legislatura == "1" && casa == "camara") {
-        return DadosGerais["lula"]["câmara"][1]
-    } else if (governo == "lula" && legislatura == "2" && casa == "camara") {
-        return DadosGerais["lula"]["câmara"][2]
-    } else if (governo == "dilma" && legislatura == "1" && casa == "camara") {
-        return DadosGerais["dilma"]["câmara"][1]
-    } else if (governo == "dilma" && legislatura == "1" && casa == "senado") {
-        return DadosGerais["dilma"]["senado"][1]
-    } else if (governo == "dilma" && legislatura == "2" && casa == "camara") {
-        return DadosGerais["dilma"]["câmara"][2]
-    }  else if (governo == "dilma" && legislatura == "2" && casa == "senado") {
-        return DadosGerais["dilma"]["senado"][2]
-    } // else if (governo == "dilma" && legislatura == "2" && casa == "senado") {
-      //  return DadosGerais["dilma"]["senado"][2]
-    //}
-    return null
+    if (governo == "lula" && casa == "senado") return null;
+    if (casa == "camara") casa = "câmara";
+    return DadosGerais[governo][casa][parseInt(legislatura)];
 }
-
-/* Isso está muito feio!! Tem que fazer com um "dicionário" e/ou "mapa" */
 function status_download_json(governo,legislatura,casa) {
-    if (governo == "lula" && legislatura == "1" && casa == "camara") {
-        return status_lula_1_camara
-    } else if (governo == "lula" && legislatura == "2" && casa == "camara") {
-        return status_lula_2_camara
-    } else if (governo == "dilma" && legislatura == "1" && casa == "camara") {
-        return status_dilma_1_camara
-    } else if (governo == "dilma" && legislatura == "1" && casa == "senado") {
-        return status_dilma_1_senado
-    } else if (governo == "dilma" && legislatura == "2" && casa == "camara") {
-        return status_dilma_2_camara
-    } else if (governo == "dilma" && legislatura == "2" && casa == "senado") {
-        return true//  return status_dilma_2_senado
-    } else if (governo == "lula" && casa == "senado") {
-        return true
-    }
-    return false
+    if (governo == "lula" && casa == "senado") return null;
+    return "status_"+governo+"_"+legislatura+"_"+casa;
 }
 
 function papel(){
@@ -233,7 +203,6 @@ function papel(){
     for (votacao in d.votacoes) {
         d.votacoes[votacao].ID_VOTACAO = votacao;
     }
-
 }
 
 function navegacao(){
@@ -540,7 +509,13 @@ function desenha_eventos(callback){
           datas_sorted.push([d.votacoes[votacao].data_parsed,d.votacoes[votacao],votacao])
         }
     }
-    datas_sorted.sort(function(a,b){return b[0]-a[0]}).reverse()
+
+    //aqui, vamos usar uma função de ordenação diferente para a câmara (pois as votações têm hora certa) e outra p/ o senado
+    if (casa == "câmara")
+        datas_sorted.sort(function(a,b){return b[0]-a[0]}).reverse();
+    else
+        datas_sorted.sort(function(a,b){return b[2]-a[2]}).reverse();
+
     var intervalo = ((largura - 130)/datas_sorted.length)
     $('#eventos_tag').html("")
     $('#eventos').html("")
