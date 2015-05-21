@@ -647,7 +647,8 @@ function processar_mudanca(){
 
             votantes["id"+d.votos[i][0]] = [d.votos[i][2],d.votos[i][3]]
 
-            //essa variável mostra quais são os votantes para cada votação
+            //essa variável mostra quais são os votantes para cada votação e como ele votou.
+            //vamos usá-la para desenhar as barrinhas na visualização de votação por votação
             if (!(votacao in votantes_votacao)) {
                 votantes_votacao[votacao] = [];
             }
