@@ -1020,15 +1020,18 @@ function muda_votacao(){
         var voto = d.voto;
         var class_;
         var type;
-        if (voto == 2) {
+
+        //se o voto for 4, é porque o senador não votou. então passamos pro proximo. o mesmo para 5 (presidente)
+        if (voto == 4 || voto == 5) {
+            return;
+        }
+        //agora as outras opções, ou seja, abstencao, obstrucao, governista ou opposicionaista
+        else if (voto == 2) {
             abst++;
             class_ = "abstencao_voto", type = "a";
         } else if (voto == 3 ) {
             obs++;
             class_ = "obstrucao_voto", type = "obs"
-        } else if (voto == 5) { //PRESIDENTE
-            //abst++;
-            //class_ = "abstencao_voto /cod_17", type = "a";
         } else if ((fim.ORIENTACAO_GOVERNO == "Sim" && voto == 1) || (fim.ORIENTACAO_GOVERNO == "Não" && voto == 0) ) {
             govs++;
             class_ = "governista_voto", type = "g";
