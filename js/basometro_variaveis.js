@@ -155,9 +155,9 @@ var inicio = false,
     fim = false,
     d,//dados e grupo que contem os pontos
     g,
-    casa = "câmara",
-    governo = "Dilma",
-    legislatura = "2",
+    casa,
+    governo,
+    legislatura,
     first_time = true,
     datas_sorted = [],
     votacoes = [],
@@ -182,7 +182,7 @@ var inicio = false,
     media_da_votacao = {},
     politicos_hints = [],
     votacoes_hints = [],
-    visualizacao = "por_bancadas_partidárias",
+    visualizacao,
     is_fim = false,
     inicio_left = 0,
     play_interval,
@@ -191,8 +191,7 @@ var inicio = false,
     destaque_hover = false,
     bolinha_camara = 3, // do canvas
     bolinha_senado = 5, // do canvas
-    cores = {}
-
-var partidos_clicados = [];
+    cores = {},
+    variaveis_URL;
 
 

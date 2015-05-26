@@ -1,3 +1,12 @@
+//pega os parametros que vieram na URL para saber onde começar o gráfico
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = decodeURIComponent(value);
+    });
+    return vars;
+}
+
 function carregaLula2(){
     $.ajax({
         url: jsonURLBase + "lula2_camara.json",
@@ -131,8 +140,35 @@ $.ajax({
 //Carrega outros mandatos
 carregaDilma2Senado()
 
+//função que inicializa o aplicativo
 $(document).ready(function(){
-    main("Dilma", 2, "Camara");
+    //valores default
+    governo = "Dilma";
+    casa = "Camara";
+    legislatura = 2;
+    visualizacao = "por_bancadas_partidárias";
+
+    //lemos variaveis na URL
+    variaveis_URL = getUrlVars();
+
+    //aqui sao as variaveis que vamos checar se existem na URL
+    var lista_variaveis = [
+        "governo",
+        "casa",
+        "legislatura",
+        "visualizacao"
+    ]
+
+    lista_variaveis.forEach(function (d) {
+
+        if (d in variaveis_URL) {
+
+            //eval(d = variaveis_URL(d))
+        }
+    })
+
+    main(governo, legislatura, casa);
     hist_prepare();
     //draw_hist_graph();
 });
+

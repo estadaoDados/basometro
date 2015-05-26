@@ -1015,7 +1015,6 @@ function muda_votacao(){
 
         OBS: A OBSTRUÇÃO pode ser considerada como um voto contra ou como um voto a favor, a depender da orientação do governo.
     */
-
     votantes_votacao[fim.ID_VOTACAO].forEach(function (d) {
         var voto = d.voto;
         var class_;
