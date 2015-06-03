@@ -90,7 +90,7 @@ function main(governo,legislatura,casa){
     if ($.browser.msie && $.browser.version < 9 ) {
         alert("Atualize o Internet Explorer para a versão 9 ou superior; ou abra o Basômetro em outro navegador, como Chrome ou Firefox.")
     }
-    if(!primeira_iteracao){
+    if(primeira_iteracao){
         var dld_status = status_download_json(governo,legislatura,casa)
         while (!dld_status){
             setTimeout(function(){},5000)
@@ -98,9 +98,8 @@ function main(governo,legislatura,casa){
         }
         d = retorna_dados(governo,legislatura,casa)
 
-    } else {
-        primeira_iteracao = false
     }
+    primeira_iteracao = false
 
     if (!d) {
         alert ('Dados não disponíves ou inacessíveis para este governo.')
@@ -154,7 +153,6 @@ function adiciona_partidos() {
 
 function retorna_dados(governo,legislatura,casa) {
     if (governo == "lula" && casa == "senado") return null;
-    if (casa == "camara") casa = "câmara";
     return DadosGerais[governo][casa][parseInt(legislatura)];
 }
 function status_download_json(governo,legislatura,casa) {
@@ -183,7 +181,7 @@ function papel(){
 
     for(politico in lista_politicos_local){
         lista_politicos_local[politico].ID_POLITICO = politico
-        var circulo = new Path.Circle([380,5], ((casa=="câmara")?bolinha_camara:bolinha_senado))
+        var circulo = new Path.Circle([380,5], ((casa=="camara")?bolinha_camara:bolinha_senado))
             circulo.fillColor = 'red', circulo.fillColor.alpha = 0.7
             circulo.name = "id"+lista_politicos_local[politico].ID
             circulo.partido = lista_politicos_local[politico].PARTIDO
@@ -240,7 +238,7 @@ function navegacao(){
     $("#search").autocomplete({
         source:[],
         select: function(event, ui) {
-            if (visualizacao == "por_bancadas_partidárias") {
+            if (visualizacao == "bancadas") {
                 selecionar_politico(ui.item.value)
             }else{
                 mover_alca("fim",$(".evento[title='"+ui.item.value+"']").attr("id"))
@@ -343,7 +341,7 @@ function mudar_visualizacao() {
     $(".abas").hide();
     $("#"+visualizacao).show();
 
-    if (visualizacao == "por_bancadas_partidárias") { //TODO: usar test de regex aqui!
+    if (visualizacao == "bancadas") { //TODO: usar test de regex aqui!
         $("#search").autocomplete("option", { source: politicos_hints });
         $(".intervalo").fadeIn();
         $("#alca_inicio").fadeIn(function(){
@@ -359,7 +357,7 @@ function mudar_visualizacao() {
             $("#search").attr("placeholder","buscar politico");
             muda();
         });
-    } else if (visualizacao == "por_votações") {
+    } else if (visualizacao == "votacoes") {
         $("#search").autocomplete("option", { source: votacoes_hints });
         $("#slider_tip").text(update_pos_alca($("#alca_fim").text("Votação").addClass("alca_votacao"),true).attr("title"));
         $(".intervalo").fadeOut();
@@ -510,10 +508,12 @@ function desenha_eventos(callback){
         }
     }
 
-    //aqui, vamos usar uma função de ordenação diferente para a câmara (pois as votações têm hora certa) e outra p/ o senado
-    if (casa == "câmara")
+    //aqui, vamos usar uma função de ordenação diferente para a camara (pois as votações têm hora certa) e outra p/ o senado
+    if (casa == "camara")
+        //checa hora e data
         datas_sorted.sort(function(a,b){return b[0]-a[0]}).reverse();
     else
+        //checa a numeração do código da votação (as menores é anterior às posteriores)
         datas_sorted.sort(function(a,b){return b[2]-a[2]}).reverse();
 
     var intervalo = ((largura - 130)/datas_sorted.length)
@@ -530,14 +530,14 @@ function desenha_eventos(callback){
             $('#eventos_tag').append('<div class="evento_tag" style="left:'+posicao(i)+'">Junho</div>')
         }
         var dt = datas_sorted[i][1].data_parsed;
-        var titulo = (i+1) + " - " + dt.getDate() +"/"+ (dt.getMonth()+1) +"/"+ dt.getFullYear() + ((casa == "câmara")?(" "+ dt.getHours() + "h" + (dt.getMinutes()<10?"0":"")+ dt.getMinutes()):"" ) + " - " +datas_sorted[i][1].LINGUAGEM_COMUM;
+        var titulo = (i+1) + " - " + dt.getDate() +"/"+ (dt.getMonth()+1) +"/"+ dt.getFullYear() + ((casa == "camara")?(" "+ dt.getHours() + "h" + (dt.getMinutes()<10?"0":"")+ dt.getMinutes()):"" ) + " - " +datas_sorted[i][1].LINGUAGEM_COMUM;
         votacoes_hints.push(titulo);
         $('#eventos').append(
             '<div id="'+datas_sorted[i][2]+
             '" class="evento" data="'+datas_sorted[i][0].getTime()+
             '" title="'+titulo+
             '" style="left:'+posicao(i)+
-            '" data-date="'+dt.getDate()+"/"+(dt.getMonth()+1)+"/"+ dt.getFullYear()+((casa == "câmara")?(" "+ dt.getHours() + "h" + (dt.getMinutes()<10?"0":"")+ dt.getMinutes()):"" )+
+            '" data-date="'+dt.getDate()+"/"+(dt.getMonth()+1)+"/"+ dt.getFullYear()+((casa == "camara")?(" "+ dt.getHours() + "h" + (dt.getMinutes()<10?"0":"")+ dt.getMinutes()):"" )+
             '" data-tipo="'+datas_sorted[i][1].TIPO+
             '" data-numero="'+datas_sorted[i][1].NUMERO+
             '" data-ano="'+datas_sorted[i][1].ANO+
@@ -828,7 +828,7 @@ function totalizacao(){
         }
     };
 
-    $('#titulo').html("Em <b>"+ votacoes_ids.length +"</b> votações, <b>"+ governistas + "</b> "+(casa=="câmara"?"deputados":"senadores")+" votaram com o governo em <b>"+ $("#seletor_v").text() +"</b> das vezes ou mais; e <b>"+ (politicos_votantes-governistas) +"</b> "+(($("#seletor_v").text() == "0%")?"":"menos de")+" <b>"+ $("#seletor_v").text() +"</b> (" + votantes_votacao[fim.ID_VOTACAO].length + " participaram da última votação)")
+    $('#titulo').html("Em <b>"+ votacoes_ids.length +"</b> votações, <b>"+ governistas + "</b> "+(casa=="camara"?"deputados":"senadores")+" votaram com o governo em <b>"+ $("#seletor_v").text() +"</b> das vezes ou mais; e <b>"+ (politicos_votantes-governistas) +"</b> "+(($("#seletor_v").text() == "0%")?"":"menos de")+" <b>"+ $("#seletor_v").text() +"</b> (" + votantes_votacao[fim.ID_VOTACAO].length + " participaram da última votação)")
     .effect( "highlight", {color:tocando?"#111":"#333"}, 500 );
 
     $("#media_geral").text(Math.round((governismo_geral/politicos_votantes)*100) + "%")
@@ -944,7 +944,7 @@ function preenche_ficha(item) {
     $("#ficha_n_votou").text(item.votos[4])
 
     //if (item.foto.indexOf(".jpg") != -1) complemento_camara = "http://s3-sa-east-1.amazonaws.com/estadaodados/fotos_deputados/";
-    //var _foto = (((casa == "câmara")?complemento_camara:"") + item.foto)
+    //var _foto = (((casa == "camara")?complemento_camara:"") + item.foto)
     var _foto = "images/fotos/" + item.foto
     if ($("#ficha_foto").attr("src") != _foto) {
         $("#lendo_foto").show();

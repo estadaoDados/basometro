@@ -7,16 +7,20 @@ function getUrlVars() {
     return vars;
 }
 
-function carregaLula2(){
+function carrega_lula_2_camara(){
     $.ajax({
         url: jsonURLBase + "lula2_camara.json",
         async: true,
         type: 'GET',
         dataType: 'json',
         success: function(data, saida){
-            DadosGerais['lula']['câmara'][2] = data //global data {politicos,votacoes,votos}
-            //window.ReadyJson['lula']['câmara'][2] = true //download finalizado
-	          status_lula_2_camara = true
+            DadosGerais['lula']['camara'][2] = data //global data {politicos,votacoes,votos}
+            //se for o primeiro a baixar os dados, chama a função main
+            status_lula_2_camara = true;
+            if (primeira_iteracao) {
+                main(governo, legislatura, casa);
+                baixa_resto();
+            }
         },
         error: function() {
 	        status_lula_2_camara = true
@@ -24,43 +28,49 @@ function carregaLula2(){
     })
 }
 
-function carregaLula1(){
+function carrega_lula_1_camara(){
     $.ajax({
         url: jsonURLBase + "lula1_camara.json",
         async: true,
         type: 'GET',
         dataType: 'json',
         success: function(data, saida){
-            DadosGerais['lula']['câmara'][1] = data //global data {politicos,votacoes,votos}
-	          status_lula_1_camara = true
-            carregaLula2()
+            DadosGerais['lula']['camara'][1] = data //global data {politicos,votacoes,votos}
+            //se for o primeiro a baixar os dados, chama a função main
+            status_lula_1_camara = true;
+            if (primeira_iteracao) {
+                main(governo, legislatura, casa);
+                baixa_resto();
+            }
         },
         error: function() {
 	          status_lula_1_camara = true
-            carregaLula2()
         }
     })
 }
 
-function carregaDilma1Camara(){
+function carrega_dilma_1_camara(){
     $.ajax({
         url: jsonURLBase + "dilma1_camara.json",
         async: true,
         type: 'GET',
         dataType: 'json',
         success: function(data,saida){
-	        DadosGerais['dilma']['câmara'][1] = data //global data {politicos,votacoes,votos}
-            //window.ReadyJson['dilma']['câmara'][1] = true //download finalizado
-	        status_dilma_1_camara = true
+	        DadosGerais['dilma']['camara'][1] = data //global data {politicos,votacoes,votos}
+            //se for o primeiro a baixar os dados, chama a função main
+            status_dilma_1_camara = true;
+            if (primeira_iteracao) {
+                main(governo, legislatura, casa);
+                baixa_resto();
+            }
         },
         error: function() {
-            //window.ReadyJson['dilma']['câmara'][1] = true //download finalizado
 	        status_dilma_1_camara = true
         }
     })
 }
 
-function carregaDilma1Senado(){
+function carrega_dilma_1_senado(){
     $.ajax({
         url: jsonURLBase + "dilma1_senado.json",
         async: true,
@@ -68,36 +78,20 @@ function carregaDilma1Senado(){
         dataType: 'json',
         success: function(data,saida){
             DadosGerais['dilma']['senado'][1] = data //global data {politicos,votacoes,votos}
-            //window.ReadyJson['dilma']['senado'][1] = true //download finalizado
-	        status_dilma_1_senado = true
-          carregaLula1()
+            //se for o primeiro a baixar os dados, chama a função main
+            status_dilma_1_senado = true;
+            if (primeira_iteracao) {
+                main(governo, legislatura, casa);
+                baixa_resto();
+            }
         },
         error: function() {
-          carregaLula1()
-            //window.ReadyJson['dilma']['senado'][1] = true //download finalizado
 	        status_dilma_1_senado = true
-        }
-    })
-}
-function carregaDilma2Camara(){
-    $.ajax({
-        url: jsonURLBase + "dilma2_camara.json",
-        async: true,
-        type: 'GET',
-        dataType: 'json',
-        success: function(data,saida){
-            DadosGerais['dilma']['câmara'][2] = data //global data {politicos,votacoes,votos}
-            //window.ReadyJson['dilma']['câmara'][1] = true //download finalizado
-            status_dilma_2_camara = true
-        },
-        error: function() {
-            //window.ReadyJson['dilma']['câmara'][1] = true //download finalizado
-            status_dilma_2_camara = true
         }
     })
 }
 
-function carregaDilma2Senado(){
+function carrega_dilma_2_senado(){
     $.ajax({
         url: jsonURLBase + "dilma2_senado.json",
         async: true,
@@ -105,48 +99,76 @@ function carregaDilma2Senado(){
         dataType: 'json',
         success: function(data,saida){
             DadosGerais['dilma']['senado'][2] = data //global data {politicos,votacoes,votos}
-            //window.ReadyJson['dilma']['senado'][1] = true //download finalizado
-            status_dilma_2_senado = true
-            carregaDilma1Camara()
-            carregaDilma1Senado()
+            //se for o primeiro a baixar os dados, chama a função main
+            status_dilma_2_senado = true;
+            if (primeira_iteracao) {
+                main(governo, legislatura, casa);
+                baixa_resto();
+            }
         },
         error: function() {
-            carregaDilma1Camara()
-            carregaDilma1Senado()
-            //window.ReadyJson['dilma']['senado'][1] = true //download finalizado
-            status_dilma_12senado = true
+            status_dilma_2_senado = true;
         }
     })
 }
 
-//Carrega Dilma 2 - Câmara - Primeira visualização do projeto
-$.ajax({
-    url: jsonURLBase + "dilma2_camara.json",
-    async: false,
-    type: 'GET',
-    dataType: 'json',
-    success: function(data,saida){
-        $("#loading").hide()
-        window.DadosGerais['dilma']['câmara'][2] = data //global data {politicos,votacoes,votos}
-        d = window.DadosGerais['dilma']['câmara'][2]
-        if (!d) { alert ('Dados não disponíves ou inacessíveis para este governo.')}
-        $("#loading_first").hide()
-        //window.ReadyJson['lula']['câmara'][1] = true //download finalizado
-	      status_dilma_2_camara = true
-    },
-    error: function() { alert('Dados não disponíveis ou inacessíveis, tenta novamente mais tarde'); }
-})
+function carrega_dilma_2_camara() {
+    $.ajax({
+        url: jsonURLBase + "dilma2_camara.json",
+        async: false,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data, saida) {
+            $("#loading").hide()
+            window.DadosGerais['dilma']['camara'][2] = data //global data {politicos,votacoes,votos}
+            d = window.DadosGerais['dilma']['camara'][2]
+            if (!d) {
+                alert('Dados não disponíves ou inacessíveis para este governo.')
+            }
+            $("#loading_first").hide()
+            //se for o primeiro a baixar os dados, chama a função main
+            status_dilma_2_camara = true;
+            if (primeira_iteracao) {
+                main(governo, legislatura, casa);
+                baixa_resto();
+            }
+        },
+        error: function () {
+            alert('Dados não disponíveis ou inacessíveis, tenta novamente mais tarde');
+        }
+    })
+}
 
-//Carrega outros mandatos
-carregaDilma2Senado()
+//função para baixar os outros dados que não são os primeiros carregados
+function baixa_resto() {
+    for (var governo in DadosGerais) {
+        for (var casa in DadosGerais[governo]) {
+            for (var legislatura in DadosGerais[governo][casa]) {
+                var variavel = "status_"+governo+"_"+legislatura+"_"+casa;
+                var funcao = "carrega_"+governo+"_"+legislatura+"_"+casa;
+                if (window[variavel] == false) {
+                    window[funcao]();
+
+                }
+            }
+        }
+    }
+}
+
+
+//função que carrega os dados, de acordo com as variáveis de início
+function carrega_dados(){
+    var funcao = "carrega_"+governo+"_"+legislatura+"_"+casa;
+    window[funcao]();
+}
 
 //função que inicializa o aplicativo
 $(document).ready(function(){
     //valores default
-    governo = "Dilma";
-    casa = "Camara";
+    governo = "dilma";
+    casa = "camara";
     legislatura = 2;
-    visualizacao = "por_bancadas_partidárias";
+    visualizacao = "bancadas";
 
     //lemos variaveis na URL
     variaveis_URL = getUrlVars();
@@ -160,14 +182,14 @@ $(document).ready(function(){
     ]
 
     lista_variaveis.forEach(function (d) {
-
         if (d in variaveis_URL) {
-
-            //eval(d = variaveis_URL(d))
+            window[d] = variaveis_URL[d]
         }
     })
 
-    main(governo, legislatura, casa);
+    carrega_dados();
+    muda_menus();
+
     hist_prepare();
     //draw_hist_graph();
 });

@@ -51,7 +51,7 @@ function menu_de_navegacao(){
             window.location.href="/saopauloquebalanca"
 
         } else if (/(Câmara|Senado)/.test(escolha)) {
-            nova_casa = /Câmara/.test(escolha)?"câmara":"senado"
+            nova_casa = /Câmara/.test(escolha)?"camara":"senado"
             if (nova_casa != casa) {
                 $("#loading").show()
                 casa = nova_casa
@@ -80,8 +80,9 @@ function menu_de_navegacao(){
             }
         } else {
             $("#loading").show()
-            visualizacao = escolha.substr(7)
-            $("#listar_tipos").text(visualizacao.replace(/_/g," "))
+            var vis1 = escolha.substr(7);
+            (vis1 == "por bancadas partidárias") ? visualizacao = "bancadas": visualizacao = "votacoes";
+            $("#listar_tipos").text((visualizacao == "bancadas"?"por bancada partidária":"por votações"));
             mudar_visualizacao();
             $("#loading").hide()
             //alert("Visualização por votação não acessível no momento")
@@ -98,4 +99,11 @@ function enable_search(){
     $("#search").focus();
 }
 
-
+//função chamada assim que é a página é carregada para saber qual valor colocar nos menus, de acordo com as variáveis
+//da URL
+function muda_menus() {
+    $("#listar_casa").text((casa == "camara")?"na Câmara":"no Senado");
+    var gov = (governo == "dilma")?"Dilma":"Lula";
+    $("#listar_governo").text(gov+" "+legislatura)
+    $("#listar_tipos").text((visualizacao == "bancadas"?"por bancada partidária":"por votações"));
+}

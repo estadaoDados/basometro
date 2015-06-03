@@ -1,11 +1,26 @@
-var status_dilma_2_camara = false;
-var status_dilma_2_senado = false;
-var status_dilma_1_camara = false;
-var status_dilma_1_senado = false;
-var status_lula_1_camara = false;
-var status_lula_1_senado = true;
-var status_lula_2_camara = false;
-var status_lula_2_senado = true;
+//variável necessária para dizer quais legislaturas e governos que temos
+window.DadosGerais={
+    "dilma":{"camara": {1: {}, 2:{}}, "senado": {1: {}, 2:{}}},
+    "lula":{"camara": {1:{}, 2:{}}}
+}
+
+window.ReadyJson={
+    "dilma":{"camara": {1: false, 2: false }, "senado": {1: false, 2:false}},
+    "lula":{"camara": {1: false, 2: false}}
+}
+
+window.histData = {};
+
+//aqui cria uma variável de status dos dados de cada um dos governos, legislaturas e casas
+for (var governo in DadosGerais) {
+    for (var casa in DadosGerais[governo]) {
+        for (var legislatura in DadosGerais[governo][casa]) {
+            var variavel = "status_"+governo+"_"+legislatura+"_"+casa;
+            window[variavel] = false;
+        }
+    }
+}
+
 var jsonURLBase = "dados/"
 
 window.cores = {
@@ -132,18 +147,6 @@ window.dic_partidos = {
     PSDC:'Partido Social Democrático Cristão',
     "S.Part.": "Sem Partido"
 }
-
-window.DadosGerais={
-  "dilma":{"câmara": {1: {}, 2:{}}, "senado": {1: {}, 2:{}}},
-  "lula":{"câmara": {1:{}, 2:{}}, "senad             o": {1:{},2:{}}}
-}
-
-window.ReadyJson={
-  "dilma":{"camara": {1: false, 2: false }, "senado": {1: false, 2:false}},
-  "lula":{"camara": {1: false, 2: false}, "senado": {1: true, 2: true}}
-}
-
-window.histData = {};
 
 var primeira_iteracao = true;
 var primeira_alca = true;
