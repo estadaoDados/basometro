@@ -8,11 +8,20 @@
 */
 
 //TODO - Hardcoded
-var hexDigits = new Array
-("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f");
 
-function hex(x) {
-    return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
+//função que coloca na hash da URL todas as variáveis listadas dentro dela e muda a cada atualização
+function muda_hash() {
+    var hash_atual = window.location.hash;
+    var hash = "";
+    lista_variaveis.forEach(function (d) {
+        if (d != "partidos") {
+            if (hash_atual.indexOf(d) > -1) {
+                hash += d+"="+window[d]+"&";
+            }
+        }
+    })
+
+    window.location.hash = hash;
 }
 
 $.ui.autocomplete.prototype._renderItem = function( ul, item){
@@ -341,7 +350,7 @@ function mudar_visualizacao() {
     $(".abas").hide();
     $("#"+visualizacao).show();
 
-    if (visualizacao == "bancadas") { //TODO: usar test de regex aqui!
+    if (visualizacao == "bancadas") {
         $("#search").autocomplete("option", { source: politicos_hints });
         $(".intervalo").fadeIn();
         $("#alca_inicio").fadeIn(function(){
@@ -585,6 +594,7 @@ function muda(desenhar){
     } else {
         processar_mudanca();
     }
+    muda_hash();
 }
 
 function processar_mudanca(){

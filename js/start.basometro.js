@@ -1,7 +1,7 @@
 //pega os parametros que vieram na URL para saber onde começar o gráfico
 function getUrlVars() {
     var vars = {};
-    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+    var parts = window.location.href.replace(/[#&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
         vars[key] = decodeURIComponent(value);
     });
     return vars;
@@ -173,24 +173,27 @@ $(document).ready(function(){
     //lemos variaveis na URL
     variaveis_URL = getUrlVars();
 
-    //aqui sao as variaveis que vamos checar se existem na URL
-    var lista_variaveis = [
-        "governo",
-        "casa",
-        "legislatura",
-        "visualizacao"
-    ]
-
+    //agora usamos as varia'eis listadas em lista_variaveis para checar se ela foi informada no hash
+    //se foi, mudamos seu valor
     lista_variaveis.forEach(function (d) {
         if (d in variaveis_URL) {
-            window[d] = variaveis_URL[d]
+            //uma regra diferente para partidos, já que no nosso código ele é um dict chamado lista_partidos
+            if (d == "partidos") {
+                var partidos = variaveis_URL[d].split(",");
+                partidos.forEach(function (p) {
+                    filtros_partido[p] = true;
+                    filtrar_partido = true;
+                })
+            } else {
+                window[d] = variaveis_URL[d];
+            }
         }
     })
 
     carrega_dados();
     muda_menus();
-
     hist_prepare();
+    muda_hash();
     //draw_hist_graph();
 });
 

@@ -50,7 +50,8 @@ function menu_de_navegacao(){
         } else if (/(São_Paulo_que_balança)/.test(escolha)) {
             window.location.href="/saopauloquebalanca"
 
-        } else if (/(Câmara|Senado)/.test(escolha)) {
+        } else //se foi clicado o menu de escolha da Casa
+        if (/(Câmara|Senado)/.test(escolha)) {
             nova_casa = /Câmara/.test(escolha)?"camara":"senado"
             if (nova_casa != casa) {
                 $("#loading").show()
@@ -61,9 +62,11 @@ function menu_de_navegacao(){
                 $(".click").toggleClass("click")
                 main(governo, legislatura, escolha.substr(10))
                 hist_prepare();
+                muda_hash();
                 $("#loading").hide()
             }
-        } else if (/(Lula_1|Lula_2|Dilma_1|Dilma_2)/.test(escolha)) {
+        } else //ou o menu de escolha do governo
+        if (/(Lula_1|Lula_2|Dilma_1|Dilma_2)/.test(escolha)) {
             novo_governo = /Dilma/.test(escolha)?"dilma":"lula"
             nova_legislatura = /1/.test(escolha)?"1":"2"
             console.log(novo_governo,nova_legislatura)
@@ -76,14 +79,17 @@ function menu_de_navegacao(){
                 $(".click").toggleClass("click")
                 main(governo, legislatura, casa.replace("â","a"))
                 hist_prepare();
+                muda_hash();
                 $("#loading").hide()
             }
-        } else {
+        } //ou o visualização por bancada ou votação
+        else {
             $("#loading").show()
             var vis1 = escolha.substr(7);
             (vis1 == "por bancadas partidárias") ? visualizacao = "bancadas": visualizacao = "votacoes";
             $("#listar_tipos").text((visualizacao == "bancadas"?"por bancada partidária":"por votações"));
             mudar_visualizacao();
+            muda_hash();
             $("#loading").hide()
             //alert("Visualização por votação não acessível no momento")
         };

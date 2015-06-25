@@ -23,6 +23,18 @@ for (var governo in DadosGerais) {
 
 var jsonURLBase = "dados/"
 
+//aqui sao as variaveis que sempre vamos checar se existem na URL do hash
+var lista_variaveis = [
+    "governo",
+    "casa",
+    "legislatura",
+    "visualizacao",
+    "partidos"
+]
+
+//variaveis de filtro padrão que também serão checadas
+filtros_partido = {}, filtrar_partido = false
+
 window.cores = {
     "PT"       :["#a00200",20],
     "PST"      :["#a51001",2],
