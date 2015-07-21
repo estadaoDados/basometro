@@ -105,11 +105,10 @@ function main(governo,legislatura,casa){
             setTimeout(function(){},5000)
             dld_status = status_download_json(governo, legislatura, casa)
         }
-        d = retorna_dados(governo,legislatura,casa)
-
     }
     primeira_iteracao = false
 
+    d = retorna_dados(governo,legislatura,casa)
     if (!d) {
         alert ('Dados não disponíves ou inacessíveis para este governo.')
     } else {

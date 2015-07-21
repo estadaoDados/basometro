@@ -69,7 +69,6 @@ function menu_de_navegacao(){
         if (/(Lula_1|Lula_2|Dilma_1|Dilma_2)/.test(escolha)) {
             novo_governo = /Dilma/.test(escolha)?"dilma":"lula"
             nova_legislatura = /1/.test(escolha)?"1":"2"
-            console.log(novo_governo,nova_legislatura)
             if (novo_governo != governo || nova_legislatura != legislatura) {
                 $("#loading").show()
                 governo = novo_governo
