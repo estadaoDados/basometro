@@ -508,10 +508,10 @@ function desenha_eventos(callback){
           var dt = String(d.votacoes[votacao].DATA).replace(/(\d+)(\d\d)(\d\d)/g,"$1-$2-$3").split("-")
           if (!d.votacoes[votacao].HORA) console.log(d.votacoes[votacao],votacao);
           dt = dt.concat(d.votacoes[votacao].HORA.split(":"))
-          if (dt[0] >= 10)
+          if (dt[0].length == 2)
             d.votacoes[votacao].data_parsed = new Date("20"+dt[0],(dt[1]-1),dt[2],dt[3],dt[4])
           else
-            d.votacoes[votacao].data_parsed = new Date("20"+dt[0],(dt[1]-1),dt[2],dt[3],dt[4])
+            d.votacoes[votacao].data_parsed = new Date("200"+dt[0],(dt[1]-1),dt[2],dt[3],dt[4])
           datas_sorted.push([d.votacoes[votacao].data_parsed,d.votacoes[votacao],votacao])
         }
     }
