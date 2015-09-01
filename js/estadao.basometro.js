@@ -511,7 +511,7 @@ function desenha_eventos(callback){
           if (dt[0] >= 10)
             d.votacoes[votacao].data_parsed = new Date("20"+dt[0],(dt[1]-1),dt[2],dt[3],dt[4])
           else
-            d.votacoes[votacao].data_parsed = new Date("200"+dt[0],(dt[1]-1),dt[2],dt[3],dt[4])
+            d.votacoes[votacao].data_parsed = new Date("20"+dt[0],(dt[1]-1),dt[2],dt[3],dt[4])
           datas_sorted.push([d.votacoes[votacao].data_parsed,d.votacoes[votacao],votacao])
         }
     }
