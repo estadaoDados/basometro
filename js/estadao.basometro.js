@@ -591,6 +591,7 @@ function muda(desenhar){
     if ( desenhar ) {
         desenha_eventos(processar_mudanca);
     } else {
+
         processar_mudanca();
     }
     muda_hash();
@@ -599,7 +600,6 @@ function muda(desenhar){
 function processar_mudanca(){
     //essa é a função principal que coloca as bolinhas e faz os cálculos de governismo de acordo com os filtros selecionados
     enter_frame = 0, politicos_hints = [], votacoes_ids = [], participantes = {}, votantes = {}, partidos = [], votos = [], votantes_sorted = [], media_por_votacao = {},  media_da_votacao = {}, votantes_votacao = {};
-
     //aqui, descobre quais são as votações existentes no período selecionado
     if (inicio.data_parsed > fim.data_parsed) inicio = fim;
     for (var i = 0; i < datas_sorted.length; i++) {
@@ -610,7 +610,6 @@ function processar_mudanca(){
         }
     };
     $("#vota_count").text(votacoes_ids.length)
-
     //agora pega todos os ids dos políticos em questão e esconde todas as bolinhas
     var incluidos = []
     for (var i = 0; i < g.children.length; i++) {
@@ -625,13 +624,14 @@ function processar_mudanca(){
     for (politico in d.politicos) {
         traducao_politico["id"+d.politicos[politico]["ID"]] = politico
     }
-
     //aqui fazemos os cálculos das médias de governismo de acordo com voto e orientação
+
     for (var i = 0; i < d.votos.length; i++) {//votos = [POLITICO,ID_VOTACAO,PARTIDO,VOTO]
+        
         var votacao = String(d.votos[i][1])
         if(votacoes_ids.indexOf(votacao) != -1){ //todos os votos aqui já estão subselecteds
             votos.push(d.votos[i])
-
+        
             if (incluidos.indexOf("id" + d.votos[i][0]) != -1) {
                 if (media_por_votacao[d.votos[i][1]][d.votos[i][2]]) {
                     if(d.votos[i][3]>=0 && d.votos[i][3] < 4) media_por_votacao[d.votos[i][1]][d.votos[i][2]][1] ++
@@ -677,9 +677,9 @@ function processar_mudanca(){
     }
 
     for (var i = 0; i < partidos.length; i++) {
-    if (!cores[partidos[i]]) console.log(partidos[i])
+    if (!cores[partidos[i]]) console.log(partidos[i] + "teste");
         if ( !votantes_sorted[cores[partidos[i]][1]]) {
-                votantes_sorted[cores[partidos[i]][1]] = []
+                votantes_sorted[cores[partidos[i]][1]] = [];
             }
     } //initiate array of partidos
 
@@ -708,7 +708,6 @@ function processar_mudanca(){
         first_time = false;
     }
 
-
     for (var i = 0; i < votos.length; i++) {
         //TODO: dupla iteração de votos???
         g.children["id"+votos[i][0]].votos[votos[i][3]] ++;
@@ -716,7 +715,6 @@ function processar_mudanca(){
         if(d.votacoes[votos[i][1]].ORIENTACAO_GOVERNO == "Não" && votos[i][3] == 0) g.children["id"+votos[i][0]].votos[6] ++;
         if(d.votacoes[votos[i][1]].ORIENTACAO_GOVERNO == "Obstrução" && votos[i][3] == 3) g.children["id"+votos[i][0]].votos[6] ++;
     }
-
     for(politico in votantes) {
         votantes_sorted[cores[g.children[politico].partido][1]].push(votantes[politico])
     }

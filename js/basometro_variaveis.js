@@ -72,6 +72,7 @@ window.cores = {
     "PRONA"    :["#62afc3",32],
     "PAN"      :["#58abd0",33],
     "PSDC"     :["#4da7de",34],
+    "REDE"     :["#000000",35],
 
     // "ZZZ"   :["#43a3eb",35],
     "S.Part."   :["#999999",36]
@@ -106,7 +107,8 @@ window.paleta = {
     24:'#E9BC00',
     25:'#B6720A',
     26:'#9A740F',
-    27: '#634600'
+    27: '#634600',
+    35: '#000000'
 }
 
 window.ordem_partido = {
@@ -157,6 +159,7 @@ window.dic_partidos = {
     PAN: 'Partido dos Aposentados da Nação',
     PPB: 'Partido Progressista Brasileiro',
     PSDC:'Partido Social Democrático Cristão',
+    REDE: 'REDE',
     "S.Part.": "Sem Partido"
 }
 
