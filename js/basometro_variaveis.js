@@ -35,7 +35,7 @@ var lista_variaveis = [
 //variaveis de filtro padrão que também serão checadas
 filtros_partido = {}, filtrar_partido = false
 
-window.cores = {
+/*window.cores = {
     "PT"       :["#a00200",20],
     "PST"      :["#a51001",2],
     "PL"       :["#aa1d01",3],
@@ -72,11 +72,11 @@ window.cores = {
     "PRONA"    :["#62afc3",32],
     "PAN"      :["#58abd0",33],
     "PSDC"     :["#4da7de",34],
-    "REDE"     :["#000000",35],
+    "REDE"     :["#598F59",35],
 
     // "ZZZ"   :["#43a3eb",35],
     "S.Part."   :["#999999",36]
-}
+}*/
 
 
 window.paleta = {
@@ -108,7 +108,7 @@ window.paleta = {
     25:'#B6720A',
     26:'#9A740F',
     27: '#634600',
-    35: '#000000'
+    28: '#598F59'
 }
 
 window.ordem_partido = {
@@ -118,7 +118,7 @@ window.ordem_partido = {
     },
     dilma: {
         1: ['PT','PMN','PCdoB','PSL','PHS','PRB','PRP','PROS','PSDC','PTdoB','PDT','PR','PP','PSB','PMDB','PTB','PSC','PRTB','PV','PTC','PSD','PEN','SDD','PSOL','PPS','DEM','PSDB'],
-        2: ['PTC','PT','PCdoB','PSL','PRB','PRTB','PP','PHS','PMDB','PTB','PRP','PSB','PROS','PTN','PDT','PR','PTdoB','PV','PSC','PMN','PSD','PEN','PSDC','SDD','PSOL','PPS','DEM','PSDB']
+        2: ['PTC','PT','PCdoB','PSL','PRB','PRTB','PP','PHS','PMDB','PTB','PRP','PSB','PROS','PTN','PDT','PR','PTdoB','PV','PSC','PMN','PSD','PEN','PSDC','SDD','PSOL','PPS','DEM','PSDB','REDE']
     }
 }
 

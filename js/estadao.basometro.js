@@ -9,7 +9,7 @@
 
 //TODO - Hardcoded
 
-//função que coloca na hash da URL todas as variáveis listadas dentro dela e muda a cada atualização
+//função que coloca na hash da URL todas as variáveis listadas dentro dela e muda a cada atualização //TODO terminar
 function muda_hash() {
     var hash_atual = window.location.hash;
     var hash = "";
@@ -128,7 +128,6 @@ function adiciona_partidos() {
     //faz um multiplicador que transformará o index de cada partido em um número entre 0 e o total de cores da paleta)
     var multiplicador = Object.keys(paleta).length/ordem.length
 
-
     for (p in ordem) {
         var cor = parseInt(p*multiplicador)
 
@@ -143,7 +142,6 @@ function adiciona_partidos() {
             '</div>'
         pai.append(codigo)
     }
-
     //se faltar algum partido, adiciona no final da lista
     for (p in dic_partidos) {
         if (!(ordem.indexOf(p)>-1)) {
