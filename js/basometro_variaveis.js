@@ -105,10 +105,11 @@ window.paleta = {
     22:'#CAD226',
     23:'#FEEE00',
     24:'#E9BC00',
-    25:'#B6720A',
-    26:'#9A740F',
-    27: '#634600',
-    28: '#598F59'
+    25:'#598F59',
+    26:'#B6720A',
+    27:'#9A740F',
+    28: '#634600',
+    29: '#999999'
 }
 
 window.ordem_partido = {
@@ -118,7 +119,7 @@ window.ordem_partido = {
     },
     dilma: {
         1: ['PT','PMN','PCdoB','PSL','PHS','PRB','PRP','PROS','PSDC','PTdoB','PDT','PR','PP','PSB','PMDB','PTB','PSC','PRTB','PV','PTC','PSD','PEN','SDD','PSOL','PPS','DEM','PSDB'],
-        2: ['PTC','PT','PCdoB','PSL','PRB','PRTB','PP','PHS','PMDB','PTB','PRP','PSB','PROS','PTN','PDT','PR','PTdoB','PV','PSC','PMN','PSD','PEN','PSDC','SDD','PSOL','PPS','DEM','PSDB','REDE']
+        2: ['PTC','PT','PCdoB','PSL','PRB','PRTB','PP','PHS','PMDB','PTB','PRP','PSB','PROS','PTN','PDT','PR','PTdoB','PV','PSC','PMN','PSD','PEN','PSDC','SDD','PSOL','REDE','PPS','DEM','PSDB','S. Part.']
     }
 }
 
@@ -212,4 +213,27 @@ var inicio = false,
     cores = {},
     variaveis_URL;
 
+//variáveis do Google Docs para baixar as novas ementas
+var chave_planilha = '1nxAL1ChPElm_Vv7fsHsUbfbWe040mvg49dWh05haFUE',
+    url_base = "https://spreadsheets.google.com/feeds/cells/"+chave_planilha+"/",
+    url_final = "/public/values?alt=json",
+    ordem_planilhas = {
+        'lula': {
+            'camara': {
+                1: 1,
+                2: 2
+            }
+        },
+        'dilma': {
+            'camara': {
+                1:3,
+                2:4
+         },
+            'senado': {
+                1:5,
+                2:6
+            }
+
+        }
+    };
 

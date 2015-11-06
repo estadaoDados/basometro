@@ -653,7 +653,6 @@ function processar_mudanca(){
             participantes["id"+d.votos[i][0]] = [d.votos[i][2],d.votos[i][3]] //ultimo partido e ultimo voto
 
             votantes["id"+d.votos[i][0]] = [d.votos[i][2],d.votos[i][3]]
-
             //essa variável mostra quais são os votantes para cada votação e como ele votou.
             //vamos usá-la para desenhar as barrinhas na visualização de votação por votação
             if (!(votacao in votantes_votacao)) {
@@ -690,7 +689,7 @@ function processar_mudanca(){
             g.children[votante].partido = votantes[votante][0]
             g.children[votante].fillColor = cores[votantes[votante][0]][0]
             g.children[votante].fillColor.alpha = 0.7
-            g.children[votante].aceleracao = 0
+            g.children[votante].aceleracao = 0;
             g.children[votante].destino_y = 0 //eixo vertical
             g.children[votante].destino_x = 0 //eixo horizontal
             g.children[votante].votos = [0,0,0,0,0,0,0] //o ultimo são os votos com o governo

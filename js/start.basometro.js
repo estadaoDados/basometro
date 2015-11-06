@@ -15,12 +15,9 @@ function carrega_lula_2_camara(){
         dataType: 'json',
         success: function(data, saida){
             DadosGerais['lula']['camara'][2] = data //global data {politicos,votacoes,votos}
-            //se for o primeiro a baixar os dados, chama a função main
             status_lula_2_camara = true;
-            if (primeira_iteracao) {
-                main(governo, legislatura, casa);
-                baixa_resto();
-            }
+            //aqui baixa as ementas atualizadas do Google Docs e lá chama a função main
+            baixa_ementas('lula','camara',2);
         },
         error: function() {
 	        status_lula_2_camara = true
@@ -36,12 +33,9 @@ function carrega_lula_1_camara(){
         dataType: 'json',
         success: function(data, saida){
             DadosGerais['lula']['camara'][1] = data //global data {politicos,votacoes,votos}
-            //se for o primeiro a baixar os dados, chama a função main
             status_lula_1_camara = true;
-            if (primeira_iteracao) {
-                main(governo, legislatura, casa);
-                baixa_resto();
-            }
+            //aqui baixa as ementas atualizadas do Google Docs e lá chama a função main
+            baixa_ementas('lula','camara',1);
         },
         error: function() {
 	          status_lula_1_camara = true
@@ -57,12 +51,9 @@ function carrega_dilma_1_camara(){
         dataType: 'json',
         success: function(data,saida){
 	        DadosGerais['dilma']['camara'][1] = data //global data {politicos,votacoes,votos}
-            //se for o primeiro a baixar os dados, chama a função main
             status_dilma_1_camara = true;
-            if (primeira_iteracao) {
-                main(governo, legislatura, casa);
-                baixa_resto();
-            }
+            //aqui baixa as ementas atualizadas do Google Docs e lá chama a função main
+            baixa_ementas('dilma','camara',1);
         },
         error: function() {
 	        status_dilma_1_camara = true
@@ -78,12 +69,9 @@ function carrega_dilma_1_senado(){
         dataType: 'json',
         success: function(data,saida){
             DadosGerais['dilma']['senado'][1] = data //global data {politicos,votacoes,votos}
-            //se for o primeiro a baixar os dados, chama a função main
             status_dilma_1_senado = true;
-            if (primeira_iteracao) {
-                main(governo, legislatura, casa);
-                baixa_resto();
-            }
+            //aqui baixa as ementas atualizadas do Google Docs e lá chama a função main
+            baixa_ementas('dilma','senado',1);
         },
         error: function() {
 	        status_dilma_1_senado = true
@@ -99,12 +87,10 @@ function carrega_dilma_2_senado(){
         dataType: 'json',
         success: function(data,saida){
             DadosGerais['dilma']['senado'][2] = data //global data {politicos,votacoes,votos}
-            //se for o primeiro a baixar os dados, chama a função main
             status_dilma_2_senado = true;
-            if (primeira_iteracao) {
-                main(governo, legislatura, casa);
-                baixa_resto();
-            }
+            //aqui baixa as ementas atualizadas do Google Docs e lá chama a função main
+            baixa_ementas('dilma','senado',2);
+
         },
         error: function() {
             status_dilma_2_senado = true;
@@ -125,13 +111,10 @@ function carrega_dilma_2_camara() {
             if (!d) {
                 alert('Dados não disponíves ou inacessíveis para este governo.')
             }
-            $("#loading_first").hide()
-            //se for o primeiro a baixar os dados, chama a função main
+            $("#loading_first").hide();
             status_dilma_2_camara = true;
-            if (primeira_iteracao) {
-                main(governo, legislatura, casa);
-                baixa_resto();
-            }
+            //aqui baixa as ementas atualizadas do Google Docs e lá chama a função main
+            baixa_ementas('dilma','camara',2);
         },
         error: function () {
             alert('Dados não disponíveis ou inacessíveis, tenta novamente mais tarde');
@@ -160,6 +143,57 @@ function baixa_resto() {
 function carrega_dados(){
     var funcao = "carrega_"+governo+"_"+legislatura+"_"+casa;
     window[funcao]();
+}
+
+//função para ler as planilhas do Google Docs
+var le_planilha = function(d) {
+    var cells = d.feed.entry; // d são os dados recebidos do Google...
+    var numCells = cells.length;
+    var cellId, cellPos , conteudo;
+    var celulas = {}
+    var titulos = {};
+
+    for(var i=0; i < numCells; i++) {
+
+        // lê na string do id a coluna e linha
+        cellId = cells[i].id.$t.split('/');
+        cellPos = cellId[cellId.length - 1].split('C');
+        cellPos[0] = cellPos[0].replace('R', '');
+        conteudo = cells[i].content.$t
+
+        if (cellPos[0] == "1") {
+            titulos[cellPos[1]] = conteudo
+
+        } else {
+            if (!(cellPos[0] in celulas)) {
+                celulas[cellPos[0]] = {}
+            }
+            celulas[cellPos[0]][titulos[cellPos[1]]] = conteudo
+        }
+    }
+    return celulas
+}
+
+
+//função que baixa planilha do google e lê usando a função acima
+function baixa_ementas(gov,casa,legis) {
+    $.getJSON(url_base + ordem_planilhas[gov][casa][legis] + url_final, function (dados) {
+        var ementas = le_planilha(dados)
+        for (var key in ementas) {
+            if (ementas[key]) {
+                var id = ementas[key]["ID_VOTACAO"]
+                if (d["votacoes"][id]) {
+                    d["votacoes"][id]["LINGUAGEM_COMUM"] = ementas[key]["LINGUAGEM_COMUM"]
+                }
+            }
+        };
+
+        //se for a primeira iteração, chama o main
+        if (primeira_iteracao) {
+            main(governo, legislatura, casa);
+            baixa_resto();
+        }
+    })
 }
 
 //função que inicializa o aplicativo
