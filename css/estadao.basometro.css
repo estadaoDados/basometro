@@ -1,5 +1,5 @@
 ﻿body{
-  background-color: black;
+  background-color: #202020;
   width:980px;
   margin:10px auto;
   font-size:13px;
@@ -298,7 +298,7 @@ h3{
   color:#999;
   margin:5px 0px;
   font-size:1.05em;
-  background:black;
+  background:#202020;
   z-index:0;
   height:16px;
   text-align:center;
@@ -1136,7 +1136,7 @@ h3{
   font-weight: normal;
   font-family: Georgia;
   position: absolute;
-  background: black;
+  background: #202020;
   width: 804px;
   height: 576px;
   top: -7px;
@@ -1146,7 +1146,6 @@ h3{
   -moz-transition: all 0.3s ease;
   -ms-transition: all 0.3s ease;
   -o-transition: all 0.3s ease;
-  text-shadow:1px 1px 3px grey;
   z-index:1000;
   border:2px solid white;
   -webkit-border-radius: 10px;
@@ -1255,8 +1254,8 @@ h3{
   list-style-type: none;
 }
 #lista_valores_historico li {
-  color: #fff;
-  font: 11px sans-serif;
+  color: white;
+  font: 14px sans-serif;
   float: left;
   width: auto;
   display: inline;
