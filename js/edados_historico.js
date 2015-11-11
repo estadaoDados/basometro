@@ -62,7 +62,6 @@ function hist_draw_legend(partido, conteudo){
         'class': "focus_text " + partido,
         'html': function(){ return partido + ": " + conteudo; }
     })
-        .css("color",(partido=="Geral")?"#fff":cores[partido][0])
         .appendTo('#lista_valores_historico')
 }
 
