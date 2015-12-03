@@ -99,17 +99,18 @@ window.paleta = {
     16:'#008270',
     17:'#009045',
     18:'#00602D',
-    19: '#5F8930',
+    19:'#5F8930',
     20:'#7BAC39',
     21:'#A3BD31',
     22:'#CAD226',
     23:'#FEEE00',
     24:'#E9BC00',
     25:'#598F59',
-    26:'#B6720A',
-    27:'#9A740F',
-    28: '#634600',
-    29: '#999999'
+    26:'#e1c69d',
+    27:'#B6720A',
+    28:'#9A740F',
+    29:'#634600',
+    30:'#999999'
 }
 
 window.ordem_partido = {
@@ -119,7 +120,7 @@ window.ordem_partido = {
     },
     dilma: {
         1: ['PT','PMN','PCdoB','PSL','PHS','PRB','PRP','PROS','PSDC','PTdoB','PDT','PR','PP','PSB','PMDB','PTB','PSC','PRTB','PV','PTC','PSD','PEN','SDD','PSOL','PPS','DEM','PSDB'],
-        2: ['PTC','PT','PCdoB','PSL','PRB','PRTB','PP','PHS','PMDB','PTB','PRP','PSB','PROS','PTN','PDT','PR','PTdoB','PV','PSC','PMN','PSD','PEN','PSDC','SDD','PSOL','REDE','PPS','DEM','PSDB','S. Part.']
+        2: ['PTC','PT','PCdoB','PSL','PRB','PRTB','PP','PHS','PMDB','PTB','PRP','PSB','PROS','PTN','PDT','PR','PTdoB','PV','PSC','PMN','PSD','PEN','PSDC','SDD','PSOL','REDE','PMB','PPS','DEM','PSDB','S. Part.']
     }
 }
 
@@ -161,6 +162,7 @@ window.dic_partidos = {
     PPB: 'Partido Progressista Brasileiro',
     PSDC:'Partido Social Democrático Cristão',
     REDE: 'REDE',
+    PMB: 'Partido da Mulher Brasileira',
     "S.Part.": "Sem Partido"
 }
 
