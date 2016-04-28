@@ -1,3 +1,6 @@
+var string_governos = new RegExp(governos_menu.join("|"))
+$("#listar_governo").attr('title',governos_menu.join(','))                
+
 $("#choices").hide()
 $("#navegacao_topo a.drop").click(function(){
     if ($("#choices").is(":visible")) {
@@ -66,14 +69,15 @@ function menu_de_navegacao(){
                 $("#loading").hide()
             }
         } else //ou o menu de escolha do governo
-        if (/(Lula_1|Lula_2|Dilma_1|Dilma_2)/.test(escolha)) {
-            novo_governo = /Dilma/.test(escolha)?"dilma":"lula"
-            nova_legislatura = /1/.test(escolha)?"1":"2"
+        if (string_governos.test(escolha)) {
+            var temp = escolha.split("_")
+            novo_governo = temp[1]
+            nova_legislatura = temp[2]
             if (novo_governo != governo || nova_legislatura != legislatura) {
                 $("#loading").show()
                 governo = novo_governo
                 legislatura = nova_legislatura
-                rebuild()
+                rebuild()                
                 $("#listar_governo").text(escolha.substr(7).replace(/_/g," "))
                 $(".click").toggleClass("click")
                 main(governo, legislatura, casa.replace("â","a"))
@@ -108,7 +112,7 @@ function enable_search(){
 //da URL
 function muda_menus() {
     $("#listar_casa").text((casa == "camara")?"na Câmara":"no Senado");
-    var gov = (governo == "dilma")?"Dilma":"Lula";
+    var gov = governo.capitalize();
     $("#listar_governo").text(gov+" "+legislatura)
     $("#listar_tipos").text((visualizacao == "bancadas"?"por bancada partidária":"por votações"));
 }

@@ -1,14 +1,33 @@
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
 //variável necessária para dizer quais legislaturas e governos que temos
 window.DadosGerais={
-    "dilma":{"camara": {1: {}, 2:{}}, "senado": {1: {}, 2:{}}},
-    "lula":{"camara": {1:{}, 2:{}}}
+    "lula":{"camara": {1:{}, 2:{}}},
+    "dilma":{"camara": {1: {}, 2:{}}, "senado": {1: {}, 2:{}}}
+    //,'temer':{'camara':{1:{}}}
 }
 
-window.ReadyJson={
-    "dilma":{"camara": {1: false, 2: false }, "senado": {1: false, 2:false}},
-    "lula":{"camara": {1: false, 2: false}}
+//aqui a ordem dos partidos
+window.ordem_partido = {
+    lula: {
+        1:['PST','PMN','PT','PSL','PSB','PCdoB','PL','PSC','PTC','PTB','PP','PMDB','PMR','PPS','PDT','PV','PPB','PSOL','PRP','PSDB','DEM','PRONA','PRB'],
+        2:['PMN','PT','PSB','PRB','PCdoB','PHS','PTdoB','PR','PAN','PSC','PTC','PTB','PP','PMDB','PPS','PDT','PRTB','PV','PPB','PSOL','PRP','PSDB','DEM']
+    },
+    dilma: {
+        1: ['PT','PMN','PCdoB','PSL','PHS','PRB','PRP','PROS','PSDC','PTdoB','PDT','PR','PP','PSB','PMDB','PTB','PSC','PRTB','PV','PTC','PSD','PEN','SDD','PSOL','PPS','DEM','PSDB'],
+        2: ['PTC','PT','PCdoB','PSL','PRB','PRTB','PP','PHS','PMDB','PTB','PRP','PSB','PROS','PTN','PDT','PR','PTdoB','PV','PSC','PMN','PSD','PEN','PSDC','SDD','PSOL','REDE','PMB','PPS','DEM','PSDB','S. Part.']
+    },
+    temer : {
+        1: ['PTC','PT','PCdoB','PSL','PRB','PRTB','PP','PHS','PMDB','PTB','PRP','PSB','PROS','PTN','PDT','PR','PTdoB','PV','PSC','PMN','PSD','PEN','PSDC','SDD','PSOL','REDE','PMB','PPS','DEM','PSDB','S. Part.']
+    }
 }
 
+//aqui vamos fazer a variável para popular o menu de governos
+window.governos_menu = []
+
+//e aqui a do histórico
 window.histData = {};
 
 //aqui cria uma variável de status dos dados de cada um dos governos, legislaturas e casas
@@ -17,13 +36,27 @@ for (var governo in DadosGerais) {
         for (var legislatura in DadosGerais[governo][casa]) {
             var variavel = "status_"+governo+"_"+legislatura+"_"+casa;
             window[variavel] = false;
+
+            //e aqui populamos o menu de governos
+            var g_menu = governo.capitalize() + "_" + legislatura
+            if (governos_menu.indexOf(g_menu) == -1) {
+                governos_menu.push(g_menu)
+            }
         }
     }
 }
 
+//valores iniciais
+//var governo = governos_menu[governos_menu.length-1].split("_")[0].toLowerCase();
+//var legislatura = parseInt(governos_menu[governos_menu.length-1].split("_")[1].toLowerCase());
+governo = 'dilma'
+legislatura = 2
+var casa = "camara";
+var visualizacao = "bancadas";
+
 var jsonURLBase = "dados/"
 
-//aqui sao as variaveis que sempre vamos checar se existem na URL do hash
+//aqui sao as variaveis que sempre vamos checar se existem na URL do hash //TODO
 var lista_variaveis = [
     "governo",
     "casa",
@@ -113,16 +146,6 @@ window.paleta = {
     30:'#999999'
 }
 
-window.ordem_partido = {
-    lula: {
-        1:['PST','PMN','PT','PSL','PSB','PCdoB','PL','PSC','PTC','PTB','PP','PMDB','PMR','PPS','PDT','PV','PPB','PSOL','PRP','PSDB','DEM','PRONA','PRB'],
-        2:['PMN','PT','PSB','PRB','PCdoB','PHS','PTdoB','PR','PAN','PSC','PTC','PTB','PP','PMDB','PPS','PDT','PRTB','PV','PPB','PSOL','PRP','PSDB','DEM']
-    },
-    dilma: {
-        1: ['PT','PMN','PCdoB','PSL','PHS','PRB','PRP','PROS','PSDC','PTdoB','PDT','PR','PP','PSB','PMDB','PTB','PSC','PRTB','PV','PTC','PSD','PEN','SDD','PSOL','PPS','DEM','PSDB'],
-        2: ['PTC','PT','PCdoB','PSL','PRB','PRTB','PP','PHS','PMDB','PTB','PRP','PSB','PROS','PTN','PDT','PR','PTdoB','PV','PSC','PMN','PSD','PEN','PSDC','SDD','PSOL','REDE','PMB','PPS','DEM','PSDB','S. Part.']
-    }
-}
 
 window.dic_partidos = {
     PT: 'Partido dos Trabalhadores',

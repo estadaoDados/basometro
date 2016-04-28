@@ -1,4 +1,6 @@
-//pega os parametros que vieram na URL para saber onde começar o gráfico
+var primeiro = true
+
+//pega os parametros que vieram na URL para saber onde começar o gráfico //TODO
 function getUrlVars() {
     var vars = {};
     var parts = window.location.href.replace(/[#&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
@@ -7,117 +9,29 @@ function getUrlVars() {
     return vars;
 }
 
-function carrega_lula_2_camara(){
+function carrega(quem,quando,onde){    
     $.ajax({
-        url: jsonURLBase + "lula2_camara.json",
+        url: jsonURLBase + quem + quando + "_"+ onde + ".json",
         async: true,
         type: 'GET',
         dataType: 'json',
         success: function(data, saida){
-            DadosGerais['lula']['camara'][2] = data //global data {politicos,votacoes,votos}
-            status_lula_2_camara = true;
-            //aqui baixa as ementas atualizadas do Google Docs e lá chama a função main
-            baixa_ementas('lula','camara',2);
-        },
-        error: function() {
-	        status_lula_2_camara = true
-        }
-    })
-}
-
-function carrega_lula_1_camara(){
-    $.ajax({
-        url: jsonURLBase + "lula1_camara.json",
-        async: true,
-        type: 'GET',
-        dataType: 'json',
-        success: function(data, saida){
-            DadosGerais['lula']['camara'][1] = data //global data {politicos,votacoes,votos}
-            status_lula_1_camara = true;
-            //aqui baixa as ementas atualizadas do Google Docs e lá chama a função main
-            baixa_ementas('lula','camara',1);
-        },
-        error: function() {
-	          status_lula_1_camara = true
-        }
-    })
-}
-
-function carrega_dilma_1_camara(){
-    $.ajax({
-        url: jsonURLBase + "dilma1_camara.json",
-        async: true,
-        type: 'GET',
-        dataType: 'json',
-        success: function(data,saida){
-	        DadosGerais['dilma']['camara'][1] = data //global data {politicos,votacoes,votos}
-            status_dilma_1_camara = true;
-            //aqui baixa as ementas atualizadas do Google Docs e lá chama a função main
-            baixa_ementas('dilma','camara',1);
-        },
-        error: function() {
-	        status_dilma_1_camara = true
-        }
-    })
-}
-
-function carrega_dilma_1_senado(){
-    $.ajax({
-        url: jsonURLBase + "dilma1_senado.json",
-        async: true,
-        type: 'GET',
-        dataType: 'json',
-        success: function(data,saida){
-            DadosGerais['dilma']['senado'][1] = data //global data {politicos,votacoes,votos}
-            status_dilma_1_senado = true;
-            //aqui baixa as ementas atualizadas do Google Docs e lá chama a função main
-            baixa_ementas('dilma','senado',1);
-        },
-        error: function() {
-	        status_dilma_1_senado = true
-        }
-    })
-}
-
-function carrega_dilma_2_senado(){
-    $.ajax({
-        url: jsonURLBase + "dilma2_senado.json",
-        async: true,
-        type: 'GET',
-        dataType: 'json',
-        success: function(data,saida){
-            DadosGerais['dilma']['senado'][2] = data //global data {politicos,votacoes,votos}
-            status_dilma_2_senado = true;
-            //aqui baixa as ementas atualizadas do Google Docs e lá chama a função main
-            baixa_ementas('dilma','senado',2);
-
-        },
-        error: function() {
-            status_dilma_2_senado = true;
-        }
-    })
-}
-
-function carrega_dilma_2_camara() {
-    $.ajax({
-        url: jsonURLBase + "dilma2_camara.json",
-        async: false,
-        type: 'GET',
-        dataType: 'json',
-        success: function (data, saida) {
-            $("#loading").hide()
-            window.DadosGerais['dilma']['camara'][2] = data //global data {politicos,votacoes,votos}
-            d = window.DadosGerais['dilma']['camara'][2]
-            if (!d) {
-                alert('Dados não disponíves ou inacessíveis para este governo.')
+            DadosGerais[quem][onde][quando] = data //global data {politicos,votacoes,votos}
+            window["status_"+quem+"_"+quando+"_"+onde] = true;            
+            //se for o primeiro
+            if (primeiro) {
+                $("#loading_first").hide();
+                 d = window.DadosGerais['dilma']['camara'][2]
+                if (!d) {
+                    alert('Dados não disponíveis ou inacessíveis, tenta novamente mais tarde.')
+                }
+                primeiro = false;
             }
-            $("#loading_first").hide();
-            status_dilma_2_camara = true;
             //aqui baixa as ementas atualizadas do Google Docs e lá chama a função main
-            baixa_ementas('dilma','camara',2);
+            baixa_ementas(quem,onde,quando);
         },
-        error: function () {
-            alert('Dados não disponíveis ou inacessíveis, tenta novamente mais tarde');
+        error: function() {
+            window["status_"+quem+"_"+quando+"_"+onde] = true;            
         }
     })
 }
@@ -127,10 +41,9 @@ function baixa_resto() {
     for (var governo in DadosGerais) {
         for (var casa in DadosGerais[governo]) {
             for (var legislatura in DadosGerais[governo][casa]) {
-                var variavel = "status_"+governo+"_"+legislatura+"_"+casa;
-                var funcao = "carrega_"+governo+"_"+legislatura+"_"+casa;
+                var variavel = "status_"+governo+"_"+legislatura+"_"+casa;                
                 if (window[variavel] == false) {
-                    window[funcao]();
+                    carrega(governo,legislatura,casa);
 
                 }
             }
@@ -138,12 +51,6 @@ function baixa_resto() {
     }
 }
 
-
-//função que carrega os dados, de acordo com as variáveis de início
-function carrega_dados(){
-    var funcao = "carrega_"+governo+"_"+legislatura+"_"+casa;
-    window[funcao]();
-}
 
 //função para ler as planilhas do Google Docs
 var le_planilha = function(d) {
@@ -174,10 +81,10 @@ var le_planilha = function(d) {
     return celulas
 }
 
-
 //função que baixa planilha do google e lê usando a função acima
 function baixa_ementas(gov,casa,legis) {
-    $.getJSON(url_base + ordem_planilhas[gov][casa][legis] + url_final, function (dados) {
+    try {
+        $.getJSON(url_base + ordem_planilhas[gov][casa][legis] + url_final, function (dados) {
         var ementas = le_planilha(dados)
         for (var key in ementas) {
             if (ementas[key]) {
@@ -194,17 +101,14 @@ function baixa_ementas(gov,casa,legis) {
             baixa_resto();
         }
     })
+
+    }
+    catch(err) {}
 }
 
 //função que inicializa o aplicativo
 $(document).ready(function(){
-    //valores default
-    governo = "dilma";
-    casa = "camara";
-    legislatura = 2;
-    visualizacao = "bancadas";
-
-    //lemos variaveis na URL
+    //lemos variaveis na URL //TODO
     variaveis_URL = getUrlVars();
 
     //agora usamos as varia'eis listadas em lista_variaveis para checar se ela foi informada no hash
@@ -224,7 +128,7 @@ $(document).ready(function(){
         }
     })
 
-    carrega_dados();
+    carrega(governo,legislatura,casa);
     muda_menus();
     hist_prepare();
     muda_hash();
