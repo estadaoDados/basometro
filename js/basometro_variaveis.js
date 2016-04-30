@@ -6,7 +6,7 @@ String.prototype.capitalize = function() {
 window.DadosGerais={
     "lula":{"camara": {1:{}, 2:{}}},
     "dilma":{"camara": {1: {}, 2:{}}, "senado": {1: {}, 2:{}}}
-    //,'temer':{'camara':{1:{}}}
+    ,'temer':{'camara':{1:{}},'senado':{1:{}}}
 }
 
 //aqui a ordem dos partidos
@@ -47,10 +47,10 @@ for (var governo in DadosGerais) {
 }
 
 //valores iniciais
-//var governo = governos_menu[governos_menu.length-1].split("_")[0].toLowerCase();
-//var legislatura = parseInt(governos_menu[governos_menu.length-1].split("_")[1].toLowerCase());
-governo = 'dilma'
-legislatura = 2
+var governo = governos_menu[governos_menu.length-1].split("_")[0].toLowerCase();
+var legislatura = parseInt(governos_menu[governos_menu.length-1].split("_")[1].toLowerCase());
+//governo = 'dilma'
+//egislatura = 2
 var casa = "camara";
 var visualizacao = "bancadas";
 

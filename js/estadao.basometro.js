@@ -10,7 +10,7 @@
 //TODO - Hardcoded
 
 //função que coloca na hash da URL todas as variáveis listadas dentro dela e muda a cada atualização //TODO terminar
-function muda_hash() {
+function muda_hash() { //TODO
     var hash_atual = window.location.hash;
     var hash = "";
     lista_variaveis.forEach(function (d) {
