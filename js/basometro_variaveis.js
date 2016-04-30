@@ -6,7 +6,7 @@ String.prototype.capitalize = function() {
 window.DadosGerais={
     "lula":{"camara": {1:{}, 2:{}}},
     "dilma":{"camara": {1: {}, 2:{}}, "senado": {1: {}, 2:{}}}
-    ,'temer':{'camara':{1:{}},'senado':{1:{}}}
+    //,'temer':{'camara':{1:{}},'senado':{1:{}}}
 }
 
 //aqui a ordem dos partidos
