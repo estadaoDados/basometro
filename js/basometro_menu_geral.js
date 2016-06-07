@@ -1,12 +1,12 @@
 var string_governos = new RegExp(governos_menu.join("|"))
-$("#listar_governo").attr('title',governos_menu.join(','))                
+$("#listar_governo").attr('title2',governos_menu.join(','))
 
 $("#choices").hide()
 $("#navegacao_topo a.drop").click(function(){
     if ($("#choices").is(":visible")) {
         $("#choices").hide()
     }else{
-        var choices = $(this).attr("title").split(",")
+        var choices = $(this).attr("title2").split(",")
         choices_parsed = ""
         for (var i = 0; i < choices.length; i++) {
             choices_parsed += "<div id='choice_"+choices[i]+"' class='"+((choices[i].indexOf("#") == -1)?"choices":"submenu")+"'>"+choices[i].replace(/_/g," ").replace(/#/g,"")+"</div>"
@@ -77,7 +77,7 @@ function menu_de_navegacao(){
                 $("#loading").show()
                 governo = novo_governo
                 legislatura = nova_legislatura
-                rebuild()                
+                rebuild()
                 $("#listar_governo").text(escolha.substr(7).replace(/_/g," "))
                 $(".click").toggleClass("click")
                 main(governo, legislatura, casa.replace("â","a"))

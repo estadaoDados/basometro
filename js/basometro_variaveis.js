@@ -6,8 +6,40 @@ String.prototype.capitalize = function() {
 window.DadosGerais={
     "lula":{"camara": {1:{}, 2:{}}},
     "dilma":{"camara": {1: {}, 2:{}}, "senado": {1: {}, 2:{}}}
-    //,'temer':{'camara':{1:{}},'senado':{1:{}}}
+    ,'temer':{'camara':{1:{}},'senado':{1:{}}}
 }
+
+//variáveis do Google Docs para baixar as novas ementas
+var chave_planilha = '1nxAL1ChPElm_Vv7fsHsUbfbWe040mvg49dWh05haFUE',
+    url_base = "https://spreadsheets.google.com/feeds/cells/"+chave_planilha+"/",
+    url_final = "/public/values?alt=json",
+    ordem_planilhas = {
+        'lula': {
+            'camara': {
+                1: 1,
+                2: 2
+            }
+        },
+        'dilma': {
+            'camara': {
+                1:3,
+                2:4
+         },
+            'senado': {
+                1:5,
+                2:6
+            }
+        },
+        'temer': {
+            'camara': {
+                1:7
+            },
+            'senado': {
+                1:8
+            }
+        }
+    };
+
 
 //aqui a ordem dos partidos
 window.ordem_partido = {
@@ -237,28 +269,4 @@ var inicio = false,
     bolinha_senado = 5, // do canvas
     cores = {},
     variaveis_URL;
-
-//variáveis do Google Docs para baixar as novas ementas
-var chave_planilha = '1nxAL1ChPElm_Vv7fsHsUbfbWe040mvg49dWh05haFUE',
-    url_base = "https://spreadsheets.google.com/feeds/cells/"+chave_planilha+"/",
-    url_final = "/public/values?alt=json",
-    ordem_planilhas = {
-        'lula': {
-            'camara': {
-                1: 1,
-                2: 2
-            }
-        },
-        'dilma': {
-            'camara': {
-                1:3,
-                2:4
-         },
-            'senado': {
-                1:5,
-                2:6
-            }
-
-        }
-    };
 
