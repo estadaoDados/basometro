@@ -625,11 +625,11 @@ function processar_mudanca(){
     //aqui fazemos os cálculos das médias de governismo de acordo com voto e orientação
 
     for (var i = 0; i < d.votos.length; i++) {//votos = [POLITICO,ID_VOTACAO,PARTIDO,VOTO]
-        
+
         var votacao = String(d.votos[i][1])
         if(votacoes_ids.indexOf(votacao) != -1){ //todos os votos aqui já estão subselecteds
             votos.push(d.votos[i])
-        
+
             if (incluidos.indexOf("id" + d.votos[i][0]) != -1) {
                 if (media_por_votacao[d.votos[i][1]][d.votos[i][2]]) {
                     if(d.votos[i][3]>=0 && d.votos[i][3] < 4) media_por_votacao[d.votos[i][1]][d.votos[i][2]][1] ++
@@ -700,10 +700,7 @@ function processar_mudanca(){
     }
 
     politicos_hints.sort();
-    if (first_time) {
-        $("#search").autocomplete("option", { source: politicos_hints });
-        first_time = false;
-    }
+    $("#search").autocomplete("option", { source: politicos_hints });
 
     for (var i = 0; i < votos.length; i++) {
         //TODO: dupla iteração de votos???
