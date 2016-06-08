@@ -9,7 +9,7 @@ function getUrlVars() {
     return vars;
 }
 
-function carrega(quem,quando,onde){    
+function carrega(quem,quando,onde){
     $.ajax({
         url: jsonURLBase + quem + quando + "_"+ onde + ".json",
         async: true,
@@ -17,11 +17,11 @@ function carrega(quem,quando,onde){
         dataType: 'json',
         success: function(data, saida){
             DadosGerais[quem][onde][quando] = data //global data {politicos,votacoes,votos}
-            window["status_"+quem+"_"+quando+"_"+onde] = true;            
+            window["status_"+quem+"_"+quando+"_"+onde] = true;
             //se for o primeiro
             if (primeiro) {
                 $("#loading_first").hide();
-                 d = window.DadosGerais['dilma']['camara'][2]
+                 d = window.DadosGerais[quem][onde][quando]
                 if (!d) {
                     alert('Dados não disponíveis ou inacessíveis, tenta novamente mais tarde.')
                 }
@@ -31,7 +31,7 @@ function carrega(quem,quando,onde){
             baixa_ementas(quem,onde,quando);
         },
         error: function() {
-            window["status_"+quem+"_"+quando+"_"+onde] = true;            
+            window["status_"+quem+"_"+quando+"_"+onde] = true;
         }
     })
 }
@@ -41,7 +41,7 @@ function baixa_resto() {
     for (var governo in DadosGerais) {
         for (var casa in DadosGerais[governo]) {
             for (var legislatura in DadosGerais[governo][casa]) {
-                var variavel = "status_"+governo+"_"+legislatura+"_"+casa;                
+                var variavel = "status_"+governo+"_"+legislatura+"_"+casa;
                 if (window[variavel] == false) {
                     carrega(governo,legislatura,casa);
 
@@ -113,7 +113,7 @@ $(document).ready(function(){
 
     //agora usamos as varia'eis listadas em lista_variaveis para checar se ela foi informada no hash
     //se foi, mudamos seu valor
-    lista_variaveis.forEach(function (d) {
+    /*lista_variaveis.forEach(function (d) {
         if (d in variaveis_URL) {
             //uma regra diferente para partidos, já que no nosso código ele é um dict chamado lista_partidos
             if (d == "partidos") {
@@ -126,7 +126,7 @@ $(document).ready(function(){
                 window[d] = variaveis_URL[d];
             }
         }
-    })
+    })*/
 
     carrega(governo,legislatura,casa);
     muda_menus();
